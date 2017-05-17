@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class ClimbingPanel extends JPanel {
 
 	/**
-	 * 
+	 * ClimbingPanel
 	 */
 	private static final long serialVersionUID = 1L;
 	private Graphics g;

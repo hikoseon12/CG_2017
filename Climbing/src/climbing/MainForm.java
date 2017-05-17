@@ -14,7 +14,7 @@ public class MainForm extends JFrame implements MouseListener {
 	
 	public MainForm()
 	{
-		super("Climbing");
+		super("Climbing - for CG 2017 Term Project");
 		initUI();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
