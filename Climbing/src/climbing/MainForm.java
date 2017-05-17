@@ -4,13 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class MainForm extends JFrame implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
 	ClimbingPanel pnClimbing;
+	
+	JButton btOne;
 	
 	public MainForm()
 	{
@@ -26,6 +30,12 @@ public class MainForm extends JFrame implements MouseListener {
 		pnClimbing = new ClimbingPanel();
 		pnClimbing.addMouseListener(this);
 		this.add(pnClimbing, BorderLayout.CENTER);
+		
+		JPanel pnControl = new JPanel();
+		btOne = new JButton("Action");
+		pnControl.add(btOne);
+		
+		this.add(pnControl, BorderLayout.SOUTH);
 		
 	}
 	
