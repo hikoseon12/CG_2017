@@ -1,12 +1,11 @@
 package climbing;
 
-import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.io.*;
+import java.util.*;
 
 public class MainForm extends JFrame implements MouseListener {
 
@@ -19,7 +18,7 @@ public class MainForm extends JFrame implements MouseListener {
 	public MainForm()
 	{
 		super("Climbing - for CG 2017 Term Project");
-		initUI();
+		initUI();		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
@@ -40,6 +39,30 @@ public class MainForm extends JFrame implements MouseListener {
 	}
 	
 	
+	public void loadConf(File file)
+	{
+		ConfReader cr = new ConfReader();
+		cr.parse(new File("Climbing.conf"));
+		
+		Pnt rectPnt = cr.getBoundRectPnt();
+		
+		this.setSize((int)rectPnt.coord(0), (int)rectPnt.coord(1) + 100);
+		
+		ArrayList<Pnt> plist = cr.getPointList();
+		
+		for( Pnt point : plist)
+			pnClimbing.addPnt(point);
+		
+		ArrayList<Integer> man = cr.getMan();
+		if( man != null )
+		{
+			pnClimbing.setMan(plist.get(man.get(0)), plist.get(man.get(1)), plist.get(man.get(2)), plist.get(man.get(3)));
+		}
+		
+		pnClimbing.repaint();
+	}
+	
+	
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
@@ -47,6 +70,7 @@ public class MainForm extends JFrame implements MouseListener {
 	public void mousePressed(MouseEvent e) {
         if (e.getSource() != pnClimbing) return;
         Pnt point = new Pnt(e.getX(), e.getY());
+        //System.out.println("Click! " + point.toString());
         pnClimbing.addPnt(point);
         pnClimbing.repaint();
 	}
@@ -54,8 +78,9 @@ public class MainForm extends JFrame implements MouseListener {
 		
 	public static void main(String[] args) {
 
-		MainForm mf = new MainForm();
+		MainForm mf = new MainForm();		
 		mf.setSize(800,800);
+		mf.loadConf(new File("Climbing.conf"));
 		mf.setVisible(true);
 
 	}

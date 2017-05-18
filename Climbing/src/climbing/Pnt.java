@@ -32,6 +32,8 @@ package climbing;
  * Created July 2005.  Derived from an earlier, messier version.
  *
  * Modified Novemeber 2007.  Minor clean up.
+ * 
+ * Modifed May, 2017. Hyun-Kyu Shin for CG 2017 Term Project
  */
 public class Pnt {
 
