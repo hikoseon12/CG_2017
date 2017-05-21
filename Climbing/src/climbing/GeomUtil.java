@@ -1,5 +1,7 @@
 package climbing;
 
+import java.util.ArrayList;
+
 public class GeomUtil {
 
 	public static Pnt getCenter(Pnt a, Pnt b)
@@ -29,6 +31,18 @@ public class GeomUtil {
     	return Math.sqrt( Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2) );
     }
 	
-    
+    public static Pnt getCenterPointOfMan(Man man, ArrayList<Pnt> pointList)
+    {
+    	Pnt manLH = pointList.get(man.getLh());
+		Pnt manRH = pointList.get(man.getRh());
+		Pnt manLF = pointList.get(man.getLf());
+		Pnt manRF = pointList.get(man.getRf());
+    	
+    	Pnt bisectH = GeomUtil.getCenter(manLH, manRH);
+    	Pnt bisectF = GeomUtil.getCenter(manLF, manRF);
+    	Pnt center = GeomUtil.getCenter(bisectH, bisectF);
+    	
+    	return center;
+    }
     
 }

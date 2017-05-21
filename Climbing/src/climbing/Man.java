@@ -7,6 +7,11 @@ public class Man {
 	private int lf;
 	private int rf;
 	
+	private int tall = 170;
+	
+	public double getArmMaxLength() { return tall/2 ; }   
+	public double getLegMaxLength() { return tall/2 + 15.0; }
+	
 	public Man(int lh, int rh, int lf, int rf)
 	{
 		this.lh = lh;

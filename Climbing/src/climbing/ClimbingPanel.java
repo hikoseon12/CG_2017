@@ -62,10 +62,6 @@ public class ClimbingPanel extends JPanel {
 	public void setMan(Man man)
 	{
 		this.man = man;
-		manLH = pointList.get(this.man.getLh());
-		manRH = pointList.get(this.man.getRh());
-		manLF = pointList.get(this.man.getLf());
-		manRF = pointList.get(this.man.getRf());
 		isManDeclared = true;
 	}
 	
@@ -81,7 +77,7 @@ public class ClimbingPanel extends JPanel {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
                         
-        drawTitle(); /* draw Ttitle */
+        drawTitle(); /* draw Title */
         
         g.setColor(Color.BLUE);
         for(Pnt point : pointList)
@@ -89,13 +85,16 @@ public class ClimbingPanel extends JPanel {
         
         if( isManDeclared )   
         {	
+        	manLH = pointList.get(this.man.getLh());
+    		manRH = pointList.get(this.man.getRh());
+    		manLF = pointList.get(this.man.getLf());
+    		manRF = pointList.get(this.man.getRf());
+        	
         	Pnt bisectH = GeomUtil.getCenter(manLH, manRH);
         	Pnt bisectF = GeomUtil.getCenter(manLF, manRF);
-        	//System.out.println("BisectH:" + bisectH.toString());
-        	//System.out.println("BisectF:" + bisectF.toString());
         	Pnt center = GeomUtil.getCenter(bisectH, bisectF);
         	Double angle = GeomUtil.getAngle(bisectH, bisectF);
-        	//System.out.println("Angle: " + angle + ", " + Math.toDegrees(angle));
+        	
         	drawMan(manLH, manRH, manLF, manRF, center, angle);
         }
         

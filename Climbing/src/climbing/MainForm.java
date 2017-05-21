@@ -13,7 +13,7 @@ public class MainForm extends JFrame implements MouseListener {
 
 	ClimbingPanel pnClimbing;
     ClimbingControl control;	
-	JButton btOne;
+	JButton btNext;
 	
 	public MainForm()
 	{
@@ -31,8 +31,14 @@ public class MainForm extends JFrame implements MouseListener {
 		this.add(pnClimbing, BorderLayout.CENTER);
 		
 		JPanel pnControl = new JPanel();
-		btOne = new JButton("Action");
-		pnControl.add(btOne);
+		btNext = new JButton("Next");
+		btNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				doNextButton();
+			}
+		});
+		pnControl.add(btNext);
 		
 		this.add(pnControl, BorderLayout.SOUTH);
 		
@@ -73,6 +79,11 @@ public class MainForm extends JFrame implements MouseListener {
 	
 	}
 	
+	
+	public void doNextButton() {
+		control.doNextStep();
+		pnClimbing.repaint();
+	}
 	
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
