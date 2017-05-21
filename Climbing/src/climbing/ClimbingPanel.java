@@ -34,6 +34,7 @@ public class ClimbingPanel extends JPanel {
 	private ArrayList<Pnt> pointList;
 	
 	private Pnt manLH, manRH, manLF, manRF;
+	private Man man;
 	private boolean isManDeclared = false;
 	
 	public ClimbingPanel()
@@ -58,12 +59,13 @@ public class ClimbingPanel extends JPanel {
 		pointList.add(point);
 	}
 	
-	public void setMan(Pnt lh, Pnt rh, Pnt lf, Pnt rf)
+	public void setMan(Man man)
 	{
-		manLH = lh;
-		manRH = rh;
-		manLF = lf;
-		manRF = rf;
+		this.man = man;
+		manLH = pointList.get(man.getLh());
+		manRH = pointList.get(man.getRh());
+		manLF = pointList.get(man.getLf());
+		manRF = pointList.get(man.getRf());
 		isManDeclared = true;
 	}
 	
@@ -87,39 +89,19 @@ public class ClimbingPanel extends JPanel {
         
         if( isManDeclared )   
         {	
-        	Pnt bisectH = getCenter(manLH, manRH);
-        	Pnt bisectF = getCenter(manLF, manRF);
-        	System.out.println("BisectH:" + bisectH.toString());
-        	System.out.println("BisectF:" + bisectF.toString());
-        	Pnt center = getCenter(bisectH, bisectF);
-        	Double angle = getAngle(bisectH, bisectF);
-        	System.out.println("Angle: " + angle + ", " + Math.toDegrees(angle));
+        	Pnt bisectH = GeomUtil.getCenter(manLH, manRH);
+        	Pnt bisectF = GeomUtil.getCenter(manLF, manRF);
+        	//System.out.println("BisectH:" + bisectH.toString());
+        	//System.out.println("BisectF:" + bisectF.toString());
+        	Pnt center = GeomUtil.getCenter(bisectH, bisectF);
+        	Double angle = GeomUtil.getAngle(bisectH, bisectF);
+        	//System.out.println("Angle: " + angle + ", " + Math.toDegrees(angle));
         	drawMan(manLH, manRH, manLF, manRF, center, angle);
         }
         
         g.setColor(temp);
     }
     
-    
-    public Pnt getCenter(Pnt a, Pnt b)
-    {
-    	return new Pnt( (a.getX() + b.getX())/2.0, (a.getY() + b.getY())/2.0 ); 
-    }
-    
-    public double getAngle(Pnt a, Pnt b)
-    {    	
-    	double height = b.getY() - a.getY();
-    	double width  = a.getX() - b.getX();
-    	if( width == 0 ) return 0.0;
-    	
-    	double angle;
-    	
-    	if( width > 0 ) angle = Math.atan( width / height);
-    	else angle = -1 * Math.atan( width*-1.0 / height);
-    	   	
-    	return angle;    	
-    	
-    }
     
     public void drawTitle() {
     	if( title == null ) return;
@@ -181,12 +163,9 @@ public class ClimbingPanel extends JPanel {
     	AffineTransform trans = new AffineTransform();
     	trans.setToTranslation(center.getX() - maWidth/2, center.getY()- maHeight/2);
     	trans.rotate( angle, maWidth/2, maHeight/2); 	
-    	
-    	System.out.println("Center Point: " + center.toString());
+    	    	
     	g2d.drawImage(miniAndroid, trans, null);
-    	
-    	
-    	
+    	   	
     	g.setColor(temp);
     }
     

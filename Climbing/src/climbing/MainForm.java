@@ -12,7 +12,7 @@ public class MainForm extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
 
 	ClimbingPanel pnClimbing;
-	
+    ClimbingControl control;	
 	JButton btOne;
 	
 	public MainForm()
@@ -44,6 +44,8 @@ public class MainForm extends JFrame implements MouseListener {
 		ConfReader cr = new ConfReader();
 		cr.parse(new File("Climbing.conf"));
 		
+		control = new ClimbingControl();
+		
 		Pnt rectPnt = cr.getBoundRectPnt();
 		
 		String title = cr.getTitle();
@@ -52,17 +54,23 @@ public class MainForm extends JFrame implements MouseListener {
 		this.setSize((int)rectPnt.coord(0), (int)rectPnt.coord(1) + 100);
 		
 		ArrayList<Pnt> plist = cr.getPointList();
+		control.setPointList(plist);
 		
 		for( Pnt point : plist)
 			pnClimbing.addPnt(point);
 		
-		ArrayList<Integer> man = cr.getMan();
+		Man man = cr.getMan();
 		if( man != null )
 		{
-			pnClimbing.setMan(plist.get(man.get(0)), plist.get(man.get(1)), plist.get(man.get(2)), plist.get(man.get(3)));
+			pnClimbing.setMan(man);
+			control.setMan(man);
 		}
 		
+		ArrayList<TargetStep> tslist = cr.getTargetStep();
+		control.setTargetList(tslist);
+				
 		pnClimbing.repaint();
+	
 	}
 	
 	

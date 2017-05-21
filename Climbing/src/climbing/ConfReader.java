@@ -9,13 +9,17 @@ public class ConfReader {
 	Pnt endPoint;
 	String title;
 	ArrayList<Integer> manPoint;
+	Man man;
 	boolean isManDeclared = false;
+	
+	ArrayList<TargetStep> targetList;
 	
 	public ConfReader()
 	{
 		pointList = new ArrayList<Pnt>();
 		endPoint = new Pnt(800.0,800.0);
 		title = "";
+		targetList = new ArrayList<TargetStep>();
 	}
 	
 	public ArrayList<Pnt> getPointList() { return pointList; }
@@ -73,6 +77,10 @@ public class ConfReader {
 						
 					case "MAN" :
 						procMan(arg, lineCount);
+						break;
+					
+					case "STEP" :
+						procStep(arg, lineCount);
 						break;
 
 					default:
@@ -203,13 +211,52 @@ public class ConfReader {
 			manPoint.add(value);
 		}
 		
+		man = new Man(manPoint.get(0), manPoint.get(1), manPoint.get(2), manPoint.get(3));
 		isManDeclared = true;	
 	}
 	
-	public ArrayList<Integer> getMan()
+	
+	public Man getMan()
 	{
-		if( isManDeclared )  return manPoint;
+		if( isManDeclared )  return man;
 		else return null;
 	}
-	 
+	
+	public void procStep(String arg, int lineCount)
+	{
+		StringTokenizer st = new StringTokenizer(arg, ",");
+		if( st.countTokens() != 2) {
+			System.out.printf("ERROR Line %d : Tokens are not valid : %s\n", lineCount, arg);
+			return;
+		}
+		
+		String valueStr = st.nextToken().trim();
+		int value = 0;
+		
+		try{
+			value = Integer.parseInt(valueStr);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			System.out.printf("ERROR Line %d : Wrong index : %s\n", lineCount, valueStr);
+			return;
+		}
+		
+		String handStr = st.nextToken().trim().toUpperCase();
+		int hand = 0;
+		
+		if( handStr.equals("R")) hand = TargetStep.RIGHT_HAND;
+		else if (handStr.equals("L")) hand = TargetStep.LEFT_HAND;
+		else {
+			System.out.printf("ERROR Line %d :  Wrong Hand : %s\n",  lineCount, handStr);
+			return;
+		}
+		
+		Pnt point = pointList.get(value);
+		TargetStep ts = new TargetStep(value, point, hand);
+		//System.out.println(ts);
+		targetList.add(ts);
+	}
+	
+	public ArrayList<TargetStep> getTargetStep() { return targetList; }
 }
