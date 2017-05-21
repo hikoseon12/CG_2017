@@ -46,6 +46,9 @@ public class MainForm extends JFrame implements MouseListener {
 		
 		Pnt rectPnt = cr.getBoundRectPnt();
 		
+		String title = cr.getTitle();
+		if(title != null ) pnClimbing.setTitle(title);
+		
 		this.setSize((int)rectPnt.coord(0), (int)rectPnt.coord(1) + 100);
 		
 		ArrayList<Pnt> plist = cr.getPointList();
@@ -79,7 +82,7 @@ public class MainForm extends JFrame implements MouseListener {
 	public static void main(String[] args) {
 
 		MainForm mf = new MainForm();		
-		mf.setSize(800,800);
+		mf.setSize(1000,600);
 		mf.loadConf(new File("Climbing.conf"));
 		mf.setVisible(true);
 

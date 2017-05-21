@@ -92,6 +92,18 @@ public class Pnt {
     }
 
     /**
+     *  @return x coordinate of this Pnt 
+     *  add by Hyun-Kyu Shin, 2017-05-21
+     * */
+    public double getX() { return this.coordinates[0]; }
+    
+    /**
+     *  @return y coordinate of this Pnt 
+     *  add by Hyun-Kyu Shin, 2017-05-21
+     *  */
+    public double getY() { return this.coordinates[1]; }
+    
+    /**
      * @return this Pnt's dimension.
      */
     public int dimension () {

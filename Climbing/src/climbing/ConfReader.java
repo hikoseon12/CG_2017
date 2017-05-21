@@ -7,6 +7,7 @@ public class ConfReader {
 
 	ArrayList<Pnt> pointList;
 	Pnt endPoint;
+	String title;
 	ArrayList<Integer> manPoint;
 	boolean isManDeclared = false;
 	
@@ -14,6 +15,7 @@ public class ConfReader {
 	{
 		pointList = new ArrayList<Pnt>();
 		endPoint = new Pnt(800.0,800.0);
+		title = "";
 	}
 	
 	public ArrayList<Pnt> getPointList() { return pointList; }
@@ -45,7 +47,7 @@ public class ConfReader {
 				
 				if( !line.startsWith("{")  || !line.endsWith("}"))
 				{
-					System.out.printf("ERROR! Line Number %d. Each meaniful line must have { and } .\n", lineCount);
+					System.out.printf("ERROR! Line Number %d. Each meaningful line must have { and } .\n", lineCount);
 					isError = true;
 					break;
 				}
@@ -58,6 +60,9 @@ public class ConfReader {
 				
 				switch(type.toUpperCase())
 				{
+				    case "TITLE" :
+				    	procTitle(arg, lineCount);
+				    	break;
 					case "RECT" :
 						procRect(arg, lineCount);
 						break;
@@ -88,6 +93,14 @@ public class ConfReader {
 		}
 		
 		return !isError;
+	}
+	
+	
+	public String getTitle() { return title; }
+	
+	private void procTitle(String arg, int lineCount)
+	{
+		title = arg; 
 	}
 	
 	private void procRect(String arg, int lineCount)
