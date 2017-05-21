@@ -62,10 +62,10 @@ public class ClimbingPanel extends JPanel {
 	public void setMan(Man man)
 	{
 		this.man = man;
-		manLH = pointList.get(man.getLh());
-		manRH = pointList.get(man.getRh());
-		manLF = pointList.get(man.getLf());
-		manRF = pointList.get(man.getRf());
+		manLH = pointList.get(this.man.getLh());
+		manRH = pointList.get(this.man.getRh());
+		manLF = pointList.get(this.man.getLf());
+		manRF = pointList.get(this.man.getRf());
 		isManDeclared = true;
 	}
 	
