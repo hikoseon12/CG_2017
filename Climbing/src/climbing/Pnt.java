@@ -34,6 +34,8 @@ package climbing;
  * Modified Novemeber 2007.  Minor clean up.
  * 
  * Modifed May, 2017. Hyun-Kyu Shin for CG 2017 Term Project
+ * 
+ * getX() and getY added 2017.05.21 by hkshin
  */
 public class Pnt {
 
