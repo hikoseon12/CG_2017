@@ -79,7 +79,7 @@ public class MainForm extends JFrame {
 		ArrayList<Pnt> plist = cr.getPointList();
 		control.setPointList(plist);
 		control.initDTrangluation();
-  
+		
 		for( Pnt point : plist)
 			pnClimbing.addPnt(point);
 		
@@ -92,8 +92,10 @@ public class MainForm extends JFrame {
 		
 		ArrayList<TargetStep> tslist = cr.getTargetStep();
 		control.setTargetList(tslist);
-			
+
 		pnClimbing.setDtriangle(control.getDelaunayTriangles());
+		control.initVornoi();
+		pnClimbing.setVornoiPoint(control.getVornooiList());
 		pnClimbing.repaint();
 	}
 	

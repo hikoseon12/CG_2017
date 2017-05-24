@@ -11,9 +11,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import org.w3c.dom.events.EventException;
+
 
 
 class PntPair{
@@ -33,13 +38,14 @@ public class ClimbingPanel extends JPanel {
 	public static int pointRadius = 3;
 	public static int handRadius  = 5;
 
- private ArrayList<BufferedImage> imgBuffer;
+    private ArrayList<BufferedImage> imgBuffer;
 	AffineTransform transIdentity = new AffineTransform();
 	
 	private String title;
 
- private ArrayList<Pnt> pointList;
- private ArrayList<Triangle> triList;
+    private ArrayList<Pnt> pointList;
+    private ArrayList<Triangle> triList;
+    private ArrayList<ArrayList<Pnt>> vornoiList;
 	
 	private Pnt manLH, manRH, manLF, manRF;
 	private Man man;
@@ -105,6 +111,10 @@ public class ClimbingPanel extends JPanel {
  {
   this.triList = dtr;
  }
+ public void setVornoiPoint(ArrayList<ArrayList<Pnt>> vp)
+ {
+  this.vornoiList = vp;
+ }
  
 	public void clearMan() { isManDeclared = false; }
 	
@@ -169,6 +179,19 @@ public class ClimbingPanel extends JPanel {
 	          drawPolygon(vertices);
 	        }
         }
+//        for(int i = 0; i < vornoiList.size(); i++){
+//        	try{
+//        	if(vornoiList.get(i).size()==0) continue;
+//        	System.out.println(vornoiList.get(i).size());
+//        	drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
+//        	}
+//        	catch(EventException e){
+//        		System.out.println(e);
+//        		System.out.print(i);
+//        	}
+//        }
+        
+        
         
         g.setColor(temp);
     }

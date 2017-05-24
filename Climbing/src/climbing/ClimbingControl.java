@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -17,7 +18,9 @@ public class ClimbingControl {
 	private Pnt curTarget;
 	private Triangulation dt;
 	private ArrayList<Triangle> triangleList;
+	private ArrayList<ArrayList<Pnt>> vornList;
 	HashMap<Pnt, Set<Pnt>> triPntHash;
+	private Triangle initTri;
 	private int initBoardSize = 10000;
 	private int action; /////////////////////////////////이거 추가!!
 
@@ -25,9 +28,9 @@ public class ClimbingControl {
 		nextStepIndex = 0;
 		isLFused = false;
 		isRFused = false;
-		Triangle tri = new Triangle(new Pnt(-initBoardSize, initBoardSize), new Pnt(initBoardSize, initBoardSize),
+		initTri = new Triangle(new Pnt(-initBoardSize, initBoardSize), new Pnt(initBoardSize, initBoardSize),
 				new Pnt(0, -initBoardSize));
-		dt = new Triangulation(tri);
+		dt = new Triangulation(initTri);
 		triangleList = new ArrayList<Triangle>();
 		action = 0; ////////////////////////////////////이거 추가!!
 	}
@@ -38,6 +41,9 @@ public class ClimbingControl {
 
 	public ArrayList<Triangle> getDelaunayTriangles() {
 		return triangleList;
+	}
+	public ArrayList<ArrayList<Pnt>> getVornooiList() {
+		return vornList;
 	}
 
 	public ArrayList<Pnt> getNearestPointList(Pnt pnt) {
@@ -71,6 +77,21 @@ public class ClimbingControl {
 			}
 		}
 		System.out.println("[Done]");
+	}
+	public void initVornoi(){
+		HashSet<Pnt> done = new HashSet<Pnt>(initTri);
+        vornList = new ArrayList<ArrayList<Pnt>>();
+        for (Triangle triangle : dt)
+            for (Pnt site: triangle) {
+            	if (!site.inRange(initBoardSize) || !site.inRange(initBoardSize))
+					continue;
+                if (done.contains(site)) continue;
+                done.add(site);
+                List<Triangle> list = dt.surroundingTriangles(site, triangle);
+                vornList.add(new ArrayList<Pnt>());
+                for (Triangle tri: list)
+                	vornList.get(vornList.size()-1).add(tri.getCircumcenter());
+        }
 	}
 
 	public ArrayList<Pnt> getNearPointsInDT(int index) {
