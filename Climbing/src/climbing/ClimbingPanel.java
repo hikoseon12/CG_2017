@@ -51,7 +51,7 @@ public class ClimbingPanel extends JPanel {
 	  pointList = new ArrayList<Pnt>();
 	  triList = new ArrayList<Triangle>();
 		imgBuffer = new ArrayList<BufferedImage>();
-		String imgNames[] = {"body","lhf","rhf","llb","rlb","lhb","rhb","llf","rlf"};
+		String imgNames[] = {"body","lhf","rhf","llb","rlb","lhb","rhb","llf","rlf","head"};
 		title = null;
 		try{
 		  for(int i = 0; i < imgNames.length; i++){
@@ -134,8 +134,10 @@ public class ClimbingPanel extends JPanel {
         	Double angle = GeomUtil.getAngle(bisectH, bisectF);
          
         	
-         PntPair body = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2),
-                                    GeomUtil.getProportionalPoint(center, bisectF, man.getBodyLength()/2));
+    	PntPair body = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2),
+                GeomUtil.getProportionalPoint(center, bisectF, man.getBodyLength()/2));
+    	PntPair head = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, 3*man.getBodyLength()/2),
+                GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2));
          PntPair LH = new PntPair(manLH, GeomUtil.getCircleIntersection(body.first,manLH,man.getFrontArmLength(),man.getBackArmLength(),false));
          PntPair RH = new PntPair(manRH, GeomUtil.getCircleIntersection(body.first,manRH,man.getFrontArmLength(),man.getBackArmLength(),true));
          PntPair LF = new PntPair(manLF, GeomUtil.getCircleIntersection(body.second,manLF,man.getFrontLegLength(),man.getBackLegLength(),true));
@@ -147,6 +149,7 @@ public class ClimbingPanel extends JPanel {
          position.add(RH);
          position.add(LF);
          position.add(RF);
+         position.add(head);
          drawMan(position, center, angle);
         	
         }
@@ -228,10 +231,10 @@ public class ClimbingPanel extends JPanel {
      g2d.setStroke(tempStroke);
 
      int bodyWidth = 30;
-     int otherWidth = 15;
+     int otherWidth = 20;
      
      AffineTransform trans = new AffineTransform();
-     for(int i = 0 ; i < 5; i++){
+     for(int i = 4 ; i >= 0; i--){
        int curWidth = (i==0?bodyWidth:otherWidth);
        int curHeight = (int) GeomUtil.getDistance(pos.get(i).first, pos.get(i).second);
        Pnt curCenter = GeomUtil.getCenter(pos.get(i).first, pos.get(i).second);
@@ -247,11 +250,19 @@ public class ClimbingPanel extends JPanel {
          curAngle = GeomUtil.getAngle(pos.get(i).second, (i<3?pos.get(0).first:pos.get(0).second));
          trans.setToTranslation(curCenter.getX() - curWidth/2, curCenter.getY()- curHeight/2);
          trans.rotate(curAngle, curWidth/2, curHeight/2);
-         g2d.drawImage(imgBuffer.get(i+4).getScaledInstance(curWidth, curHeight, Image.SCALE_DEFAULT), trans, null);
-         
+         g2d.drawImage(imgBuffer.get(i+4).getScaledInstance(curWidth, curHeight, Image.SCALE_DEFAULT), trans, null); 
        }
      }
-    	g.setColor(temp);
+     int curWidth = otherWidth*2;
+     int curHeight = (int) GeomUtil.getDistance(pos.get(5).first, pos.get(5).second);
+     Pnt curCenter = GeomUtil.getCenter(pos.get(5).first, pos.get(5).second);
+     double curAngle = GeomUtil.getAngle(pos.get(5).first, pos.get(5).second);
+     
+     trans.setToTranslation(curCenter.getX() - curWidth/2, curCenter.getY()- curHeight/2);
+     trans.rotate(curAngle, curWidth/2, curHeight/2);
+
+     g2d.drawImage(imgBuffer.get(9).getScaledInstance(curWidth, curHeight, Image.SCALE_DEFAULT), trans, null); 
+     g.setColor(temp);
     }
     
     public void drawHand(Pnt point, int r)
