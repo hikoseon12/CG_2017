@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
-public class MainForm extends JFrame implements MouseListener {
+public class DiaForm extends JFrame implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,7 +16,7 @@ public class MainForm extends JFrame implements MouseListener {
     ClimbingControl control;	
 	JButton btNext;
 	
-	public MainForm()
+	public DiaForm()
 	{
 		super("[Team #3] Climbing - for CG 2017 Term Project");
 		initUI();		
@@ -27,7 +27,7 @@ public class MainForm extends JFrame implements MouseListener {
 	{
 		this.setLayout(new BorderLayout());
 		
-		pnClimbing = new ClimbingPanel("character/skeleton");
+		pnClimbing = new ClimbingPanel("abc");
 		pnClimbing.addMouseListener(this);
 		this.add(pnClimbing, BorderLayout.CENTER);
 		
@@ -103,9 +103,9 @@ public class MainForm extends JFrame implements MouseListener {
 		
 	public static void main(String[] args) {
 		
-		MainForm mf = new MainForm();		
+		DiaForm mf = new DiaForm();		
 		mf.setSize(1000,600);
-		mf.loadConf(new File("Conf/Climbing.conf"));
+		mf.loadConf(new File("Climbing.conf"));
 		mf.setVisible(true);
 	}
 

@@ -46,7 +46,7 @@ public class ClimbingPanel extends JPanel {
 	private boolean isManDeclared = false;
 	private boolean displayDT = false;
 	
-	public ClimbingPanel()
+	public ClimbingPanel(String path)
 	{
 	  pointList = new ArrayList<Pnt>();
 	  triList = new ArrayList<Triangle>();
@@ -55,7 +55,7 @@ public class ClimbingPanel extends JPanel {
 		title = null;
 		try{
 		  for(int i = 0; i < imgNames.length; i++){
-		    imgBuffer.add(ImageIO.read(new File("body/"+imgNames[i]+".png")));
+		    imgBuffer.add(ImageIO.read(new File(path+"/body/"+imgNames[i]+".png")));
 		  }
 		} catch (Exception e)
 		{

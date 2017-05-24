@@ -100,10 +100,10 @@ public class GeomUtil {
      * @params center points of circles, radius
      * @return 3 points of a triangle
      */
-    public static ArrayList<Pnt> get3CircleTriangle(Pnt a, Pnt b, Pnt c, int r1, int r2, int r3){
+    public static ArrayList<Pnt> get3CircleTriangle(Pnt a, Pnt b, Pnt c, double r1, double r2, double r3){
         ArrayList<Pnt> inner = new ArrayList<Pnt>();
 	    Pnt[] parr = {a,b,c};
-	    int[] rarr = {r1,r2,r3};
+	    double[] rarr = {r1,r2,r3};
 	    
 	    for(int i = 0; i < parr.length; i++){
 	    	int j = (i+1)%parr.length;
