@@ -90,7 +90,18 @@ public class ClimbingControl {
 		}
 		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
 	}
-
+  	public int getNearPointsInVornoi(Pnt pnt){
+ 	     Triangle tri = dt.locate(pnt);
+ 	     if(tri==null) return -1;
+ 	     double dist = Math.pow(10,8);
+ 	     Pnt small = null;
+ 	     for(Pnt x : tri.toArray(new Pnt[0])){
+ 	    	 if(GeomUtil.getDistance(x, pnt)-dist<Math.pow(10, -5)){
+ 	    		 small = x;
+ 	    	 }
+ 	     }
+ 	     return small.getIndex();
+    }
 	public Man getMan() {
 		return man;
 	}
