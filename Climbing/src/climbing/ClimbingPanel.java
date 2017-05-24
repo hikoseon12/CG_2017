@@ -57,7 +57,7 @@ public class ClimbingPanel extends JPanel {
 	{
 	  pointList = new ArrayList<Pnt>();
 	  triList = new ArrayList<Triangle>();
-		
+	  vornoiList = new ArrayList<ArrayList<Pnt>>();
 		title = null;
 		
 	}
@@ -179,17 +179,9 @@ public class ClimbingPanel extends JPanel {
 	          drawPolygon(vertices);
 	        }
         }
-//        for(int i = 0; i < vornoiList.size(); i++){
-//        	try{
-//        	if(vornoiList.get(i).size()==0) continue;
-//        	System.out.println(vornoiList.get(i).size());
-//        	drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
-//        	}
-//        	catch(EventException e){
-//        		System.out.println(e);
-//        		System.out.print(i);
-//        	}
-//        }
+        for(int i = 0; i < vornoiList.size(); i++){
+        	drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
+        }
         
         
         

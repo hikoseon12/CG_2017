@@ -32,6 +32,7 @@ public class ClimbingControl {
 				new Pnt(0, -initBoardSize));
 		dt = new Triangulation(initTri);
 		triangleList = new ArrayList<Triangle>();
+        vornList = new ArrayList<ArrayList<Pnt>>();
 		action = 0; ////////////////////////////////////이거 추가!!
 	}
 
