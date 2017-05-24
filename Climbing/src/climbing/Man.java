@@ -7,15 +7,15 @@ public class Man {
 	private int lf;
 	private int rf;
 	
-	private int tall = 170;
+	private int tall = 200;
 	
 	public double getArmMaxLength() { return 0.6*tall ; }
 	public double getFrontArmLength() { return 0.4*getArmMaxLength() ; } 
 	public double getBackArmLength() { return 0.6*getArmMaxLength() ;  }
 	public double getLegMaxLength() { return 0.6*tall; }
- public double getFrontLegLength() { return 0.4*getLegMaxLength() ; } 
- public double getBackLegLength() { return 0.6*getLegMaxLength() ;  }
- public double getBodyLength() { return 0.28*tall ; } 
+    public double getFrontLegLength() { return 0.4*getLegMaxLength() ; } 
+    public double getBackLegLength() { return 0.6*getLegMaxLength() ;  }
+    public double getBodyLength() { return 0.28*tall ; } 
 	
 	public Man(int lh, int rh, int lf, int rf)
 	{
@@ -25,6 +25,17 @@ public class Man {
 		this.rf = rf;
 	}
 	
+	public void setTall(int px)
+	{
+		this.tall = px;
+	}
+	public void setRealTall(int cm)
+	{
+		this.tall = (int)( cm / 18.0 * 25.0);
+	}
+	
+	public int getTall() { return this.tall; }
+	public int getRealTall()  {return (int) (this.tall * 25.0 / 18.0); } 
 	
 	public int getLh() {
 		return lh;
