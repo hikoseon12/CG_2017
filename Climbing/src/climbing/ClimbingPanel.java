@@ -144,8 +144,8 @@ public class ClimbingPanel extends JPanel {
         	
     	PntPair body = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2),
                 GeomUtil.getProportionalPoint(center, bisectF, man.getBodyLength()/2));
-    	PntPair head = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, 3*man.getBodyLength()/2),
-                GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2));
+    	PntPair head = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()),
+                GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/3));
          PntPair LH = new PntPair(manLH, GeomUtil.getCircleIntersection(body.first,manLH,man.getFrontArmLength(),man.getBackArmLength(),false));
          PntPair RH = new PntPair(manRH, GeomUtil.getCircleIntersection(body.first,manRH,man.getFrontArmLength(),man.getBackArmLength(),true));
          PntPair LF = new PntPair(manLF, GeomUtil.getCircleIntersection(body.second,manLF,man.getFrontLegLength(),man.getBackLegLength(),true));
