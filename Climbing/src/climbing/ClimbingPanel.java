@@ -44,6 +44,7 @@ public class ClimbingPanel extends JPanel {
 	private Pnt manLH, manRH, manLF, manRF;
 	private Man man;
 	private boolean isManDeclared = false;
+	private boolean displayDT = false;
 	
 	public ClimbingPanel()
 	{
@@ -62,6 +63,20 @@ public class ClimbingPanel extends JPanel {
 		}
 	}
 	
+	
+	
+	public boolean isDisplayDT() {
+		return displayDT;
+	}
+
+
+
+	public void setDisplayDT(boolean displayDT) {
+		this.displayDT = displayDT;
+	}
+
+
+
 	public void setTitle(String title)
 	{
 		this.title = title;
@@ -135,10 +150,15 @@ public class ClimbingPanel extends JPanel {
          drawMan(position, center, angle);
         	
         }
-        for (Triangle triangle : triList) {
-          Pnt[] vertices = triangle.toArray(new Pnt[0]);
-          drawPolygon(vertices);
+        
+        if( displayDT ) {
+        	/* Draw Triangulation when enabled */
+	        for (Triangle triangle : triList) {
+	          Pnt[] vertices = triangle.toArray(new Pnt[0]);
+	          drawPolygon(vertices);
+	        }
         }
+        
         g.setColor(temp);
     }
     
@@ -186,8 +206,8 @@ public class ClimbingPanel extends JPanel {
     	  drawHand(pos.get(i).first,(i%2==1?5:7));
     	}
 
-     //System.out.println("ÃÖ´ë ÆÈ±æÀÌ : "+man.getArmMaxLength()+" µÞÆÈ±æÀÌ : "+man.getBackArmLength()+" ¾ÕÆÈ ±æÀÌ : " +man.getFrontArmLength());
-     //System.out.println("ÃÖ´ë ´Ù¸®±æÀÌ : "+man.getLegMaxLength()+" µÞ´Ù¸®±æÀÌ : "+man.getBackLegLength()+" ¾Õ´Ù¸®±æÀÌ : " +man.getFrontLegLength());
+     //System.out.println("ï¿½Ö´ï¿½ ï¿½È±ï¿½ï¿½ï¿½ : "+man.getArmMaxLength()+" ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ : "+man.getBackArmLength()+" ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : " +man.getFrontArmLength());
+     //System.out.println("ï¿½Ö´ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ : "+man.getLegMaxLength()+" ï¿½Þ´Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ : "+man.getBackLegLength()+" ï¿½Õ´Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ : " +man.getFrontLegLength());
     	
     	
     	Graphics2D g2d = (Graphics2D) g;
