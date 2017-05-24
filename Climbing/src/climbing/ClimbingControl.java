@@ -220,7 +220,7 @@ public class ClimbingControl {
 		{	
 			// **오른발RF 움직이기
 			//현재 포지션에서 무게 중심을 구한다
-			     
+			       
 	/*		double RfHeight = pointList.get(man.getRf()).getY();				
 			double nowHoldHeight = targetList.get(nextStepIndex).getPoint().getY();
 			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
