@@ -221,29 +221,34 @@ public class ClimbingControl {
 			// **오른발RF 움직이기
 			//현재 포지션에서 무게 중심을 구한다
 			       
-	/*		double RfHeight = pointList.get(man.getRf()).getY();				
+			double RfHeight = pointList.get(man.getRf()).getY();				
 			double nowHoldHeight = targetList.get(nextStepIndex).getPoint().getY();
 			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
 			
 			RfHeight -= nowHoldHeight - nextHoldHeight;
 			System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap: "+nextHoldHeight);
-			//LfHeight += 1; //왼발이 오른발 보다 조금 위에 있으면 다음 홀드 잡기 편함. 휴리스틱한 방법으로
 			System.out.println("RfHeight: "+RfHeight);
 			RfHeight = Math.min(RfHeight,375);//범위 벗어났을 때 처리
 			
+			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()), pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
+			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+			
+			//트라이앵귤레이션으로 가능한 후보 셋을 구한다.
+			//ArrayList<Pnt> nearFeet = getNearPointsInDT2(pointList.get(man.getRf()).getIndex());
 			
 			Pnt idealFootPnt =new Pnt(pointList.get(man.getRf()).getX(), RfHeight);
-			ArrayList<Pnt> nearFeet = getNearPointsInDT2(pointList.get(man.getRf()).getIndex());
-			//셋에서 가상의 점과 가장 가까운 그런데 이때 키 범위에 닿는지 판단
+			int idealFootIndex = getNearPointsInVornoi(idealFootPnt);
+			ArrayList<Pnt> nearFeet = getNearPointsInDT2(idealFootIndex);
 			
 			double preDistance = 9999999;
 			double nextDistance = 0;
-			Pnt nextFootPnt = pointList.get(man.getRf()); //오른쪽 발로 세팅
+			Pnt nextFootPnt = pointList.get(man.getRf());//이거 고치기
 			
 			for(int index = 0; index < nearFeet.size(); index++)	
 			{	
 				nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
-				if(nextDistance < preDistance && nearFeet.get(index).getX() <= pointList.get(man.getRf()).getX())
+				if(nextDistance < preDistance && GeomUtil.getDistance(pointList.get(man.getRf()), nearFeet.get(index)) <= man.getTall())
 				{	
 					//키 고려??
 					System.out.println(":::nextDistance "+nextDistance+" preDistance "+preDistance);
@@ -254,7 +259,7 @@ public class ClimbingControl {
 			}	
 			man.setRf(nextFootPnt.getIndex());
 			action = 0;
-			
+			/*		
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()), pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
