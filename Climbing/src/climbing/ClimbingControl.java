@@ -203,7 +203,7 @@ public class ClimbingControl {
 				}
 			}
 			//(손이 안닿으니 발을 움직여야한다)
-			// *왼발LF 움직이기   
+			// *왼발LF 움직이기      
 			double LfHeight = pointList.get(man.getLf()).getY();				
 			double nowHoldHeight = targetList.get(nextStepIndex-1).getPoint().getY();
 			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
