@@ -44,7 +44,7 @@ public class GeomUtil {
                         c.getY()+distCI*(b.getX()-a.getX())/distAB);
 //      String temp = "a~ " + getDistance(a, in1)
 //                    +" b~ "  + getDistance(b, in1)
-//                    +" Á÷¼±°Å¸® " + distAB;
+//                    +" ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ " + distAB;
 //      System.out.println(temp);
 
 //      System.out.println(a);
@@ -62,7 +62,7 @@ public class GeomUtil {
         return (type?in1:in2);
     }
 	/* getAngle(Pnt a, Pnt b)
-	 * Á¡ b¸¦ Áö³ª´Â ¼öÁ÷¼±À» ±âÁØÀ¸·Î, ¼±ºÐ ab°¡ ÀÌ·ç´Â °¢µµ. ´ÜÀ§´Â ¶óµð¾È	 
+	 * ï¿½ï¿½ bï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ abï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½	 
 	 */
     public static double getAngle(Pnt a, Pnt b)
     {    	
@@ -97,4 +97,20 @@ public class GeomUtil {
     	return center;
     }
     
+    public static Pnt getCircleCenter(Pnt p1, Pnt p2, Pnt p3) {
+    	
+       double offset = Math.pow(p2.getX(),2) + Math.pow(p2.getY(),2);
+       double bc =   ( Math.pow(p1.getX(),2) + Math.pow(p1.getY(),2) - offset )/2.0;
+       double cd =   (offset - Math.pow(p3.getX(), 2) - Math.pow(p3.getY(), 2))/2.0;
+       double det =  (p1.getX() - p2.getX()) * (p2.getY() - p3.getY()) - (p2.getX() - p3.getX())* (p1.getY() - p2.getY()); 
+
+       if (Math.abs(det) < 0.0000001) { throw new IllegalArgumentException("Yeah, lazy."); }
+
+       double idet = 1/det;
+
+       double centerx =  (bc * (p2.getY() - p3.getY()) - cd * (p1.getY() - p2.getY())) * idet;
+       double centery =  (cd * (p1.getX() - p2.getX()) - bc * (p2.getX() - p3.getX())) * idet;
+        
+       return new Pnt(centerx, centery);
+    }
 }
