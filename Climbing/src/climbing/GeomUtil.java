@@ -44,7 +44,7 @@ public class GeomUtil {
                         c.getY()+distCI*(b.getX()-a.getX())/distAB);
 //      String temp = "a~ " + getDistance(a, in1)
 //                    +" b~ "  + getDistance(b, in1)
-//                    +" �����Ÿ� " + distAB;
+//                    +" 占쏙옙占쏙옙占신몌옙 " + distAB;
 //      System.out.println(temp);
 
 //      System.out.println(a);
@@ -62,7 +62,7 @@ public class GeomUtil {
         return (type?in1:in2);
     }
 	/* getAngle(Pnt a, Pnt b)
-	 * �� b�� ������ �������� ��������, ���� ab�� �̷�� ����. ������ ����	 
+	 * 占쏙옙 b占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙, 占쏙옙占쏙옙 ab占쏙옙 占싱뤄옙占� 占쏙옙占쏙옙. 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙	 
 	 */
     public static double getAngle(Pnt a, Pnt b)
     {    	
@@ -96,7 +96,24 @@ public class GeomUtil {
     	
     	return center;
     }
-    
+    public static ArrayList<Pnt> get3CircleTriangle(Pnt a, Pnt b, Pnt c, int r1, int r2, int r3){
+        ArrayList<Pnt> inner = new ArrayList<Pnt>();
+	    Pnt[] parr = {a,b,c};
+	    int[] rarr = {r1,r2,r3};
+	    
+	    for(int i = 0; i < parr.length; i++){
+	    	int j = (i+1)%parr.length;
+	    	int k = (i+2)%parr.length;
+	    	Pnt p1 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], false);
+	        Pnt p2 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], true);
+	        if((rarr[k]-GeomUtil.getDistance(p1,parr[k]))>Math.pow(10, -5))
+	        	inner.add(p1);
+	        else
+	        	inner.add(p2);  
+	    }
+	    return inner;
+	 }
+	    
     public static Pnt getCircleCenter(Pnt p1, Pnt p2, Pnt p3) {
     	
        double offset = Math.pow(p2.getX(),2) + Math.pow(p2.getY(),2);
