@@ -123,6 +123,7 @@ public class MainForm extends JFrame {
 		pnClimbing.setImagePath("character/"+ this.characterName.toLowerCase());
 	}
 	
+	
 	public void loadDefaultConf()
 	{
 		this.confFileName = "Climbing.conf";
@@ -135,10 +136,12 @@ public class MainForm extends JFrame {
 	
 		
 		MainForm mf = new MainForm();		
+		
 		mf.setVisible(true);
 		mf.showConfDialog();
 		mf.loadConf();
 		//mf.loadDefaultConf();
+		
 		
 	}
 
