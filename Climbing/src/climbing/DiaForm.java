@@ -5,7 +5,6 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import java.io.*;
 import java.util.*;
 
 public class DiaForm extends JDialog  {
