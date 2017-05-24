@@ -52,7 +52,7 @@ public class DiaForm extends JDialog  {
 	    pnMain.add(confFiles);
 	    
 	    characters = new JComboBox();
-	    characters.addItem("NoHeadBones");
+	    characters.addItem("Skeleton");
 	    characters.addItem("IronMan");
 	    
 	    pnMain.add(characters);

@@ -32,7 +32,7 @@ public class MainForm extends JFrame {
 	{
 		this.setLayout(new BorderLayout());
 		
-		pnClimbing = new ClimbingPanel("character/skeleton");
+		pnClimbing = new ClimbingPanel();
 		
 		this.add(pnClimbing, BorderLayout.CENTER);
 		
@@ -120,13 +120,14 @@ public class MainForm extends JFrame {
 		this.confFileName = df.getSelectedFileName();
 		this.characterIndex = df.getSelectedCharacterIndex();
 		this.characterName = df.getSelectedCharacterName();
+		pnClimbing.setImagePath("character/"+ this.characterName.toLowerCase());
 	}
 	
 	public void loadDefaultConf()
 	{
 		this.confFileName = "Climbing.conf";
 		this.characterIndex = 0;
-		this.characterName ="NoHeadBones";
+		this.characterName ="Skeleton";
 		
 		loadConf();
 	}
@@ -135,9 +136,9 @@ public class MainForm extends JFrame {
 		
 		MainForm mf = new MainForm();		
 		mf.setVisible(true);
-		//mf.showConfDialog();
-		//mf.loadConf();
-		mf.loadDefaultConf();
+		mf.showConfDialog();
+		mf.loadConf();
+		//mf.loadDefaultConf();
 		
 	}
 

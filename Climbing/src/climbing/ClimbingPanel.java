@@ -45,25 +45,33 @@ public class ClimbingPanel extends JPanel {
 	private Man man;
 	private boolean isManDeclared = false;
 	private boolean displayDT = false;
+	private boolean isImageReady = false;
 	
-	public ClimbingPanel(String path)
+	public ClimbingPanel()
 	{
 	  pointList = new ArrayList<Pnt>();
 	  triList = new ArrayList<Triangle>();
-		imgBuffer = new ArrayList<BufferedImage>();
-		String imgNames[] = {"body","lhf","rhf","llb","rlb","lhb","rhb","llf","rlf","head"};
+		
 		title = null;
-		try{
-		  for(int i = 0; i < imgNames.length; i++){
-		    imgBuffer.add(ImageIO.read(new File(path+"/body/"+imgNames[i]+".png")));
-		  }
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		
 	}
 	
-	
+	public void setImagePath(String path)
+	{
+		imgBuffer = new ArrayList<BufferedImage>();
+		String imgNames[] = {"body","lhf","rhf","llb","rlb","lhb","rhb","llf","rlf","head"};
+		
+		try{
+			  for(int i = 0; i < imgNames.length; i++){
+			    imgBuffer.add(ImageIO.read(new File(path+"/body/"+imgNames[i]+".png")));
+			  }
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		
+		isImageReady = true;
+	}
 	
 	public boolean isDisplayDT() {
 		return displayDT;
@@ -121,7 +129,7 @@ public class ClimbingPanel extends JPanel {
         for(Pnt point : pointList)
         	draw(point);
         
-        if( isManDeclared )   
+        if( isManDeclared && isImageReady)   
         {	
         	manLH = pointList.get(this.man.getLh());
        		manRH = pointList.get(this.man.getRh());
