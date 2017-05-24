@@ -129,7 +129,7 @@ public class MainForm extends JFrame {
 		this.confFileName = "Climbing.conf";
 		this.characterIndex = 0;
 		this.characterName ="Skeleton";
-		
+		pnClimbing.setImagePath("character/"+ this.characterName.toLowerCase());
 		loadConf();
 	}
 	public static void main(String[] args) {
