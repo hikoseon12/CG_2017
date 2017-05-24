@@ -206,7 +206,7 @@ public class ClimbingControl {
 			// *왼발LF 움직이기
 			double LfHeight = pointList.get(man.getLf()).getY();				
 			double nowHoldHeight = targetList.get(nextStepIndex-1).getPoint().getY();
-			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
+			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
 			
 			LfHeight -= nowHoldHeight - nextHoldHeight;
 			System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap: "+nextHoldHeight+"LfHeight: "+LfHeight);
@@ -225,7 +225,7 @@ public class ClimbingControl {
 				nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 				if(nextDistance < preDistance && nearFeet.get(index).getX() <= pointList.get(man.getRf()).getX())
 				{	
-					//키 고려??
+					//consider tall??
 					System.out.println(":::nextDistance "+nextDistance+" preDistance "+preDistance);
 					System.out.println(":::index "+index+ nearFeet.get(index));
 					preDistance = nextDistance;
@@ -240,8 +240,8 @@ public class ClimbingControl {
 			// **오른발RF 움직이기
 			//현재 포지션에서 무게 중심을 구한다
 			double RfHeight = pointList.get(man.getRf()).getY();				
-			double nowHoldHeight = targetList.get(nextStepIndex).getPoint().getY();
-			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
+			double nowHoldHeight = targetList.get(nextStepIndex-1).getPoint().getY();
+			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
 			
 			RfHeight -= nowHoldHeight - nextHoldHeight;
 			System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap: "+nextHoldHeight);
@@ -253,8 +253,8 @@ public class ClimbingControl {
 			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 			
 			//트라이앵귤레이션으로 가능한 후보 셋을 구한다.	
-			Pnt idealFootPnt =new Pnt(pointList.get(man.getRf()).getX(), RfHeight);
-			int idealFootIndex = getNearPointsInVornoi(idealFootPnt);
+			Pnt idealRfPnt =GeomUtil.getRightPointOfCircleAndLine(innerCenter, innerRadius, RfHeight);
+			int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 			ArrayList<Pnt> nearFeet = getNearPointsInDT2(idealFootIndex);
 			
 			double preDistance = 9999999;
@@ -263,7 +263,7 @@ public class ClimbingControl {
 			
 			for(int index = 0; index < nearFeet.size(); index++)	
 			{	
-				nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
+				nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
 				double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getRf()), nearFeet.get(index));
 				if(nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength())
 				{
@@ -275,57 +275,7 @@ public class ClimbingControl {
 			}	
 			man.setRf(nextFootPnt.getIndex());
 			action = 0;
-			/*		
-			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()), pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
-			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-			
-			//트라이앵귤레이션으로 가능한 후보 셋을 구한다.
-			//ArrayList<Pnt> nearFeet = getNearPointsInDT2(pointList.get(man.getRf()).getIndex());
-			
-			//이 중에서 다다음 홀드를 고려한 높이와 맞는 것 && LF-RF의 거리가 적당한 것
-			int RfHeight = pointList.get(man.getRf()).getY();
-			nextStepIndex += 2;
-			int nextnextHoldHeight = pointList.get(ns.getIndex()).getY();
-			nextStepIndex -= 2;
-			RfHeight += nextnextHoldHeight - pointList.get(ns.getIndex()).getY(); //그럼 y축 정해짐!!
-			RfHeight = max(RfHeight, 0)//범위 벗어났을 때 처리
-			RfHeight = min(RfHeight, 200(?):홀드 제일 높이 있는 범위)
-			
-			///////###양손 사이에 있는지 확인.=>이럴 일은 없을 거 같으니 고려안해줘도 될 거 같음
-			man.setLf(//여기는 x좌표, RfHeight);//왼발을 움직인다.
-			
-			이중에 제일 멀리 있는 것을 고른다.
-			오른발을 움직인다.
-			man.setRf(...);
-			action = 0
-	*/	}
-		
-		/*		//두 손이  같은 곳에 있을 때
-		if( man.getLh() == man.getRh())
-		{
-			// To do:  실제로 움직이기 전에 가능한 움직임인지 확인해야 함
-			if( ns.getHand() == TargetStep.LEFT_HAND)
-				man.setLh( ns.getIndex());
-			else man.setRh( ns.getIndex());
-			nextStepIndex++;
-			System.out.println(man);
-			
-			Pnt aaa = pointList.get(man.getLh());
-			
-			System.out.println("aaa" +  aaa.getY());
-			return;
-		}
-		Pnt curManCenter = GeomUtil.getCenterPointOfMan(man, pointList);
-		// 두 발이 같은 곳에 있을 때
-		if( man.getLf() == man.getRf())
-		{
-			if( isLFused )
-			{ // 오른발 이동 
-			} else {  // 왼발 이동 
-			}
-		}
-*/		
+		}		
 	}
 	
 	public int findNextDiffHoldIndex(int nowIndex)
