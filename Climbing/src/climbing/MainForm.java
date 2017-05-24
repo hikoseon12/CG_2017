@@ -92,6 +92,7 @@ public class MainForm extends JFrame {
 		
 		ArrayList<TargetStep> tslist = cr.getTargetStep();
 		control.setTargetList(tslist);
+		pnClimbing.setTargetList(tslist);
 
 		pnClimbing.setDtriangle(control.getDelaunayTriangles());
 		control.initVornoi();
