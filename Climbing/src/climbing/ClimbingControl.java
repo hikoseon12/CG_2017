@@ -161,7 +161,7 @@ public class ClimbingControl {
 	public void doNextStep()
 	{	
 		if( nextStepIndex == 0 ) curTarget = pointList.get(man.getLh()); // 초기에는 두 손으로 시작
-		
+		if(nextStepIndex >= targetList.size()) {System.out.println("FINSHED ALL STEP"); return;}
 		TargetStep ns = targetList.get(nextStepIndex);
 		System.out.println(man);
 		Pnt nextTarget = pointList.get(ns.getIndex());
@@ -237,8 +237,6 @@ public class ClimbingControl {
 		}
 		else if(action == 1)
 		{	
-			// **오른발RF 움직이기
-			//현재 포지션에서 무게 중심을 구한다
 			double RfHeight = pointList.get(man.getRf()).getY();				
 			double nowHoldHeight = targetList.get(nextStepIndex-1).getPoint().getY();
 			double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
@@ -252,14 +250,17 @@ public class ClimbingControl {
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 			
-			//트라이앵귤레이션으로 가능한 후보 셋을 구한다.	
 			Pnt idealRfPnt =GeomUtil.getRightPointOfCircleAndLine(innerCenter, innerRadius, RfHeight);
 			int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 			ArrayList<Pnt> nearFeet = getNearPointsInDT2(idealFootIndex);
+			if(nearFeet == null)
+			{
+				//nearFeet = new Pnt();
+			}
 			
 			double preDistance = 9999999;
 			double nextDistance = 0;
-			Pnt nextFootPnt = pointList.get(man.getRf());//이거 고치기
+			Pnt nextFootPnt = pointList.get(man.getRf());//just initialized
 			
 			for(int index = 0; index < nearFeet.size(); index++)	
 			{	
