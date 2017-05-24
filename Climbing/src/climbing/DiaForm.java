@@ -12,8 +12,8 @@ public class DiaForm extends JDialog  {
 
 	private static final long serialVersionUID = 1L;
 
-	JComboBox confFiles;
-	JComboBox characters;
+	JComboBox<String> confFiles;
+	JComboBox<String> characters;
 	
 	String selectedFileName;
 	String selectedCharacterName;
@@ -42,7 +42,7 @@ public class DiaForm extends JDialog  {
 		JPanel pnMain = new JPanel();
 		pnMain.setLayout(new GridLayout(2,1));
 		
-		confFiles =  new JComboBox();
+		confFiles =  new JComboBox<String>();
 	    ArrayList<String> filenames = _FileReader.findFiles("conf", "conf");	
 	    for(String name: filenames)
 	    {
@@ -51,7 +51,7 @@ public class DiaForm extends JDialog  {
         
 	    pnMain.add(confFiles);
 	    
-	    characters = new JComboBox();
+	    characters = new JComboBox<String>();
 	    characters.addItem("Skeleton");
 	    characters.addItem("IronMan");
 	    
