@@ -97,7 +97,7 @@ public class GeomUtil {
     	return center;
     }
     /*
-     * @params the center points of circles, radius
+     * @params center points of circles, radius
      * @return 3 points of a triangle
      */
     public static ArrayList<Pnt> get3CircleTriangle(Pnt a, Pnt b, Pnt c, int r1, int r2, int r3){

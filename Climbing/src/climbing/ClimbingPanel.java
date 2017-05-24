@@ -132,7 +132,7 @@ public class ClimbingPanel extends JPanel {
          position.add(RH);
          position.add(LF);
          position.add(RF);
-        	drawMan(position, center, angle);
+         drawMan(position, center, angle);
         	
         }
         for (Triangle triangle : triList) {
