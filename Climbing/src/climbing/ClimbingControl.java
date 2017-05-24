@@ -289,7 +289,7 @@ public class ClimbingControl {
 			nextStepIndex -= 2;
 			RfHeight += nextnextHoldHeight - pointList.get(ns.getIndex()).getY(); //그럼 y축 정해짐!!
 			RfHeight = max(RfHeight, 0)//범위 벗어났을 때 처리
-			RfHeight = min(RfHeight, 200(?):홀드 제일 높이 있는 범위)//
+			RfHeight = min(RfHeight, 200(?):홀드 제일 높이 있는 범위)
 			
 			///////###양손 사이에 있는지 확인.=>이럴 일은 없을 거 같으니 고려안해줘도 될 거 같음
 			man.setLf(//여기는 x좌표, RfHeight);//왼발을 움직인다.
