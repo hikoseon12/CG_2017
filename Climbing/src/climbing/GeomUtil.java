@@ -44,7 +44,7 @@ public class GeomUtil {
                         c.getY()+distCI*(b.getX()-a.getX())/distAB);
 //      String temp = "a~ " + getDistance(a, in1)
 //                    +" b~ "  + getDistance(b, in1)
-//                    +" 占쏙옙占쏙옙占신몌옙 " + distAB;
+//                    +" �뜝�룞�삕�뜝�룞�삕�뜝�떊紐뚯삕 " + distAB;
 //      System.out.println(temp);
 
 //      System.out.println(a);
@@ -62,7 +62,7 @@ public class GeomUtil {
         return (type?in1:in2);
     }
 	/* getAngle(Pnt a, Pnt b)
-	 * 占쏙옙 b占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙, 占쏙옙占쏙옙 ab占쏙옙 占싱뤄옙占� 占쏙옙占쏙옙. 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙	 
+	 * �뜝�룞�삕 b�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕, �뜝�룞�삕�뜝�룞�삕 ab�뜝�룞�삕 �뜝�떛琉꾩삕�뜝占� �뜝�룞�삕�뜝�룞�삕. �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕	 
 	 */
     public static double getAngle(Pnt a, Pnt b)
     {    	
@@ -82,7 +82,11 @@ public class GeomUtil {
     {
     	return Math.sqrt( Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2) );
     }
-	
+	public static Pnt getRightPointOfCircleAndLine(Pnt center, double radius, double height){
+		if(Math.abs(height-center.getY())-radius>Math.pow(10, -5)) return null; 
+		double delta = Math.sqrt(radius*radius-(height-center.getY())*(height-center.getY()));
+		return new Pnt(center.getX()+delta,height);
+	}
     public static Pnt getCenterPointOfMan(Man man, ArrayList<Pnt> pointList)
     {
     	Pnt manLH = pointList.get(man.getLh());
