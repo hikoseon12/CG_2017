@@ -279,6 +279,7 @@ public class ClimbingControl {
 		}		
 	}
 	
+	
 	public int findNextDiffHoldIndex(int nowIndex)
 	{
 		int nextIndex = nowIndex;

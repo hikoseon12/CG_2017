@@ -236,6 +236,7 @@ public class ClimbingPanel extends JPanel {
       g.drawPolygon(x, y, polygon.length);
     }
     
+    
     public void drawMan(ArrayList<PntPair> pos, Pnt center, double angle)
     {
     	Color temp = g.getColor();
