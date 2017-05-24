@@ -93,46 +93,52 @@ public class ClimbingPanel extends JPanel {
            
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        
+        
+        
                         
         drawTitle(); /* draw Title */
-        
-        g.setColor(Color.BLUE);
-        for(Pnt point : pointList)
-        	draw(point);
-        
-        if( isManDeclared )   
-        {	
-        	manLH = pointList.get(this.man.getLh());
-       		manRH = pointList.get(this.man.getRh());
-       		manLF = pointList.get(this.man.getLf());
-       		manRF = pointList.get(this.man.getRf());
-        	
-        	Pnt bisectH = GeomUtil.getCenter(manLH, manRH);
-        	Pnt bisectF = GeomUtil.getCenter(manLF, manRF);
-         Pnt center = GeomUtil.getCenter(bisectH, bisectF);
-        	Double angle = GeomUtil.getAngle(bisectH, bisectF);
-         
-        	
-         PntPair body = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2),
-                                    GeomUtil.getProportionalPoint(center, bisectF, man.getBodyLength()/2));
-         PntPair LH = new PntPair(manLH, GeomUtil.getCircleIntersection(body.first,manLH,man.getFrontArmLength(),man.getBackArmLength(),false));
-         PntPair RH = new PntPair(manRH, GeomUtil.getCircleIntersection(body.first,manRH,man.getFrontArmLength(),man.getBackArmLength(),true));
-         PntPair LF = new PntPair(manLF, GeomUtil.getCircleIntersection(body.second,manLF,man.getFrontLegLength(),man.getBackLegLength(),true));
-         PntPair RF = new PntPair(manRF, GeomUtil.getCircleIntersection(body.second,manRF,man.getFrontLegLength(),man.getBackLegLength(),false));
 
-         ArrayList<PntPair> position = new ArrayList<PntPair>();
-         position.add(body);
-         position.add(LH);
-         position.add(RH);
-         position.add(LF);
-         position.add(RF);
-        	drawMan(position, center, angle);
-        	
-        }
-        for (Triangle triangle : triList) {
-          Pnt[] vertices = triangle.toArray(new Pnt[0]);
-          drawPolygon(vertices);
-        }
+        g.setColor(Color.BLUE);
+       
+//        
+//        g.setColor(Color.BLUE);
+//        for(Pnt point : pointList)
+//        	draw(point);
+//        
+//        if( isManDeclared )   
+//        {	
+//        	manLH = pointList.get(this.man.getLh());
+//       		manRH = pointList.get(this.man.getRh());
+//       		manLF = pointList.get(this.man.getLf());
+//       		manRF = pointList.get(this.man.getRf());
+//        	
+//        	Pnt bisectH = GeomUtil.getCenter(manLH, manRH);
+//        	Pnt bisectF = GeomUtil.getCenter(manLF, manRF);
+//         Pnt center = GeomUtil.getCenter(bisectH, bisectF);
+//        	Double angle = GeomUtil.getAngle(bisectH, bisectF);
+//         
+//        	
+//         PntPair body = new PntPair(GeomUtil.getProportionalPoint(center, bisectH, man.getBodyLength()/2),
+//                                    GeomUtil.getProportionalPoint(center, bisectF, man.getBodyLength()/2));
+//         PntPair LH = new PntPair(manLH, GeomUtil.getCircleIntersection(body.first,manLH,man.getFrontArmLength(),man.getBackArmLength(),false));
+//         PntPair RH = new PntPair(manRH, GeomUtil.getCircleIntersection(body.first,manRH,man.getFrontArmLength(),man.getBackArmLength(),true));
+//         PntPair LF = new PntPair(manLF, GeomUtil.getCircleIntersection(body.second,manLF,man.getFrontLegLength(),man.getBackLegLength(),true));
+//         PntPair RF = new PntPair(manRF, GeomUtil.getCircleIntersection(body.second,manRF,man.getFrontLegLength(),man.getBackLegLength(),false));
+//
+//         ArrayList<PntPair> position = new ArrayList<PntPair>();
+//         position.add(body);
+//         position.add(LH);
+//         position.add(RH);
+//         position.add(LF);
+//         position.add(RF);
+//        	drawMan(position, center, angle);
+//        	
+//        }
+//        for (Triangle triangle : triList) {
+//          Pnt[] vertices = triangle.toArray(new Pnt[0]);
+//          drawPolygon(vertices);
+//        }
         g.setColor(temp);
     }
     
