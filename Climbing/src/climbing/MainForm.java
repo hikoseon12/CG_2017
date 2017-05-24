@@ -101,7 +101,7 @@ public class MainForm extends JFrame implements MouseListener {
 	
 		
 	public static void main(String[] args) {
-
+		
 		MainForm mf = new MainForm();		
 		mf.setSize(1000,600);
 		mf.loadConf(new File("Climbing.conf"));
