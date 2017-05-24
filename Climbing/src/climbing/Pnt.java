@@ -453,5 +453,17 @@ public class Pnt {
         return new Pnt(result);
     }
 	
-	
+	  /**
+	   * Added at 24, May, 2017 gods
+	   * @param Pnt and value, check the pnt's x and y in (-value,value)
+	   * @return if in range then true otherwise false
+	   * 
+	   */
+    public boolean inRange( int value){
+      if(coordinates[0] >= value || 
+         coordinates[1] >= value ||
+         coordinates[0] <= -value||
+         coordinates[1] <= -value) return false;
+      return true;
+    }
 }

@@ -64,28 +64,28 @@ public class ConfReader {
 				
 				switch(type.toUpperCase())
 				{
-				    case "TITLE" :
-				    	procTitle(arg, lineCount);
-				    	break;
-					case "RECT" :
-						procRect(arg, lineCount);
-						break;
-				
-					case "POINT" :
-						procPoint(arg, lineCount);
-						break;
-						
-					case "MAN" :
-						procMan(arg, lineCount);
-						break;
-					
-					case "STEP" :
-						procStep(arg, lineCount);
-						break;
-
-					default:
-						System.out.printf("ERROR Line %d : Undefined Type..:%s\n", lineCount, line);
-				   
+		    case "TITLE" :
+		    	procTitle(arg, lineCount);
+		    	break;
+ 					case "RECT" :
+ 						procRect(arg, lineCount);
+ 						break;
+ 				
+ 					case "POINT" :
+ 						procPoint(arg, lineCount);
+ 						break;
+ 						
+ 					case "MAN" :
+ 						procMan(arg, lineCount);
+ 						break;
+ 					
+ 					case "STEP" :
+ 						procStep(arg, lineCount);
+ 						break;
+ 
+ 					default:
+ 						System.out.printf("ERROR Line %d : Undefined Type..:%s\n", lineCount, line);
+  				   
 				}
 				
 			}  // end of while

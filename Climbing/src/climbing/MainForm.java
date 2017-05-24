@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -61,7 +62,8 @@ public class MainForm extends JFrame implements MouseListener {
 		
 		ArrayList<Pnt> plist = cr.getPointList();
 		control.setPointList(plist);
-		
+  control.initDTrangluation();
+  
 		for( Pnt point : plist)
 			pnClimbing.addPnt(point);
 		
@@ -74,15 +76,15 @@ public class MainForm extends JFrame implements MouseListener {
 		
 		ArrayList<TargetStep> tslist = cr.getTargetStep();
 		control.setTargetList(tslist);
-				
+			
+	 pnClimbing.setDtriangle(control.getDelaunayTriangles());
 		pnClimbing.repaint();
-	
 	}
 	
 	
 	public void doNextButton() {
-		control.doNextStep();
-		pnClimbing.repaint();
+		 control.doNextStep();
+		 pnClimbing.repaint();
 	}
 	
 	public void mouseEntered(MouseEvent e) {}
@@ -104,7 +106,6 @@ public class MainForm extends JFrame implements MouseListener {
 		mf.setSize(1000,600);
 		mf.loadConf(new File("Climbing.conf"));
 		mf.setVisible(true);
-
 	}
 
 }

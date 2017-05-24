@@ -9,8 +9,13 @@ public class Man {
 	
 	private int tall = 170;
 	
-	public double getArmMaxLength() { return tall/2 ; }   
-	public double getLegMaxLength() { return tall/2 + 15.0; }
+	public double getArmMaxLength() { return 0.6*tall ; }
+	public double getFrontArmLength() { return 0.4*getArmMaxLength() ; } 
+	public double getBackArmLength() { return 0.6*getArmMaxLength() ;  }
+	public double getLegMaxLength() { return 0.6*tall; }
+ public double getFrontLegLength() { return 0.4*getLegMaxLength() ; } 
+ public double getBackLegLength() { return 0.6*getLegMaxLength() ;  }
+ public double getBodyLength() { return 0.28*tall ; } 
 	
 	public Man(int lh, int rh, int lf, int rf)
 	{
