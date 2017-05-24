@@ -8,13 +8,16 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
-public class MainForm extends JFrame implements MouseListener {
+public class MainForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	ClimbingPanel pnClimbing;
     ClimbingControl control;	
 	JButton btNext;
+	String confFileName;
+	String characterName;
+	int    characterIndex;
 	
 	public MainForm()
 	{
@@ -28,7 +31,7 @@ public class MainForm extends JFrame implements MouseListener {
 		this.setLayout(new BorderLayout());
 		
 		pnClimbing = new ClimbingPanel("character/skeleton");
-		pnClimbing.addMouseListener(this);
+		
 		this.add(pnClimbing, BorderLayout.CENTER);
 		
 		JPanel pnControl = new JPanel();
@@ -46,9 +49,10 @@ public class MainForm extends JFrame implements MouseListener {
 	}
 	
 	
-	public void loadConf(File file)
+	public void loadConf()
 	{
 		
+		File file = new File("conf/"+ confFileName);
 		ConfReader cr = new ConfReader();
 		cr.parse(file);
 		
@@ -88,25 +92,36 @@ public class MainForm extends JFrame implements MouseListener {
 		 pnClimbing.repaint();
 	}
 	
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseClicked(MouseEvent e) {}
-	public void mousePressed(MouseEvent e) {
-        if (e.getSource() != pnClimbing) return;
-        Pnt point = new Pnt(e.getX(), e.getY());
-        //System.out.println("Click! " + point.toString());
-        pnClimbing.addPnt(point);
-        pnClimbing.repaint();
+	public void showConfDialog()
+	{
+		DiaForm df = new DiaForm(this);
+		df.setSize(300,300);
+		df.setVisible(true);
+		
+		//System.out.println("Selected: " + df.getSelectedFileName());
+		
+		this.confFileName = df.getSelectedFileName();
+		this.characterIndex = df.getSelectedCharacterIndex();
+		this.characterName = df.getSelectedCharacterName();
 	}
 	
+	public void loadDefaultConf()
+	{
+		this.confFileName = "Climbing.conf";
+		this.characterIndex = 0;
+		this.characterName ="NoHeadBones";
 		
+		loadConf();
+	}
 	public static void main(String[] args) {
+	
 		
 		MainForm mf = new MainForm();		
-		mf.setSize(1000,600);
-		mf.loadConf(new File("Conf/Climbing.conf"));
 		mf.setVisible(true);
+		//mf.showConfDialog();
+		//mf.loadConf();
+		mf.loadDefaultConf();
+		
 	}
 
 }

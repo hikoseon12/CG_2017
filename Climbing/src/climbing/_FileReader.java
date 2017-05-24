@@ -14,7 +14,7 @@ public class _FileReader {
 		ArrayList<String> ret = new ArrayList<String>();
 		for(File x : fileList) {
 			if(x.isFile()&&x.getName().contains("."+ext)){
-				String curFileName=x.getName();
+				String curFileName=x.getName();				
 				ret.add(curFileName);
 			}
 		}
