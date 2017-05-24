@@ -178,8 +178,11 @@ public class ConfReader {
 			System.out.printf("ERROR Line %d : Wrong rectY value : %s\n", lineCount, rectYStr);
 			return;
 		}
-		 
-		pointList.add(new Pnt(rectX, rectY));		
+		
+		Pnt point = new Pnt(rectX, rectY);
+		point.setIndex(pointList.size());
+		
+		pointList.add(point);		
 	}
 	
 	

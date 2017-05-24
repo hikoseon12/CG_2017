@@ -36,11 +36,13 @@ package climbing;
  * Modifed May, 2017. Hyun-Kyu Shin for CG 2017 Term Project
  * 
  * getX() and getY() added 2017.05.21 by hkshin
+ * 
+ * index added with getter and setter 2017.5.24 by hkshin
  */
 public class Pnt {
 
     private double[] coordinates;          // The point's coordinates
-
+    private int index = -1;
     /**
      * Constructor.
      * @param coords the coordinates
@@ -53,13 +55,27 @@ public class Pnt {
         System.arraycopy(coords, 0, coordinates, 0, coords.length);
     }
 
-    @Override
+    
+    
+    public int getIndex() {
+		return index;
+	}
+
+
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+
+
+	@Override
     public String toString () {
         if (coordinates.length == 0) return "Pnt()";
         String result = "Pnt(" + coordinates[0];
         for (int i = 1; i < coordinates.length; i++)
             result = result + "," + coordinates[i];
-        result = result + ")";
+        result = result + ") index="+index;
         return result;
     }
 

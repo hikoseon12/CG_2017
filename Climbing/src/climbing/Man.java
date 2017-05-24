@@ -7,7 +7,7 @@ public class Man {
 	private int lf;
 	private int rf;
 	
-	private int tall = 250;
+	private int tall = 210;
 	
 	public double getArmMaxLength() { return 0.6*tall ; }
 	public double getFrontArmLength() { return 0.4*getArmMaxLength() ; } 
