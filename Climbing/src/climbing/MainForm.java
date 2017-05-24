@@ -15,9 +15,11 @@ public class MainForm extends JFrame {
 	ClimbingPanel pnClimbing;
     ClimbingControl control;	
 	JButton btNext;
+	JButton btShowDT;
 	String confFileName;
 	String characterName;
 	int    characterIndex;
+	boolean showDT = false;
 	
 	public MainForm()
 	{
@@ -43,6 +45,15 @@ public class MainForm extends JFrame {
 			}
 		});
 		pnControl.add(btNext);
+		
+		btShowDT = new JButton("DT");
+		btShowDT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				doDTClick();
+			}
+		});
+		pnControl.add(btShowDT);
 		
 		this.add(pnControl, BorderLayout.SOUTH);
 		
@@ -90,6 +101,12 @@ public class MainForm extends JFrame {
 	public void doNextButton() {
 		 control.doNextStep();
 		 pnClimbing.repaint();
+	}
+	
+	public void doDTClick() {
+		showDT = !showDT;
+		pnClimbing.setDisplayDT(showDT);
+		pnClimbing.repaint();
 	}
 	
 	public void showConfDialog()
