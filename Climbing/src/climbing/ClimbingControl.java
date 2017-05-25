@@ -24,6 +24,7 @@ public class ClimbingControl {
 	private int initBoardSize = 10000;
 	private int action; ///////////////////////////////// 이거 추가!!
 	private int footSequence = 0;
+	private ArrayList<Pnt> nearFootPnts;
 
 	Pnt[] _3CirclePnt;
 	double[] _3CircleRad;
@@ -40,6 +41,7 @@ public class ClimbingControl {
 		dt = new Triangulation(initTri);
 		triangleList = new ArrayList<Triangle>();
 		vornList = new ArrayList<ArrayList<Pnt>>();
+		nearFootPnts = new ArrayList<Pnt>();
 		action = 0; //////////////////////////////////// 이거 추가!!
 
 	    _3CirclePnt = new Pnt[3];
@@ -81,6 +83,9 @@ public class ClimbingControl {
 	}
 	public double getCenterCircleRad(){
 		return _ctrRad;
+	}
+	public ArrayList<Pnt> getNearFootPnts(){
+		return nearFootPnts;
 	}
 	public Pnt getNextStepPnt(){
 		return _next;
