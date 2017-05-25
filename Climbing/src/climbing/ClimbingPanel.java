@@ -235,7 +235,7 @@ public class ClimbingPanel extends JPanel {
         		drawCircle(_3CirclePnt[i],(int)_3CircleRad[i], 3, false, Color.BLUE);
         	}
     		drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
-    		drawLine(_ctrPnt,_next,3,Color.GRAY);
+    		drawLine(_ctrPnt,_next,3,Color.CYAN);
         	
         }
 

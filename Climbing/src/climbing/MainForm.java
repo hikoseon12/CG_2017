@@ -125,6 +125,11 @@ public class MainForm extends JFrame {
 	
 	public void doNextButton() {
 		 control.doNextStep();
+		 pnClimbing.set3CircleStatus(control.get3CirclePnts(),
+				 					 control.get3CircleRads());
+		 pnClimbing.setCenterCircleStatus(control.getCenterCirclePnt(),
+				 						  control.getCenterCircleRad());
+		 pnClimbing.setNextStepStatus(control.getNextStepPnt());
 		 pnClimbing.repaint();
 	}
 

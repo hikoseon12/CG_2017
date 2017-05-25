@@ -24,6 +24,12 @@ public class ClimbingControl {
 	private int initBoardSize = 10000;
 	private int action; ///////////////////////////////// 이거 추가!!
 	private int footSequence = 0;
+
+	Pnt[] _3CirclePnt;
+	double[] _3CircleRad;
+	Pnt _ctrPnt;
+	double _ctrRad;
+	Pnt _next;
 	
 	public ClimbingControl() {
 		nextStepIndex = 0;
@@ -35,6 +41,12 @@ public class ClimbingControl {
 		triangleList = new ArrayList<Triangle>();
 		vornList = new ArrayList<ArrayList<Pnt>>();
 		action = 0; //////////////////////////////////// 이거 추가!!
+
+	    _3CirclePnt = new Pnt[3];
+	    _ctrPnt = null;
+	    _next = null;
+	    _3CircleRad = new double[3];
+	    _ctrRad = 0;
 	}
 
 	public ArrayList<Pnt> getPointList() {
@@ -56,7 +68,23 @@ public class ClimbingControl {
 	public void setPointList(ArrayList<Pnt> pointList) {
 		this.pointList = pointList;
 	}
-
+	public Pnt[] get3CirclePnts(){
+		return _3CirclePnt;
+		
+	}
+	public double[] get3CircleRads(){
+		return _3CircleRad;
+		
+	}
+	public Pnt getCenterCirclePnt(){
+		return _ctrPnt;
+	}
+	public double getCenterCircleRad(){
+		return _ctrRad;
+	}
+	public Pnt getNextStepPnt(){
+		return _next;
+	}
 	public void initDTrangluation() {
 		System.out.print("Initialize the Dtri..");
 		for (Pnt pnt : pointList) {
@@ -208,9 +236,18 @@ public class ClimbingControl {
 			// 현재 포지션에서 무게 중심을 구한다
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
+			
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-
+			_3CirclePnt[0] = notmovingH;
+			_3CirclePnt[1] = pointList.get(man.getLf());
+			_3CirclePnt[2] = pointList.get(man.getRf());
+			_3CircleRad[0] = man.getArmMaxLength();
+			_3CircleRad[1] = man.getLegMaxLength();
+			_3CircleRad[2] = man.getLegMaxLength();
+			_ctrPnt = innerCenter;
+			_ctrRad = innerRadius;
+			_next = nextTarget;
 			//System.out.println("innerCenter" + innerCenter);
 			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
 			//		+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
@@ -234,7 +271,7 @@ public class ClimbingControl {
 		// *왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
 		double LfHeight = pointList.get(man.getLf()).getY();
 		double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
-		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex - 1).getIndex())).getY();
+		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
 
 		LfHeight -= nowHoldHeight - nextHoldHeight;
 		// System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap:
@@ -282,7 +319,19 @@ public class ClimbingControl {
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
-		
+		_3CirclePnt[0] = pointList.get(man.getLh());
+		_3CirclePnt[1] = pointList.get(man.getRh());
+		_3CirclePnt[2] = pointList.get(man.getLf());
+		_3CircleRad[0] = man.getArmMaxLength();
+		_3CircleRad[1] = man.getLegMaxLength();
+		_3CircleRad[2] = man.getLegMaxLength();
+		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
+				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
+		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+		_ctrPnt = innerCenter;
+		_ctrRad = innerRadius;
+		_next = targetList.get(nextStepIndex).getPoint();
 		//if()
 		
 		man.setLf(nextFootPnt.getIndex());
@@ -303,7 +352,15 @@ public class ClimbingControl {
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-
+		_3CirclePnt[0] = pointList.get(man.getLh());
+		_3CirclePnt[1] = pointList.get(man.getRh());
+		_3CirclePnt[2] = pointList.get(man.getLf());
+		_3CircleRad[0] = man.getArmMaxLength();
+		_3CircleRad[1] = man.getLegMaxLength();
+		_3CircleRad[2] = man.getLegMaxLength();
+		_ctrPnt = innerCenter;
+		_ctrRad = innerRadius;
+		_next = nextHoldPnt;
 		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
 		//System.out.println("idealRfPnt: " + idealRfPnt);
 		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
