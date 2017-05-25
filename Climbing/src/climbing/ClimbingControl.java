@@ -22,8 +22,9 @@ public class ClimbingControl {
 	HashMap<Pnt, Set<Pnt>> triPntHash;
 	private Triangle initTri;
 	private int initBoardSize = 10000;
-	private int action; /////////////////////////////////이거 추가!!
-
+	private int action; ///////////////////////////////// 이거 추가!!
+	private int footSequence = 0;
+	
 	public ClimbingControl() {
 		nextStepIndex = 0;
 		isLFused = false;
@@ -32,8 +33,8 @@ public class ClimbingControl {
 				new Pnt(0, -initBoardSize));
 		dt = new Triangulation(initTri);
 		triangleList = new ArrayList<Triangle>();
-        vornList = new ArrayList<ArrayList<Pnt>>();
-		action = 0; ////////////////////////////////////이거 추가!!
+		vornList = new ArrayList<ArrayList<Pnt>>();
+		action = 0; //////////////////////////////////// 이거 추가!!
 	}
 
 	public ArrayList<Pnt> getPointList() {
@@ -43,6 +44,7 @@ public class ClimbingControl {
 	public ArrayList<Triangle> getDelaunayTriangles() {
 		return triangleList;
 	}
+
 	public ArrayList<ArrayList<Pnt>> getVornooiList() {
 		return vornList;
 	}
@@ -79,20 +81,22 @@ public class ClimbingControl {
 		}
 		System.out.println("[Done]");
 	}
-	public void initVornoi(){
+
+	public void initVornoi() {
 		HashSet<Pnt> done = new HashSet<Pnt>(initTri);
-        vornList = new ArrayList<ArrayList<Pnt>>();
-        for (Triangle triangle : dt)
-            for (Pnt site: triangle) {
-            	if (!site.inRange(initBoardSize) || !site.inRange(initBoardSize))
+		vornList = new ArrayList<ArrayList<Pnt>>();
+		for (Triangle triangle : dt)
+			for (Pnt site : triangle) {
+				if (!site.inRange(initBoardSize) || !site.inRange(initBoardSize))
 					continue;
-                if (done.contains(site)) continue;
-                done.add(site);
-                List<Triangle> list = dt.surroundingTriangles(site, triangle);
-                vornList.add(new ArrayList<Pnt>());
-                for (Triangle tri: list)
-                	vornList.get(vornList.size()-1).add(tri.getCircumcenter());
-        }
+				if (done.contains(site))
+					continue;
+				done.add(site);
+				List<Triangle> list = dt.surroundingTriangles(site, triangle);
+				vornList.add(new ArrayList<Pnt>());
+				for (Triangle tri : list)
+					vornList.get(vornList.size() - 1).add(tri.getCircumcenter());
+			}
 	}
 
 	public ArrayList<Pnt> getNearPointsInDT(int index) {
@@ -112,7 +116,7 @@ public class ClimbingControl {
 		}
 		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
 	}
-	
+
 	public ArrayList<Pnt> getNearPointsInDT3(int index) {
 		ArrayList<Pnt> res = getNearPointsInDT(index);
 		Set<Pnt> ret = new HashSet<Pnt>();
@@ -122,6 +126,7 @@ public class ClimbingControl {
 		}
 		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
 	}
+
 	public ArrayList<Pnt> getNearPointsInDT4(int index) {
 		ArrayList<Pnt> res = getNearPointsInDT(index);
 		Set<Pnt> ret = new HashSet<Pnt>();
@@ -131,21 +136,24 @@ public class ClimbingControl {
 		}
 		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
 	}
-  	public int getNearPointsInVornoi(Pnt pnt){
- 	     Triangle tri = dt.locate(pnt);
- 	     if(tri==null) return -1;
- 	     double dist = Math.pow(10,8);
- 	     Pnt small = null;
- 	     double minDis = 10000.0;
- 	     for(Pnt x : tri.toArray(new Pnt[0])){
- 	    	 //if(GeomUtil.getDistance(x, pnt)-dist< Math.pow(10,-5)){
- 	    	if(GeomUtil.getDistance(x, pnt)< minDis){
- 	    		 small = x;
- 	    		 minDis = GeomUtil.getDistance(x, pnt);
- 	    	 }
- 	     }
- 	     return small.getIndex();
-    }
+
+	public int getNearPointsInVornoi(Pnt pnt) {
+		Triangle tri = dt.locate(pnt);
+		if (tri == null)
+			return -1;
+		double dist = Math.pow(10, 8);
+		Pnt small = null;
+		double minDis = 10000.0;
+		for (Pnt x : tri.toArray(new Pnt[0])) {
+			// if(GeomUtil.getDistance(x, pnt)-dist< Math.pow(10,-5)){
+			if (GeomUtil.getDistance(x, pnt) < minDis) {
+				small = x;
+				minDis = GeomUtil.getDistance(x, pnt);
+			}
+		}
+		return small.getIndex();
+	}
+
 	public Man getMan() {
 		return man;
 	}
@@ -180,169 +188,207 @@ public class ClimbingControl {
 		return nearPoints;
 	}
 
-	public int movingHandStep(TargetStep ns, Pnt nextTarget)
-	{
+	public int movingHandStep(TargetStep ns, Pnt nextTarget) {
 		Pnt movingH;
 		Pnt notmovingH;
 		int changed = 0;
-		
-		if( ns.getHand() == TargetStep.LEFT_HAND)
-		{
+
+		if (ns.getHand() == TargetStep.LEFT_HAND) {
 			movingH = pointList.get(man.getLh());
 			notmovingH = pointList.get(man.getRh());
-		}else
-		{
+		} else {
 			movingH = pointList.get(man.getRh());
 			notmovingH = pointList.get(man.getLh());
 		}
-		//손이 닿는다.
-		if(pointList.get(man.getLf()).getX() <= notmovingH.getX() && notmovingH.getX() <= pointList.get(man.getRf()).getX()) //손 한쪽을 땠을 떄 나머지 손이 양발 사이에 있다. 즉, 안정적이다)
-		{	System.out.println("action0: 양발 사이에 있다\n");
-			//현재 포지션에서 무게 중심을 구한다
-			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()), pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
+		// 손이 닿는다.
+		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
+				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()) // 손 한쪽을 땠을 떄 나머지 손이 양발 사이에 있다. 즉, 안정적이다)
+		{
+			System.out.println("action0: 양발 사이에 있다\n");
+			// 현재 포지션에서 무게 중심을 구한다
+			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
+					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-			double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-			
-			System.out.println("innerCenter"+innerCenter);
-			System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"+GeomUtil.getDistance(innerCenter, nextTarget)+"  "+innerRadius);
-			if(GeomUtil.getDistance(innerCenter, nextTarget) <=  innerRadius)
-			{	System.out.println("GeomUtil.getDistance(i)");
-				if(ns.getHand() == TargetStep.LEFT_HAND)
-					man.setLh( ns.getIndex());
+			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+
+			System.out.println("innerCenter" + innerCenter);
+			System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
+					+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
+			if (GeomUtil.getDistance(innerCenter, nextTarget) <= innerRadius) {
+				System.out.println("GeomUtil.getDistance(i)");
+				if (ns.getHand() == TargetStep.LEFT_HAND)
+					man.setLh(ns.getIndex());
 				else
-					man.setRh( ns.getIndex());
+					man.setRh(ns.getIndex());
 				nextStepIndex++;
 				System.out.println("\n거리가 \n action0: 손 움직이기 \n\n");
-				changed = 1;//FINSH ONE ROUND
+				changed = 1;// FINSH ONE ROUND
 				return changed;
 			}
 		}
 		return changed;
 	}
-	
-	public int movingLf()
-	{
+
+	public int movingLf() {
 		int changed = 1;
-		//*왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
-		double LfHeight = pointList.get(man.getLf()).getY();				
-		double nowHoldHeight = targetList.get(nextStepIndex-1).getPoint().getY();
-		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
-		
+		// *왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
+		double LfHeight = pointList.get(man.getLf()).getY();
+		double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
+		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex - 1).getIndex())).getY();
+
 		LfHeight -= nowHoldHeight - nextHoldHeight;
-		//System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap: "+nextHoldHeight+"LfHeight: "+LfHeight);
-		LfHeight = Math.min(LfHeight,375);//범위 벗어났을 때 처리
+		// System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap:
+		// "+nextHoldHeight+"LfHeight: "+LfHeight);
+		//LfHeight = Math.min(LfHeight, 375);// 범위 벗어났을 때 처리
 		
-		Pnt idealFootPnt =new Pnt(pointList.get(man.getRf()).getX(), LfHeight);
+/*		double lowHoldHeight = Math.max(pointList.get(man.getLh()).getY(),pointList.get(man.getRh()).getY());
+		System.out.println("LfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
+		System.out.println("(lowHoldHeight + man.getTall()*0.58)"+(lowHoldHeight + man.getMinHandFeetHeight()));
+		double properHeight = Math.max(LfHeight, (lowHoldHeight + man.getMinHandFeetHeight()));
+		
+		System.out.println("\nLfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
+		System.out.println("(lowHoldHeight + man.getTall()*0.6): "+(lowHoldHeight + man.getMinHandFeetHeight()) +"properHeight: "+ properHeight);
+		
+		properHeight = Math.min(properHeight, 375);
+		
+		Pnt idealFootPnt = new Pnt(pointList.get(man.getRf()).getX(), properHeight);
+*/		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
+		System.out.println("idealFootPnt: "+idealFootPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
-		//셋에서 가상의 점과 가장 가까운 그런데 이때 키 범위에 닿는지 판단
-		
+		// 셋에서 가상의 점과 가장 가까운 그런데 이때 키 범위에 닿는지 판단
+
 		double preDistance = 9999999;
 		double nextDistance = 0;
-		Pnt nextFootPnt = pointList.get(man.getRf()); //오른쪽 발로 세팅
-		System.out.println("pointList.get(man.getRf()): "+pointList.get(man.getRf()));
-		
+		Pnt nextFootPnt = pointList.get(man.getRf()); // 오른쪽 발로 세팅
+		//System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
+
 		double lowHand = Math.max(pointList.get(man.getLf()).getY(), pointList.get(man.getRf()).getY());
-		
-		for(int index = 0; index < nearFeet.size(); index++)	
-		{	
-			double  distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY()-lowHand);
+
+		for (int index = 0; index < nearFeet.size(); index++) {
+			double distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY() - lowHand);
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
-			
-			
-			if(nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX() )
-			{	System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-				//consider tall??
-				//System.out.println(":::nextDistance "+nextDistance+" preDistance "+preDistance);
-				//System.out.println(":::index "+index+ nearFeet.get(index));
+
+			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX())
+				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX() 
+				//	&& nearFeet.get(index).getX() <= pointList.get(man.getRh()).getX()) 
+			{
+				
+				System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+				// consider tall??
+				// System.out.println(":::nextDistance "+nextDistance+"
+				// preDistance "+preDistance);
+				// System.out.println(":::index "+index+ nearFeet.get(index));
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
 			}
-		}	
-		man.setLf(nextFootPnt.getIndex());System.out.println("\n\n action0: 왼발 움직이기 \n\n");
-		System.out.println("pointList.get(man.getRf()): "+pointList.get(man.getRf()));
+		}
+		man.setLf(nextFootPnt.getIndex());
+		System.out.println("\n\n action0: 왼발 움직이기 \n\n");
+		System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		return changed;
 	}
-	
-	public int movingRf()
-	{
-		int chaged = 0;
-		
-		System.out.println("\n\n action1: 오른발 움직이기 \n\n");
-		
-		Pnt nowHoldPnt = targetList.get(nextStepIndex-1).getPoint();
-        Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
 
-        ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()), pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
-        Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-        double innerRadius =  GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-         
-        Pnt idealRfPnt =GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
-        System.out.println("idealRfPnt: "+idealRfPnt);
-        System.out.println(">>CHECK!!>>pointList.get(man.getRf()): "+pointList.get(man.getRf()));
-        int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
-        ArrayList<Pnt> nearFeet = getNearPointsInDT4(idealFootIndex);
-        //System.out.println("nearFeet: "+nearFeet);
-		if(nearFeet == null)
-		{
+	public int movingRf() {
+		int chaged = 0;
+
+		System.out.println("\n\n action1: 오른발 움직이기 \n\n");
+
+		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
+		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex - 1).getIndex()));
+
+		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
+				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
+		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+
+		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt,
+				nextHoldPnt);
+		System.out.println("idealRfPnt: " + idealRfPnt);
+		System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
+		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
+		ArrayList<Pnt> nearFeet = getNearPointsInDT4(idealFootIndex);
+		// System.out.println("nearFeet: "+nearFeet);
+		if (nearFeet == null) {
 			//
 		}
-		
+
 		double preDistance = 9999999;
 		double nextDistance = 0;
-		Pnt nextFootPnt = pointList.get(man.getRf());//just initialized
-		
-		for(int index = 0; index < nearFeet.size(); index++)	
-		{	System.out.println(index+". nearFeetnearFeet.get(index): "+nearFeet.get(index));
+		Pnt nextFootPnt = pointList.get(man.getRf());// just initialized
+
+		for (int index = 0; index < nearFeet.size(); index++) {
+			//System.out.println(index + ". nearFeetnearFeet.get(index): " + nearFeet.get(index));
 			nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
 			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getRf()), nearFeet.get(index));
-			
-			//System.out.println(":::nextDistance "+nextDistance+" preDistance "+preDistance);
-			//System.out.println(":::twoLegDistance "+twoLegDistance+" man.getPossibleLegLength() "+man.getPossibleLegLength());
-			
-			if(nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength())
-			{
-				//System.out.println(":::nextDistance "+nextDistance+" preDistance "+preDistance);
-				System.out.println("들어감!!:::index "+index+ nearFeet.get(index));
+
+			// System.out.println(":::nextDistance "+nextDistance+" preDistance
+			// "+preDistance);
+			// System.out.println(":::twoLegDistance "+twoLegDistance+"
+			// man.getPossibleLegLength() "+man.getPossibleLegLength());
+
+			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()) {
+				// System.out.println(":::nextDistance "+nextDistance+"
+				// preDistance "+preDistance);
+				//System.out.println("들어감!!:::index " + index + nearFeet.get(index));
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
-		System.out.println("\n\n\n>>FINAL nextFootPnt: "+nextFootPnt + "\n\n");
+		System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
 		man.setRf(nextFootPnt.getIndex());
-		
+
 		return chaged;
 	}
-	public void doNextStep()
-	{	
-		if( nextStepIndex == 0 ) curTarget = pointList.get(man.getLh()); // 초기에는 두 손으로 시작
-		if(nextStepIndex >= targetList.size()) {System.out.println("FINSHED ALL STEP"); return;}
+
+	public void doNextStep() {
+		if (nextStepIndex == 0)
+			curTarget = pointList.get(man.getLh()); // 초기에는 두 손으로 시작
+		if (nextStepIndex >= targetList.size()) {
+			System.out.println("FINSHED ALL STEP");
+			return;
+		}
+		
 		TargetStep ns = targetList.get(nextStepIndex);
 		Pnt nextTarget = pointList.get(ns.getIndex());
 
-		if(action == 0)
-		{
-			//손을 옮긴다?!
+		// 손을 옮긴다?!
+		int changed = 0;
+		changed = movingHandStep(ns, nextTarget);
+		if (changed == 1)
+			return;
+		
+		if(footSequence == 0)//왼발 움직일 차례
+		{	
+			movingLf();
+			footSequence = 1; //다음은 오른발 움직일 차례
+		} 
+		else if (footSequence == 1) { //오른발 움직일 차례
+			movingRf();
+			footSequence = 0;//다음은 왼발 움직일 차례
+		}
+		
+	/*	if (action == 0) {
+			// 손을 옮긴다?!
 			int changed = 0;
 			changed = movingHandStep(ns, nextTarget);
-			if(changed == 1)
+			if (changed == 1)
 				return;
-			//왼발 움직이기
+			// 왼발 움직이기
 			action = movingLf();
-		}
-		else if(action == 1)
-		{
-			action = movingRf();		
-		}
+			footSequence = 1; //오른발 움직일 차례
+		} else if (action == 1) {
+			action = movingRf();
+			footSequence = 0;//왼발 움직일 차례
+		}*/
 	}
-	
-	public int findNextDiffHoldIndex(int nowIndex)
-	{
+
+	public int findNextDiffHoldIndex(int nowIndex) {
 		int nextIndex = nowIndex;
 		int i;
-		for(i = nextStepIndex;  nextIndex == nowIndex && i < targetList.size();i++)
-		{
+		for (i = nextStepIndex; nextIndex == nowIndex && i < targetList.size(); i++) {
 			nextIndex = targetList.get(i).getIndex();
-			//System.out.println("i "+i+"nextIndex "+nextIndex+" nowIndex "+nowIndex);
+			// System.out.println("i "+i+"nextIndex "+nextIndex+" nowIndex
+			// "+nowIndex);
 		}
 		return nextIndex;
 	}
