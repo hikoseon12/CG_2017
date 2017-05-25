@@ -248,7 +248,10 @@ public class ClimbingControl {
 			_3CircleRad[2] = man.getLegMaxLength();
 			_ctrPnt = innerCenter;
 			_ctrRad = innerRadius;
-			_next = targetList.get(nextStepIndex+1).getPoint();
+			int holdNextShowIndex = nextStepIndex+1;
+			if(targetList.size() <= holdNextShowIndex)
+				holdNextShowIndex -= 1;
+			_next = targetList.get(holdNextShowIndex).getPoint();
 			//System.out.println("innerCenter" + innerCenter);
 			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
 			//		+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
@@ -297,7 +300,7 @@ public class ClimbingControl {
 
 		double preDistance = 9999999;
 		double nextDistance = 0;
-		Pnt nextFootPnt = pointList.get(man.getRf()); // 오른쪽 발로 세팅
+		Pnt nextFootPnt = null; // 오른쪽 발로 세팅
 		//System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 
 		double lowHand = Math.max(pointList.get(man.getLf()).getY(), pointList.get(man.getRf()).getY());
@@ -307,6 +310,7 @@ public class ClimbingControl {
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX())
+				//&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())
 				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX() 
 				//	&& nearFeet.get(index).getX() <= pointList.get(man.getRh()).getX()) 
 			{
@@ -323,7 +327,7 @@ public class ClimbingControl {
 		System.out.println("\n\n action0: 왼발 움직이기 \n\n");
 		_3CirclePnt[0] = pointList.get(man.getLh());
 		_3CirclePnt[1] = pointList.get(man.getRh());
-		_3CirclePnt[2] = pointList.get(man.getLf());
+		_3CirclePnt[2] = pointList.get(man.getRf());
 		_3CircleRad[0] = man.getArmMaxLength();
 		_3CircleRad[1] = man.getLegMaxLength();
 		_3CircleRad[2] = man.getLegMaxLength();
@@ -334,19 +338,20 @@ public class ClimbingControl {
 		_ctrPnt = innerCenter;
 		_ctrRad = innerRadius;
 		_next = targetList.get(nextStepIndex).getPoint();
-		//if()
+		
+		if(nextFootPnt == null)
+		{
+			return -1;
+		}
 		
 		man.setLf(nextFootPnt.getIndex());
 		
 		System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
-		return changed;
+		return 0;
 	}
 
 	public int movingRf() {
 		int chaged = 0;
-
-		
-
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
 		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
 
