@@ -131,6 +131,7 @@ public class MainForm extends JFrame {
 		 pnClimbing.setCenterCircleStatus(control.getCenterCirclePnt(),
 				 						  control.getCenterCircleRad());
 		 pnClimbing.setNextStepStatus(control.getNextStepPnt());
+		 pnClimbing.setNearFootList(control.getNearFootPnts());
 		 pnClimbing.repaint(); 
 	}
 

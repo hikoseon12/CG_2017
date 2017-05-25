@@ -48,6 +48,7 @@ public class ClimbingPanel extends JPanel {
     private ArrayList<Triangle> triList;
     private ArrayList<ArrayList<Pnt>> vornoiList;
    private ArrayList<TargetStep> targetList;
+   private ArrayList<Pnt> nearFootList;
     
    private Pnt manLH, manRH, manLF, manRF;
    private Man man;
@@ -69,6 +70,7 @@ public class ClimbingPanel extends JPanel {
      triList = new ArrayList<Triangle>();
      vornoiList = new ArrayList<ArrayList<Pnt>>();
      targetList = new ArrayList<TargetStep>();
+     nearFootList = new ArrayList<Pnt>();
      title = null;
      _3CirclePnt = new Pnt[3];
      _ctrPnt = null;
@@ -76,7 +78,9 @@ public class ClimbingPanel extends JPanel {
      _3CircleRad = new double[3];
      _ctrRad = 0;
    }
-   
+   public void setNearFootList(ArrayList<Pnt> nfl){
+	   this.nearFootList = nfl;
+   }
    public void set3CircleStatus(Pnt[] parr, double[] rarr){
       for(int i = 0; i < parr.length; i++){
          _3CirclePnt[i]=parr[i];
@@ -250,6 +254,11 @@ public class ClimbingPanel extends JPanel {
           drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
           drawLine(_ctrPnt,_next,3,Color.CYAN);
            
+        }
+        if(nearFootList.size()!=0){
+        	for(int i = 0; i < nearFootList.size(); i++){
+        		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
+        	}
         }
 
         for(TargetStep ts : targetList){
