@@ -48,7 +48,7 @@ public class ClimbingControl {
 	public ArrayList<ArrayList<Pnt>> getVornooiList() {
 		return vornList;
 	}
-
+	
 	public ArrayList<Pnt> getNearestPointList(Pnt pnt) {
 		return null;
 	}

@@ -17,6 +17,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.omg.CORBA._PolicyStub;
 import org.w3c.dom.events.EventException;
 
 
@@ -46,25 +47,50 @@ public class ClimbingPanel extends JPanel {
     private ArrayList<Pnt> pointList;
     private ArrayList<Triangle> triList;
     private ArrayList<ArrayList<Pnt>> vornoiList;
-	
+	private ArrayList<TargetStep> targetList;
+    
 	private Pnt manLH, manRH, manLF, manRF;
 	private Man man;
 	private boolean isManDeclared = false;
 	private boolean displayDT = false;
 	private boolean displayVD = false;
+	private boolean displayStatus = false;
 	private boolean isImageReady = false;
 	
-	public ClimbingPanel()
-	{
+	Pnt[] _3CirclePnt;
+	double[] _3CircleRad;
+	Pnt _ctrPnt;
+	double _ctrRad;
+	Pnt _next;
+	
+	public ClimbingPanel(){
 	  pointList = new ArrayList<Pnt>();
 	  triList = new ArrayList<Triangle>();
 	  vornoiList = new ArrayList<ArrayList<Pnt>>();
-		title = null;
-		
+	  targetList = new ArrayList<TargetStep>();
+	  title = null;
+	  _3CirclePnt = new Pnt[3];
+	  _ctrPnt = null;
+	  _next = null;
+	  _3CircleRad = new double[3];
+	  _ctrRad = 0;
 	}
 	
-	public void setImagePath(String path)
-	{
+	public void set3CircleStatus(Pnt[] parr, double[] rarr){
+		for(int i = 0; i < parr.length; i++){
+			_3CirclePnt[i]=parr[i];
+			_3CircleRad[i]=rarr[i];
+		}
+	}
+	public void setCenterCircleStatus(Pnt p, double r){
+		_ctrPnt = p;
+		_ctrRad = r;
+	}
+	public void setNextStepStatus(Pnt p){
+		_next = p;
+	}
+	
+	public void setImagePath(String path){
 		imgBuffer = new ArrayList<BufferedImage>();
 		String imgNames[] = {"body","lhf","rhf","llb","rlb","lhb","rhb","llf","rlf","head"};
 		
@@ -90,9 +116,6 @@ public class ClimbingPanel extends JPanel {
 		this.displayDT = displayDT;
 	}
 
-	
-
-
 	public boolean isDisplayVD() {
 		return displayVD;
 	}
@@ -100,32 +123,41 @@ public class ClimbingPanel extends JPanel {
 	public void setDisplayVD(boolean displayVD) {
 		this.displayVD = displayVD;
 	}
-
+	public void setDisplayStatus(boolean displayStatus){
+		this.displayStatus = displayStatus;
+	}
 	public void setTitle(String title)
 	{
 		this.title = title;
 	}
+	
+	public void set3StatusCircles(Pnt[] parr, double rarr){
+		
+	}
+	
 	
 	public void addPnt(Pnt point)
 	{
 		pointList.add(point);
 	}
 
- public void setMan(Man man)
- {
-  this.man = man;
-  isManDeclared = true;
- }
+	 public void setMan(Man man)
+	 {
+	  this.man = man;
+	  isManDeclared = true;
+	 }
 
- public void setDtriangle(ArrayList<Triangle> dtr)
- {
-  this.triList = dtr;
- }
- public void setVornoiPoint(ArrayList<ArrayList<Pnt>> vp)
- {
-  this.vornoiList = vp;
- }
- 
+	 public void setDtriangle(ArrayList<Triangle> dtr)
+	 {
+	  this.triList = dtr;
+	 }
+	 public void setVornoiPoint(ArrayList<ArrayList<Pnt>> vp)
+	 {
+	  this.vornoiList = vp;
+	 }
+    public void setTargetList(ArrayList<TargetStep> tl){
+    	this.targetList=tl;
+    }
 	public void clearMan() { isManDeclared = false; }
 	
     public void paintComponent (Graphics g) {
@@ -182,6 +214,7 @@ public class ClimbingPanel extends JPanel {
         	
         }
         
+        
         if( displayDT ) {
         	/* Draw Triangulation when enabled */
 	        for (Triangle triangle : triList) {
@@ -196,7 +229,20 @@ public class ClimbingPanel extends JPanel {
         	   drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
            }
         }
-    
+        
+        if( displayStatus){
+        	for(int i = 0; i < _3CirclePnt.length; i++){
+        		drawCircle(_3CirclePnt[i],(int)_3CircleRad[i], 3, false, Color.BLUE);
+        	}
+    		drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
+    		drawLine(_ctrPnt,_next,3,Color.GRAY);
+        	
+        }
+
+        for(TargetStep ts : targetList){
+        	drawCircle(ts.getPoint(),7,3, true, Color.MAGENTA);
+        }
+        
         g.setColor(temp);
     }
     
@@ -214,6 +260,14 @@ public class ClimbingPanel extends JPanel {
     	
     	g.setColor(temp);
     	g.setFont(tempFont);
+    }
+    
+    public void drawLine(Pnt s, Pnt e, int stroke,Color color){
+    	Graphics2D g2d = (Graphics2D) g;
+    	g2d.setStroke(new BasicStroke(stroke));	
+		g2d.setColor(color);
+    	g2d.drawLine((int)s.getX(), (int)s.getY(),
+    				 (int)e.getX(), (int)e.getY());
     }
     
     public void draw (Pnt point) {
@@ -240,8 +294,8 @@ public class ClimbingPanel extends JPanel {
     	Color temp = g.getColor();
     	
     	for(int i = 1; i < 5; i++){
-    	  g.setColor((i%2==1)?Color.RED:Color.GREEN);     
-    	  drawHand(pos.get(i).first,(i%2==1?5:7));
+    	  drawCircle(pos.get(i).first,(i%2==1?9:11),3,false,(i%2==1)?Color.RED:Color.GREEN);
+    	  
     	}
 
      //System.out.println("�ִ� �ȱ��� : "+man.getArmMaxLength()+" ���ȱ��� : "+man.getBackArmLength()+" ���� ���� : " +man.getFrontArmLength());
@@ -253,7 +307,7 @@ public class ClimbingPanel extends JPanel {
     	g2d.setStroke(new BasicStroke(3));
     	
     	for(int i = 0; i < 5; i++){
-       g2d.setColor((i==0)?Color.BLACK:Color.GREEN);
+       g2d.setColor((i==0)?Color.BLACK:Color.DARK_GRAY);
        g2d.drawLine((int)pos.get(i).first.getX(), (int)pos.get(i).first.getY(),
                     (int)pos.get(i).second.getX(), (int)pos.get(i).second.getY());
      
@@ -305,6 +359,19 @@ public class ClimbingPanel extends JPanel {
         int x = (int) point.coord(0);
         int y = (int) point.coord(1);
         g.drawOval(x-r, y-r, r+r, r+r);        
+    }
+    public void drawCircle(Pnt point, int r, int stroke, boolean fill, Color color){
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(color);
+    	g2d.setStroke(new BasicStroke(stroke));
+    	int x = (int) point.coord(0);
+        int y = (int) point.coord(1);
+        if(fill)
+
+        	g2d.fillOval(x-r, y-r, r+r, r+r);   
+        else
+        	g2d.drawOval(x-r, y-r, r+r, r+r);        
+        
     }
     
 }

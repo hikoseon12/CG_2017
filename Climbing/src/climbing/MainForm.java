@@ -17,11 +17,13 @@ public class MainForm extends JFrame {
 	JButton btNext;
 	JButton btShowDT;
 	JButton btShowVD;
+	JButton btShowStatus;
 	String confFileName;
 	String characterName;
 	int    characterIndex;
 	boolean showDT = false;
 	boolean showVD = false;
+	boolean showStatus = false;
 	
 	public MainForm()
 	{
@@ -56,7 +58,7 @@ public class MainForm extends JFrame {
 			}
 		});
 		pnControl.add(btShowDT);
-		
+
 		btShowVD = new JButton("VD");
 		btShowVD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
@@ -65,6 +67,15 @@ public class MainForm extends JFrame {
 			}
 		});
 		pnControl.add(btShowVD);
+		
+		btShowStatus = new JButton("Status");
+		btShowStatus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				doStatusClick();
+			}
+		});
+		pnControl.add(btShowStatus);
 		
 		this.add(pnControl, BorderLayout.SOUTH);
 		
@@ -103,6 +114,7 @@ public class MainForm extends JFrame {
 		
 		ArrayList<TargetStep> tslist = cr.getTargetStep();
 		control.setTargetList(tslist);
+		pnClimbing.setTargetList(tslist);
 
 		pnClimbing.setDtriangle(control.getDelaunayTriangles());
 		control.initVornoi();
@@ -115,10 +127,16 @@ public class MainForm extends JFrame {
 		 control.doNextStep();
 		 pnClimbing.repaint();
 	}
-	
+
 	public void doDTClick() {
 		showDT = !showDT;
 		pnClimbing.setDisplayDT(showDT);
+		pnClimbing.repaint();
+	}
+
+	public void doStatusClick() {
+		showStatus = !showStatus;
+		pnClimbing.setDisplayStatus(showStatus);
 		pnClimbing.repaint();
 	}
 	
