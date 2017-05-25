@@ -407,12 +407,12 @@ public class ClimbingControl {
 		return chaged;
 	}
 
-	public void doNextStep() {
+	public int doNextStep() {
 		if (nextStepIndex == 0)
 			curTarget = pointList.get(man.getLh()); // 초기에는 두 손으로 시작
 		if (nextStepIndex >= targetList.size()) {
 			System.out.println("FINSHED ALL STEP");
-			return;
+			return 0;
 		}
 		
 		TargetStep ns = targetList.get(nextStepIndex);
@@ -422,7 +422,7 @@ public class ClimbingControl {
 		int changed = 0;
 		changed = movingHandStep(ns, nextTarget);
 		if (changed == 1)
-			return;
+			return 0;
 		
 		if(footSequence == 0)//왼발 움직일 차례
 		{	
@@ -433,6 +433,7 @@ public class ClimbingControl {
 			movingRf();
 			footSequence = 0;//다음은 왼발 움직일 차례
 		}
+		return 0;
 	}
 
 	public int findNextDiffHoldIndex(int nowIndex) {
