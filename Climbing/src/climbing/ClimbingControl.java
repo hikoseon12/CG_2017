@@ -249,7 +249,7 @@ public class ClimbingControl {
 		System.out.println("\nLfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
 		System.out.println("(lowHoldHeight + man.getTall()*0.6): "+(lowHoldHeight + man.getMinHandFeetHeight()) +"properHeight: "+ properHeight);
 		
-		properHeight = Math.min(properHeight, 375);
+		properHeight = Math.min(properHeight, 375); 
 		
 		Pnt idealFootPnt = new Pnt(pointList.get(man.getRf()).getX(), properHeight);
 */		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
