@@ -187,7 +187,7 @@ public class ClimbingControl {
 
 		return nearPoints;
 	}
-
+	
 	public int movingHandStep(TargetStep ns, Pnt nextTarget) {
 		Pnt movingH;
 		Pnt notmovingH;
@@ -204,7 +204,7 @@ public class ClimbingControl {
 		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
 				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()) // 손 한쪽을 땠을 떄 나머지 손이 양발 사이에 있다. 즉, 안정적이다)
 		{
-			System.out.println("action0: 양발 사이에 있다\n");
+			//System.out.println("action0: 양발 사이에 있다\n");
 			// 현재 포지션에서 무게 중심을 구한다
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
@@ -282,6 +282,9 @@ public class ClimbingControl {
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
+		
+		//if()
+		
 		man.setLf(nextFootPnt.getIndex());
 		System.out.println("\n\n action0: 왼발 움직이기 \n\n");
 		System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
@@ -291,7 +294,7 @@ public class ClimbingControl {
 	public int movingRf() {
 		int chaged = 0;
 
-		System.out.println("\n\n action1: 오른발 움직이기 \n\n");
+		//System.out.println("\n\n action1: 오른발 움직이기 \n\n");
 
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
 		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex - 1).getIndex()));
@@ -302,8 +305,8 @@ public class ClimbingControl {
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 
 		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
-		System.out.println("idealRfPnt: " + idealRfPnt);
-		System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
+		//System.out.println("idealRfPnt: " + idealRfPnt);
+		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(idealFootIndex);
 		// System.out.println("nearFeet: "+nearFeet);
@@ -333,7 +336,7 @@ public class ClimbingControl {
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
-		System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
+		//System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
 		man.setRf(nextFootPnt.getIndex());
 
 		return chaged;
@@ -365,20 +368,6 @@ public class ClimbingControl {
 			movingRf();
 			footSequence = 0;//다음은 왼발 움직일 차례
 		}
-		
-	/*	if (action == 0) {
-			// 손을 옮긴다?!
-			int changed = 0;
-			changed = movingHandStep(ns, nextTarget);
-			if (changed == 1)
-				return;
-			// 왼발 움직이기
-			action = movingLf();
-			footSequence = 1; //오른발 움직일 차례
-		} else if (action == 1) {
-			action = movingRf();
-			footSequence = 0;//왼발 움직일 차례
-		}*/
 	}
 
 	public int findNextDiffHoldIndex(int nowIndex) {
@@ -390,5 +379,5 @@ public class ClimbingControl {
 		}
 		return nextIndex;
 	}
-
+	
 }

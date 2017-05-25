@@ -278,7 +278,7 @@ public class ClimbingPanel extends JPanel {
     }
     public void drawPolygon (Pnt[] polygon) {
       Graphics2D g2d = (Graphics2D) g;
-      //g2d.setStroke(new BasicStroke(1));
+      g2d.setStroke(new BasicStroke(1));
       g2d.setColor(Color.RED);
       int[] x = new int[polygon.length];
       int[] y = new int[polygon.length];
