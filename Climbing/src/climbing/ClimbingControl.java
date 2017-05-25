@@ -22,7 +22,7 @@ public class ClimbingControl {
 	HashMap<Pnt, Set<Pnt>> triPntHash;
 	private Triangle initTri;
 	private int initBoardSize = 10000;
-	private int action; ///////////////////////////////// 이거 추가!!
+	private int action;
 	private int footSequence = 0;
 	private ArrayList<Pnt> nearFootPnts;
 
@@ -42,7 +42,7 @@ public class ClimbingControl {
 		triangleList = new ArrayList<Triangle>();
 		vornList = new ArrayList<ArrayList<Pnt>>();
 		nearFootPnts = new ArrayList<Pnt>();
-		action = 0; //////////////////////////////////// 이거 추가!!
+		action = 0;
 
 	    _3CirclePnt = new Pnt[3];
 	    _ctrPnt = null;
@@ -225,6 +225,7 @@ public class ClimbingControl {
 		Pnt movingH;
 		Pnt notmovingH;
 		int changed = 0;
+		nearFootPnts.clear();
 
 		if (ns.getHand() == TargetStep.LEFT_HAND) {
 			movingH = pointList.get(man.getLh());
@@ -253,6 +254,7 @@ public class ClimbingControl {
 			_3CircleRad[2] = man.getLegMaxLength();
 			_ctrPnt = innerCenter;
 			_ctrRad = innerRadius;
+			
 			int holdNextShowIndex = nextStepIndex+1;
 			if(targetList.size() <= holdNextShowIndex)
 				holdNextShowIndex -= 1;
@@ -277,6 +279,7 @@ public class ClimbingControl {
 
 	public int movingLf() {
 		int changed = 1;
+		nearFootPnts.clear();
 		// *왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
 		double LfHeight = pointList.get(man.getLf()).getY();
 		double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
@@ -301,6 +304,7 @@ public class ClimbingControl {
 		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
 		System.out.println("idealFootPnt: "+idealFootPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
+		nearFootPnts = nearFeet;
 		// 셋에서 가상의 점과 가장 가까운 그런데 이때 키 범위에 닿는지 판단
 
 		double preDistance = 9999999;
@@ -357,6 +361,7 @@ public class ClimbingControl {
 
 	public int movingRf() {
 		int chaged = 0;
+		nearFootPnts.clear();
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
 		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
 
@@ -379,6 +384,7 @@ public class ClimbingControl {
 		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(idealFootIndex);
+		nearFootPnts = nearFeet;
 		// System.out.println("nearFeet: "+nearFeet);
 		if (nearFeet == null) {
 			//
