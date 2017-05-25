@@ -44,7 +44,6 @@ public class ClimbingPanel extends JPanel {
 	private String title;
 
     private ArrayList<Pnt> pointList;
-    private ArrayList<TargetStep> targetList;
     private ArrayList<Triangle> triList;
     private ArrayList<ArrayList<Pnt>> vornoiList;
 	
@@ -57,7 +56,6 @@ public class ClimbingPanel extends JPanel {
 	public ClimbingPanel()
 	{
 	  pointList = new ArrayList<Pnt>();
-	  targetList = new ArrayList<TargetStep>();
 	  triList = new ArrayList<Triangle>();
 	  vornoiList = new ArrayList<ArrayList<Pnt>>();
 		title = null;
@@ -91,9 +89,7 @@ public class ClimbingPanel extends JPanel {
 		this.displayDT = displayDT;
 	}
 
-    public void setTargetList(ArrayList<TargetStep> tlist){
-    	targetList = tlist;
-    }
+
 
 	public void setTitle(String title)
 	{
@@ -187,7 +183,6 @@ public class ClimbingPanel extends JPanel {
         	drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
         }
         
-        drawPnts(targetList);
         
         
         g.setColor(temp);
@@ -208,20 +203,12 @@ public class ClimbingPanel extends JPanel {
     	g.setColor(temp);
     	g.setFont(tempFont);
     }
-
+    
     public void draw (Pnt point) {
         int r = pointRadius;
         int x = (int) point.coord(0);
         int y = (int) point.coord(1);
         g.fillOval(x-r, y-r, r+r, r+r);
-    }
-    public void drawPnts (ArrayList<TargetStep> targetList) {
-    	for(TargetStep xx : targetList){
-	        int r = pointRadius;
-	        int x = (int) xx.getPoint().coord(0);
-	        int y = (int) xx.getPoint().coord(1);
-	        g.fillOval(x-r, y-r, r+r, r+r);
-    	}
     }
     public void drawPolygon (Pnt[] polygon) {
       Graphics2D g2d = (Graphics2D) g;
@@ -235,7 +222,6 @@ public class ClimbingPanel extends JPanel {
       }
       g.drawPolygon(x, y, polygon.length);
     }
-    
     
     public void drawMan(ArrayList<PntPair> pos, Pnt center, double angle)
     {

@@ -44,7 +44,7 @@ public class GeomUtil {
                         c.getY()+distCI*(b.getX()-a.getX())/distAB);
 //      String temp = "a~ " + getDistance(a, in1)
 //                    +" b~ "  + getDistance(b, in1)
-//                    +" �뜝�룞�삕�뜝�룞�삕�뜝�떊紐뚯삕 " + distAB;
+//                    +" 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈뻿筌뤿슣�굲 " + distAB;
 //      System.out.println(temp);
 
 //      System.out.println(a);
@@ -62,7 +62,7 @@ public class GeomUtil {
         return (type?in1:in2);
     }
 	/* getAngle(Pnt a, Pnt b)
-	 * �뜝�룞�삕 b�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕�뜝�룞�삕, �뜝�룞�삕�뜝�룞�삕 ab�뜝�룞�삕 �뜝�떛琉꾩삕�뜝占� �뜝�룞�삕�뜝�룞�삕. �뜝�룞�삕�뜝�룞�삕�뜝�룞�삕 �뜝�룞�삕�뜝�룞�삕	 
+	 * 占쎈쐻占쎈짗占쎌굲 b占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲, 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 ab占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈뼓筌뚭쑴�굲占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲. 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲	 
 	 */
     public static double getAngle(Pnt a, Pnt b)
     {    	
@@ -86,6 +86,11 @@ public class GeomUtil {
 		if(Math.abs(height-center.getY())-radius>Math.pow(10, -5)) return null; 
 		double delta = Math.sqrt(radius*radius-(height-center.getY())*(height-center.getY()));
 		return new Pnt(center.getX()+delta,height);
+	}
+	public static Pnt getRightPointOfCircleAndVector(Pnt Rfoot, double radius, Pnt nowHold, Pnt nextHold){
+		double holdDistance = getDistance(nowHold, nextHold);
+		return new Pnt(radius*(nextHold.getX() - nowHold.getX())/holdDistance + Rfoot.getX(),
+				radius*(nextHold.getY() - nowHold.getY())/holdDistance + Rfoot.getY());
 	}
     public static Pnt getCenterPointOfMan(Man man, ArrayList<Pnt> pointList)
     {

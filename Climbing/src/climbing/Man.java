@@ -69,7 +69,6 @@ public class Man {
 	public void setRf(int rf) {
 		this.rf = rf;
 	}
-	
 
 	public String toString() 
 	{
