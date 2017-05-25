@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import java.util.*;
 
@@ -48,12 +49,14 @@ public class DiaForm extends JDialog  {
 	    	confFiles.addItem(name);
 	    }
         
+	    confFiles.setBorder(new TitledBorder("Configuration File"));
 	    pnMain.add(confFiles);
 	    
 	    characters = new JComboBox<String>();
 	    characters.addItem("Skeleton");
 	    characters.addItem("IronMan");
 	    
+	    characters.setBorder(new TitledBorder("Character"));
 	    pnMain.add(characters);
 	    
 	    this.add(pnMain, BorderLayout.CENTER);

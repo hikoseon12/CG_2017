@@ -16,10 +16,12 @@ public class MainForm extends JFrame {
     ClimbingControl control;	
 	JButton btNext;
 	JButton btShowDT;
+	JButton btShowVD;
 	String confFileName;
 	String characterName;
 	int    characterIndex;
 	boolean showDT = false;
+	boolean showVD = false;
 	
 	public MainForm()
 	{
@@ -54,6 +56,15 @@ public class MainForm extends JFrame {
 			}
 		});
 		pnControl.add(btShowDT);
+		
+		btShowVD = new JButton("VD");
+		btShowVD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				doVDClick();
+			}
+		});
+		pnControl.add(btShowVD);
 		
 		this.add(pnControl, BorderLayout.SOUTH);
 		
@@ -111,10 +122,16 @@ public class MainForm extends JFrame {
 		pnClimbing.repaint();
 	}
 	
+	public void doVDClick() {
+		showVD = !showVD;
+		pnClimbing.setDisplayVD(showVD);
+		pnClimbing.repaint();
+	}
+	
 	public void showConfDialog()
 	{
 		DiaForm df = new DiaForm(this);
-		df.setSize(300,300);
+		df.setSize(300,200);
 		df.setVisible(true);
 		
 		//System.out.println("Selected: " + df.getSelectedFileName());

@@ -51,6 +51,7 @@ public class ClimbingPanel extends JPanel {
 	private Man man;
 	private boolean isManDeclared = false;
 	private boolean displayDT = false;
+	private boolean displayVD = false;
 	private boolean isImageReady = false;
 	
 	public ClimbingPanel()
@@ -89,7 +90,16 @@ public class ClimbingPanel extends JPanel {
 		this.displayDT = displayDT;
 	}
 
+	
 
+
+	public boolean isDisplayVD() {
+		return displayVD;
+	}
+
+	public void setDisplayVD(boolean displayVD) {
+		this.displayVD = displayVD;
+	}
 
 	public void setTitle(String title)
 	{
@@ -179,12 +189,14 @@ public class ClimbingPanel extends JPanel {
 	          drawPolygon(vertices);
 	        }
         }
-        for(int i = 0; i < vornoiList.size(); i++){
-        	drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
+        
+        if( displayVD ) {
+           /* Draw Voronoi Diagram when enabled */
+           for(int i = 0; i < vornoiList.size(); i++){
+        	   drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
+           }
         }
-        
-        
-        
+    
         g.setColor(temp);
     }
     
