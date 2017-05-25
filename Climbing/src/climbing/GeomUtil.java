@@ -44,7 +44,7 @@ public class GeomUtil {
                         c.getY()+distCI*(b.getX()-a.getX())/distAB);
 //      String temp = "a~ " + getDistance(a, in1)
 //                    +" b~ "  + getDistance(b, in1)
-//                    +" 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈뻿筌뤿슣�굲 " + distAB;
+//                    +" �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥六욜춯琉우뒩占쎄뎡 " + distAB;
 //      System.out.println(temp);
 
 //      System.out.println(a);
@@ -62,7 +62,7 @@ public class GeomUtil {
         return (type?in1:in2);
     }
 	/* getAngle(Pnt a, Pnt b)
-	 * 占쎈쐻占쎈짗占쎌굲 b占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲, 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 ab占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈뼓筌뚭쑴�굲占쎈쐻�뜝占� 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲. 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲 占쎈쐻占쎈짗占쎌굲占쎈쐻占쎈짗占쎌굲	 
+	 * �뜝�럥�맶�뜝�럥吏쀥뜝�럩援� b�뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援�, �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援� ab�뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥堉볡춯�슡�뫒占쎄뎡�뜝�럥�맶占쎈쐻�뜝占� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援�. �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援� �뜝�럥�맶�뜝�럥吏쀥뜝�럩援꿨뜝�럥�맶�뜝�럥吏쀥뜝�럩援�	 
 	 */
     public static double getAngle(Pnt a, Pnt b)
     {    	
@@ -88,7 +88,10 @@ public class GeomUtil {
 		return new Pnt(center.getX()+delta,height);
 	}
 	public static Pnt getRightPointOfCircleAndVector(Pnt Rfoot, double radius, Pnt nowHold, Pnt nextHold){
+		if(nowHold.equals(nextHold))
+			nextHold = new Pnt(nowHold.getX() + 10.0, nowHold.getY());
 		double holdDistance = getDistance(nowHold, nextHold);
+		
 		return new Pnt(radius*(nextHold.getX() - nowHold.getX())/holdDistance + Rfoot.getX(),
 				radius*(nextHold.getY() - nowHold.getY())/holdDistance + Rfoot.getY());
 	}

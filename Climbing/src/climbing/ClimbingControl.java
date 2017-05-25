@@ -211,17 +211,17 @@ public class ClimbingControl {
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 
-			System.out.println("innerCenter" + innerCenter);
-			System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
-					+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
+			//System.out.println("innerCenter" + innerCenter);
+			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
+			//		+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
 			if (GeomUtil.getDistance(innerCenter, nextTarget) <= innerRadius) {
-				System.out.println("GeomUtil.getDistance(i)");
+				//System.out.println("GeomUtil.getDistance(i)");
 				if (ns.getHand() == TargetStep.LEFT_HAND)
 					man.setLh(ns.getIndex());
 				else
 					man.setRh(ns.getIndex());
 				nextStepIndex++;
-				System.out.println("\n거리가 \n action0: 손 움직이기 \n\n");
+				//System.out.println("\n거리가 \n action0: 손 움직이기 \n\n");
 				changed = 1;// FINSH ONE ROUND
 				return changed;
 			}
@@ -241,7 +241,7 @@ public class ClimbingControl {
 		// "+nextHoldHeight+"LfHeight: "+LfHeight);
 		//LfHeight = Math.min(LfHeight, 375);// 범위 벗어났을 때 처리
 		
-/*		double lowHoldHeight = Math.max(pointList.get(man.getLh()).getY(),pointList.get(man.getRh()).getY());
+	/*	double lowHoldHeight = Math.max(pointList.get(man.getLh()).getY(),pointList.get(man.getRh()).getY());
 		System.out.println("LfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
 		System.out.println("(lowHoldHeight + man.getTall()*0.58)"+(lowHoldHeight + man.getMinHandFeetHeight()));
 		double properHeight = Math.max(LfHeight, (lowHoldHeight + man.getMinHandFeetHeight()));
@@ -251,8 +251,8 @@ public class ClimbingControl {
 		
 		properHeight = Math.min(properHeight, 375); 
 		
-		Pnt idealFootPnt = new Pnt(pointList.get(man.getRf()).getX(), properHeight);
-*/		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
+	*/	//Pnt idealFootPnt = new Pnt(pointList.get(man.getRf()).getX(), properHeight);
+		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
 		System.out.println("idealFootPnt: "+idealFootPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
 		// 셋에서 가상의 점과 가장 가까운 그런데 이때 키 범위에 닿는지 판단
@@ -301,8 +301,7 @@ public class ClimbingControl {
 		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 
-		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt,
-				nextHoldPnt);
+		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
 		System.out.println("idealRfPnt: " + idealRfPnt);
 		System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
@@ -387,8 +386,7 @@ public class ClimbingControl {
 		int i;
 		for (i = nextStepIndex; nextIndex == nowIndex && i < targetList.size(); i++) {
 			nextIndex = targetList.get(i).getIndex();
-			// System.out.println("i "+i+"nextIndex "+nextIndex+" nowIndex
-			// "+nowIndex);
+			// System.out.println("i "+i+"nextIndex "+nextIndex+" nowIndex "+nowIndex);
 		}
 		return nextIndex;
 	}
