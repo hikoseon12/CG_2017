@@ -239,6 +239,7 @@ public class ClimbingControl {
 			
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+			System.out.println("\naction0: 손 움직이기\n");
 			_3CirclePnt[0] = notmovingH;
 			_3CirclePnt[1] = pointList.get(man.getLf());
 			_3CirclePnt[2] = pointList.get(man.getRf());
@@ -247,7 +248,7 @@ public class ClimbingControl {
 			_3CircleRad[2] = man.getLegMaxLength();
 			_ctrPnt = innerCenter;
 			_ctrRad = innerRadius;
-			_next = nextTarget;
+			_next = targetList.get(nextStepIndex+1).getPoint();
 			//System.out.println("innerCenter" + innerCenter);
 			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
 			//		+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
@@ -271,7 +272,7 @@ public class ClimbingControl {
 		// *왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
 		double LfHeight = pointList.get(man.getLf()).getY();
 		double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
-		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex).getIndex())).getY();
+		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
 
 		LfHeight -= nowHoldHeight - nextHoldHeight;
 		// System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap:
@@ -319,6 +320,7 @@ public class ClimbingControl {
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
+		System.out.println("\n\n action0: 왼발 움직이기 \n\n");
 		_3CirclePnt[0] = pointList.get(man.getLh());
 		_3CirclePnt[1] = pointList.get(man.getRh());
 		_3CirclePnt[2] = pointList.get(man.getLf());
@@ -335,7 +337,7 @@ public class ClimbingControl {
 		//if()
 		
 		man.setLf(nextFootPnt.getIndex());
-		System.out.println("\n\n action0: 왼발 움직이기 \n\n");
+		
 		System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		return changed;
 	}
@@ -343,15 +345,16 @@ public class ClimbingControl {
 	public int movingRf() {
 		int chaged = 0;
 
-		//System.out.println("\n\n action1: 오른발 움직이기 \n\n");
+		
 
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
-		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex - 1).getIndex()));
+		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
 
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+		System.out.println("\n\n action1: 오른발 움직이기 \n\n");
 		_3CirclePnt[0] = pointList.get(man.getLh());
 		_3CirclePnt[1] = pointList.get(man.getRh());
 		_3CirclePnt[2] = pointList.get(man.getLf());
@@ -360,7 +363,7 @@ public class ClimbingControl {
 		_3CircleRad[2] = man.getLegMaxLength();
 		_ctrPnt = innerCenter;
 		_ctrRad = innerRadius;
-		_next = nextHoldPnt;
+		_next = targetList.get(nextStepIndex).getPoint();
 		Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
 		//System.out.println("idealRfPnt: " + idealRfPnt);
 		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
