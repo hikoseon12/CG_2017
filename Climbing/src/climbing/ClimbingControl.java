@@ -312,7 +312,7 @@ public class ClimbingControl {
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX())
 				//&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())
 				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX() 
-				//	&& nearFeet.get(index).getX() <= pointList.get(man.getRh()).getX()) 
+				//	&& nearFeet.get(index).getX() <= pointList.get(man.getRh()).getX())  
 			{
 				
 				System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
