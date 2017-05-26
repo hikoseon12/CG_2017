@@ -287,7 +287,9 @@ public class ClimbingPanel extends JPanel {
 		    case 2: drawCircle(manRH,15,4,false,Color.black); break;
 		    case 3: drawCircle(manLH,15,4,false,Color.black); break;
 		    case 4: drawCircle(manRF,15,4,false,Color.black); break;
-		    default: drawCircle(manLF,15,4,false,Color.black); break;
+		    case 5: drawCircle(manLF,15,4,false,Color.black); break;
+		    default: 
+		    	break;
     	}
     }
     public void drawCurrntStep(int i){
@@ -301,7 +303,8 @@ public class ClimbingPanel extends JPanel {
 	        case 2: stepRes="Last trial : Right Hand"; break;
 	        case 3: stepRes="Last trial : Left Hand"; break;
 	        case 4: stepRes="Last trial : Right Foot"; break;
-	        default:stepRes="Last trial : Left Foot";
+	        case 5: stepRes="Last trial : Left Foot"; break;
+	        default:stepRes="In process";
         }
         g.drawString(stepRes, this.getWidth()-200, 20);
         
