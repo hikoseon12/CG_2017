@@ -305,7 +305,7 @@ public class ClimbingPanel extends JPanel {
 	        case 3: stepRes="Last trial : Left Hand"; break;
 	        case 4: stepRes="Last trial : Right Foot"; break;
 	        case 5: stepRes="Last trial : Left Foot"; break;
-	        default:stepRes="In process";
+	        //default:stepRes="In process";
         }
         g.drawString(stepRes, this.getWidth()-200, 20);
         
