@@ -171,4 +171,42 @@ public class GeomUtil {
         
        return new Pnt(centerx, centery);
     }
+     
+    public static Pnt getCircleVectorIntersectionPoint(Pnt pointA,
+            Pnt pointB, Pnt center, double radius) {
+        double baX = pointB.getX() - pointA.getX();
+        double baY = pointB.getY() - pointA.getY();
+        double caX = center.getX() - pointA.getX();
+        double caY = center.getY() - pointA.getY();
+
+        double a = baX * baX + baY * baY;
+        double bBy2 = baX * caX + baY * caY;
+        double c = caX * caX + caY * caY - radius * radius;
+
+        double pBy2 = bBy2 / a;
+        double q = c / a;
+
+        double disc = pBy2 * pBy2 - q;
+        if( disc < 0 ) return null;
+        
+        // if disc == 0 ... dealt with later
+        double tmpSqrt = Math.sqrt(disc);
+        double abScalingFactor1 = -pBy2 + tmpSqrt;
+        double abScalingFactor2 = -pBy2 - tmpSqrt;
+        
+        /*
+        Pnt p1 = new Pnt(pointA.getX() - baX * abScalingFactor1, pointA.getY()
+                - baY * abScalingFactor1);
+        return p1;
+        */
+        /*
+        if (disc == 0) { // abScalingFactor1 == abScalingFactor2
+            return p1;
+        }
+        */
+        Pnt p2 = new Pnt(pointA.getX() - baX * abScalingFactor2, pointA.getY()
+                - baY * abScalingFactor2);
+        
+        return p2;
+    }
 }
