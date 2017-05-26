@@ -21,7 +21,7 @@ public class MainForm extends JFrame {
 	String confFileName;
 	String characterName;
 	int    characterIndex;
-	int[]    characterTall = { 210, 180 };
+	int[]    characterTall = { 210, 250 };
 	boolean showDT = false;
 	boolean showVD = false;
 	boolean showStatus = false;
@@ -111,6 +111,7 @@ public class MainForm extends JFrame {
 		if( man != null )
 		{
 			man.setTall(characterTall[characterIndex]);
+			System.out.println("Man's Height: "+man.getTall() + " px (" + man.getRealTall()+" cm)");
 			pnClimbing.setMan(man);
 			control.setMan(man);
 		}

@@ -37,7 +37,7 @@ public class Man {
 	}
 	
 	public int getTall() { return this.tall; }
-	public int getRealTall()  {return (int) (this.tall * 25.0 / 18.0); } 
+	public int getRealTall()  {return (int) (this.tall * 18.0 / 25.0); } 
 	
 	public int getLh() {
 		return lh;
