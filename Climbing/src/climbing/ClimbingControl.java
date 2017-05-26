@@ -345,7 +345,7 @@ public class ClimbingControl {
 		
 		man.setLf(nextFootPnt.getIndex());
 		
-		System.out.println("pointList.get(man.getLf()): " + pointList.get(man.getLf()));
+		//System.out.println("pointList.get(man.getLf()): " + pointList.get(man.getLf()));
 		return changed;
 	}
 
@@ -403,7 +403,7 @@ public class ClimbingControl {
 		}
 		if(nextFootPnt == null)
 		{
-			System.out.println("\n场场场!!nextFootPnt: "+nextFootPnt);
+			//System.out.println("\n场场场!!nextFootPnt: "+nextFootPnt);
 			return NotChanged;
 		}
 		//System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
@@ -421,15 +421,10 @@ public class ClimbingControl {
 		
 		TargetStep ns = targetList.get(nextStepIndex);
 		Pnt nextTarget = pointList.get(ns.getIndex());
-
-		// 颊阑 颗变促?!
-		//int changed = 0;
-		//changed = movingHandStep(ns, nextTarget);
 		
 		NotChanged = movingHandStep(ns, nextTarget);
 		
 		if(NotChanged == 0)
-		//if (changed == 1)
 			return 0;
 		
 		if(footLeftRight == 0)//哭惯 框流老 瞒肥
@@ -452,7 +447,6 @@ public class ClimbingControl {
 		int i;
 		for (i = nextStepIndex; nextIndex == nowIndex && i < targetList.size(); i++) {
 			nextIndex = targetList.get(i).getIndex();
-			// System.out.println("i "+i+"nextIndex "+nextIndex+" nowIndex "+nowIndex);
 		}
 		return nextIndex;
 	}
