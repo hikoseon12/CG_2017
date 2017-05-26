@@ -21,7 +21,7 @@ public class MainForm extends JFrame {
 	String confFileName;
 	String characterName;
 	int    characterIndex;
-	int[]    characterTall = { 210, 250 };
+	int[]    characterTall = { 210, 250, 190 };
 	boolean showDT = false;
 	boolean showVD = false;
 	boolean showStatus = false;
