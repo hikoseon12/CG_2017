@@ -452,7 +452,7 @@ public class ClimbingControl {
 		if(footLeftRight == 0)//왼발 움직일 차례
 		{	
 			NotChanged += movingLf();
-			status = 4;//LFmoved;
+			status = LFmoved;
 			footLeftRight = 1; //다음은 오른발 움직일 차례
 		} 
 		else if (footLeftRight == 1) { //오른발 움직일 차례
@@ -464,10 +464,6 @@ public class ClimbingControl {
 		if(NotChanged >= 3)
 		{
 			status = fail;
-		}
-		else
-		{
-			status = progress; //PROCESS
 		}
 		return status; 
 	}
