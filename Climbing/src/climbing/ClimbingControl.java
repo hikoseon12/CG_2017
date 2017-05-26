@@ -373,7 +373,7 @@ public class ClimbingControl {
 		
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT5(idealFootIndex);
-		nearFootPnts = nearFeet;
+		nearFootPnts = nearFeet; 
 
 		double preDistance = 9999999;
 		double nextDistance = 0;
