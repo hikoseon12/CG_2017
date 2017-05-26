@@ -369,7 +369,7 @@ public class ClimbingControl {
 		_next = targetList.get(nextStepIndex).getPoint();
 		
 		//Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
-		
+		 
 		Pnt rfPnt = pointList.get(man.getRf());
 		Pnt vtPnt = new Pnt( rfPnt.getX() + (nextHoldPnt.getX() - nowHoldPnt.getX()), 
 				rfPnt.getY() + (nextHoldPnt.getY() - nowHoldPnt.getY()));
@@ -452,7 +452,7 @@ public class ClimbingControl {
 		if(footLeftRight == 0)//왼발 움직일 차례
 		{	
 			NotChanged += movingLf();
-			status = LFmoved;
+			status = 4;//LFmoved;
 			footLeftRight = 1; //다음은 오른발 움직일 차례
 		} 
 		else if (footLeftRight == 1) { //오른발 움직일 차례
