@@ -22,10 +22,12 @@ public class ClimbingControl {
 	HashMap<Pnt, Set<Pnt>> triPntHash;
 	private Triangle initTri;
 	private int initBoardSize = 10000;
-	private int action;
-	private int footSequence = 0;
+	private int NotChanged = 0;
+	private int changed = 0;
+	private int notChanged = 1;
+	private int footLeftRight = 0;
 	private ArrayList<Pnt> nearFootPnts;
-
+	
 	Pnt[] _3CirclePnt;
 	double[] _3CircleRad;
 	Pnt _ctrPnt;
@@ -42,7 +44,6 @@ public class ClimbingControl {
 		triangleList = new ArrayList<Triangle>();
 		vornList = new ArrayList<ArrayList<Pnt>>();
 		nearFootPnts = new ArrayList<Pnt>();
-		action = 0;
 
 	    _3CirclePnt = new Pnt[3];
 	    _ctrPnt = null;
@@ -225,6 +226,7 @@ public class ClimbingControl {
 		Pnt movingH;
 		Pnt notmovingH;
 		int changed = 0;
+		
 		nearFootPnts.clear();
 
 		if (ns.getHand() == TargetStep.LEFT_HAND) {
@@ -270,15 +272,14 @@ public class ClimbingControl {
 					man.setRh(ns.getIndex());
 				nextStepIndex++;
 				//System.out.println("\n거리가 \n action0: 손 움직이기 \n\n");
-				changed = 1;// FINSH ONE ROUND
 				return changed;
 			}
 		}
-		return changed;
+		return notChanged;
 	}
 
 	public int movingLf() {
-		int changed = 1;
+		int changed = 0;
 		nearFootPnts.clear();
 		// *왼발LF 움직이기(손이 안닿으니 발을 움직여야한다)
 		double LfHeight = pointList.get(man.getLf()).getY();
@@ -290,17 +291,7 @@ public class ClimbingControl {
 		// "+nextHoldHeight+"LfHeight: "+LfHeight);
 		//LfHeight = Math.min(LfHeight, 375);// 범위 벗어났을 때 처리
 		
-	/*	double lowHoldHeight = Math.max(pointList.get(man.getLh()).getY(),pointList.get(man.getRh()).getY());
-		System.out.println("LfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
-		System.out.println("(lowHoldHeight + man.getTall()*0.58)"+(lowHoldHeight + man.getMinHandFeetHeight()));
-		double properHeight = Math.max(LfHeight, (lowHoldHeight + man.getMinHandFeetHeight()));
-		
-		System.out.println("\nLfHeight: "+LfHeight+"lowHoldHeight: "+lowHoldHeight);
-		System.out.println("(lowHoldHeight + man.getTall()*0.6): "+(lowHoldHeight + man.getMinHandFeetHeight()) +"properHeight: "+ properHeight);
-		
-		properHeight = Math.min(properHeight, 375); 
-		
-	*/	//Pnt idealFootPnt = new Pnt(pointList.get(man.getRf()).getX(), properHeight);
+
 		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
 		System.out.println("idealFootPnt: "+idealFootPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
@@ -312,16 +303,14 @@ public class ClimbingControl {
 		Pnt nextFootPnt = null; // 오른쪽 발로 세팅
 		//System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 
-		double lowHand = Math.max(pointList.get(man.getLf()).getY(), pointList.get(man.getRf()).getY());
+		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 
 		for (int index = 0; index < nearFeet.size(); index++) {
 			double distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY() - lowHand);
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 
-			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX())
-				//&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())
-				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX() 
-				//	&& nearFeet.get(index).getX() <= pointList.get(man.getRh()).getX())  
+			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX()
+				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())  
 			{
 				
 				System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -350,17 +339,17 @@ public class ClimbingControl {
 		
 		if(nextFootPnt == null)
 		{
-			return -1;
+			System.out.println("\n끝끝끝!!nextFootPnt: "+nextFootPnt);
+			return notChanged;
 		}
 		
 		man.setLf(nextFootPnt.getIndex());
 		
-		System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
-		return 0;
+		System.out.println("pointList.get(man.getLf()): " + pointList.get(man.getLf()));
+		return changed;
 	}
 
 	public int movingRf() {
-		int chaged = 0;
 		nearFootPnts.clear();
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
 		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
@@ -392,12 +381,12 @@ public class ClimbingControl {
 
 		double preDistance = 9999999;
 		double nextDistance = 0;
-		Pnt nextFootPnt = pointList.get(man.getRf());// just initialized
+		Pnt nextFootPnt = null;//pointList.get(man.getRf());// just initialized
 
 		for (int index = 0; index < nearFeet.size(); index++) {
 			//System.out.println(index + ". nearFeetnearFeet.get(index): " + nearFeet.get(index));
 			nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
-			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getRf()), nearFeet.get(index));
+			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getLf()), nearFeet.get(index));
 
 			// System.out.println(":::nextDistance "+nextDistance+" preDistance
 			// "+preDistance);
@@ -412,10 +401,14 @@ public class ClimbingControl {
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
+		if(nextFootPnt == null)
+		{
+			System.out.println("\n끝끝끝!!nextFootPnt: "+nextFootPnt);
+			return NotChanged;
+		}
 		//System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
 		man.setRf(nextFootPnt.getIndex());
-
-		return chaged;
+		return changed;
 	}
 
 	public int doNextStep() {
@@ -430,21 +423,28 @@ public class ClimbingControl {
 		Pnt nextTarget = pointList.get(ns.getIndex());
 
 		// 손을 옮긴다?!
-		int changed = 0;
-		changed = movingHandStep(ns, nextTarget);
-		if (changed == 1)
+		//int changed = 0;
+		//changed = movingHandStep(ns, nextTarget);
+		
+		NotChanged = movingHandStep(ns, nextTarget);
+		
+		if(NotChanged == 0)
+		//if (changed == 1)
 			return 0;
 		
-		if(footSequence == 0)//왼발 움직일 차례
+		if(footLeftRight == 0)//왼발 움직일 차례
 		{	
-			movingLf();
-			footSequence = 1; //다음은 오른발 움직일 차례
+			NotChanged += movingLf();
+			footLeftRight = 1; //다음은 오른발 움직일 차례
 		} 
-		else if (footSequence == 1) { //오른발 움직일 차례
-			movingRf();
-			footSequence = 0;//다음은 왼발 움직일 차례
+		else if (footLeftRight == 1) { //오른발 움직일 차례
+			NotChanged += movingRf();
+			footLeftRight = 0;//다음은 왼발 움직일 차례
 		}
-		return 0;
+		if(NotChanged >= 3)
+			return -1; //FAIL
+		else
+			return 0; //PROCESS
 	}
 
 	public int findNextDiffHoldIndex(int nowIndex) {
