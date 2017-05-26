@@ -1,6 +1,8 @@
 package climbing;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GeomUtil {
 
@@ -116,22 +118,45 @@ public class GeomUtil {
         ArrayList<Pnt> inner = new ArrayList<Pnt>();
 	    Pnt[] parr = {a,b,c};
 	    double[] rarr = {r1,r2,r3};
+	    Set<Integer> hash = new HashSet<Integer>();
 	    
-	    for(int i = 0; i < parr.length; i++){
-	    	int j = (i+1)%parr.length;
-	    	int k = (i+2)%parr.length;
-	    	Pnt p1 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], false);
-	        Pnt p2 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], true);
-	        if((rarr[k]-GeomUtil.getDistance(p1,parr[k]))>Math.pow(10, -5))
-	        	inner.add(p1);
-	        else
-	        	inner.add(p2);  
+	    for(int i = 0 ; i < parr.length; i++)
+	    	hash.add(parr[i].getIndex());
+	    if(hash.size()==3)
+	    	for(int i = 0; i < parr.length; i++){
+		    	int j = (i+1)%parr.length;
+		    	int k = (i+2)%parr.length;
+		    	Pnt p1 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], false);
+		        Pnt p2 = GeomUtil.getCircleIntersection(parr[i], parr[j], rarr[i], rarr[j], true);
+		        if((rarr[k]-GeomUtil.getDistance(p1,parr[k]))>Math.pow(10, -5))
+		        	inner.add(p1);
+		        else
+		        	inner.add(p2);  
+	    	}
+	    else{
+	    	Pnt[] k = {a,b};
+	    	double[] rk = {r1,r2};
+	    	int z = 0;
+	    	Integer[] zk = hash.toArray(new Integer[0]);
+	    	for(int i = 0; i < parr.length; i++){
+	    		if(parr[i].getIndex()==zk[i]){
+	    			k[i] = parr[i];
+	    			rk[i] = rarr[i]; z++;
+	    		}
+	    	}
+	    	Pnt p1 = GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], false);
+	    	Pnt p2 = GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], true);
+	        inner.add(p1);
+	        inner.add(p2);
+	        inner.add(null);
 	    }
 	    return inner;
 	 }
 	    
     public static Pnt getCircleCenter(Pnt p1, Pnt p2, Pnt p3) {
-    	
+       if(p3==null){
+    	 return new Pnt(((p1.getX()+p2.getX())/2),((p1.getY()+p2.getY())/2));  
+       }
        double offset = Math.pow(p2.getX(),2) + Math.pow(p2.getY(),2);
        double bc =   ( Math.pow(p1.getX(),2) + Math.pow(p1.getY(),2) - offset )/2.0;
        double cd =   (offset - Math.pow(p3.getX(), 2) - Math.pow(p3.getY(), 2))/2.0;
