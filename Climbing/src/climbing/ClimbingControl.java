@@ -233,7 +233,7 @@ public class ClimbingControl {
 	}
 	
 	public int movingHandStep(TargetStep ns, Pnt nextTarget) {
-		System.out.println("action0: ¼ÕÀ» ¿òÁ÷ÀÎ´Ù!??!");
+		System.out.println("action0: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½!??!");
 		
 		Pnt movingH;
 		Pnt notmovingH;
@@ -248,16 +248,16 @@ public class ClimbingControl {
 			movingH = pointList.get(man.getRh());
 			notmovingH = pointList.get(man.getLh());
 		}
-		// ¼ÕÀÌ ´ê´Â´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â´ï¿½.
 		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
-				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()) // ¼Õ ÇÑÂÊÀ» ¶®À» ‹š ³ª¸ÓÁö ¼ÕÀÌ ¾ç¹ß »çÀÌ¿¡ ÀÖ´Ù. Áï, ¾ÈÁ¤ÀûÀÌ´Ù)
+				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()) // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½Ö´ï¿½. ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½)
 		{
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
 			
 			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-			System.out.println("\naction0: ¼Õ ¿òÁ÷ÀÌ±â\n");
+			System.out.println("\naction0: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½\n");
 			_3CirclePnt[0] = notmovingH;
 			_3CirclePnt[1] = pointList.get(man.getLf());
 			_3CirclePnt[2] = pointList.get(man.getRf());
@@ -284,10 +284,10 @@ public class ClimbingControl {
 	}
 
 	public int movingLf() {
-		System.out.println("action0: ¿Þ¹ß ¿òÁ÷ÀÌ±â");
+		System.out.println("action0: ï¿½Þ¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½");
 		int changed = 0;
 		nearFootPnts.clear();
-		// *¿Þ¹ßLF ¿òÁ÷ÀÌ±â(¼ÕÀÌ ¾È´êÀ¸´Ï ¹ßÀ» ¿òÁ÷¿©¾ßÇÑ´Ù)
+		// *ï¿½Þ¹ï¿½LF ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½)
 		double LfHeight = pointList.get(man.getLf()).getY();
 		double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
 		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
@@ -295,18 +295,18 @@ public class ClimbingControl {
 		LfHeight -= nowHoldHeight - nextHoldHeight;
 		// System.out.println("nowHoldHeight: "+nowHoldHeight+"nextHoldGap:
 		// "+nextHoldHeight+"LfHeight: "+LfHeight);
-		//LfHeight = Math.min(LfHeight, 375);// ¹üÀ§ ¹þ¾î³µÀ» ¶§ Ã³¸®
+		//LfHeight = Math.min(LfHeight, 375);// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³µï¿½ï¿½ ï¿½ï¿½ Ã³ï¿½ï¿½
 		
 
 		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
 		System.out.println("idealFootPnt: "+idealFootPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
 		nearFootPnts = nearFeet;
-		// ¼Â¿¡¼­ °¡»óÀÇ Á¡°ú °¡Àå °¡±î¿î ±×·±µ¥ ÀÌ¶§ Å° ¹üÀ§¿¡ ´ê´ÂÁö ÆÇ´Ü
+		// ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½Ì¶ï¿½ Å° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½
 
 		double preDistance = 9999999;
 		double nextDistance = 0;
-		Pnt nextFootPnt = null; // ¿À¸¥ÂÊ ¹ß·Î ¼¼ÆÃ
+		Pnt nextFootPnt = null; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß·ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 
@@ -345,7 +345,7 @@ public class ClimbingControl {
 	}
 
 	public int movingRf() {
-		System.out.println("action1: ¿À¸¥¹ß ¿òÁ÷ÀÌ±â");
+		System.out.println("action1: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½");
 		nearFootPnts.clear();
 		Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
 		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
@@ -368,7 +368,7 @@ public class ClimbingControl {
 		Pnt rfPnt = pointList.get(man.getRf());
 		Pnt vtPnt = new Pnt( rfPnt.getX() + (nextHoldPnt.getX() - nowHoldPnt.getX()), 
 				rfPnt.getY() + (nextHoldPnt.getY() - nowHoldPnt.getY()));
-		Pnt idealRfPnt = GeomUtil.getCircleVectorIntersectionPoint(rfPnt, vtPnt,  innerCenter,innerRadius);
+		Pnt idealRfPnt = GeomUtil.getCircleVectorIntersectionPoint(rfPnt, vtPnt,  innerCenter,innerRadius*0.8);
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 		
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
@@ -414,7 +414,7 @@ public class ClimbingControl {
 		int status = 0;
 		
 		if (nextStepIndex == 0)
-			curTarget = pointList.get(man.getLh()); // ÃÊ±â¿¡´Â µÎ ¼ÕÀ¸·Î ½ÃÀÛ
+			curTarget = pointList.get(man.getLh()); // ï¿½Ê±â¿¡ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (nextStepIndex >= targetList.size()) {
 			return success;
 		}
@@ -423,7 +423,7 @@ public class ClimbingControl {
 		Pnt nextTarget = pointList.get(ns.getIndex());
 		int movedHand = 0;
 		movedHand = movingHandStep(ns, nextTarget);
-		//NotChanged += movedHand;  FAIL º¸¿©ÁÖ·Á¸é
+		//NotChanged += movedHand;  FAIL ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 		NotChanged = movedHand;
 		System.out.println("1.NotChanged: "+NotChanged);
 		if(movedHand == 0)
@@ -438,16 +438,16 @@ public class ClimbingControl {
 			return status;
 		}
 		System.out.println("2.NotChanged: "+NotChanged);
-		if(footLeftRight == 0)//¿Þ¹ß ¿òÁ÷ÀÏ Â÷·Ê
+		if(footLeftRight == 0)//ï¿½Þ¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		{	
 			NotChanged += movingLf();
 			status = LFmoved;
-			footLeftRight = 1; //´ÙÀ½Àº ¿À¸¥¹ß ¿òÁ÷ÀÏ Â÷·Ê
+			footLeftRight = 1; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		} 
-		else if (footLeftRight == 1) { //¿À¸¥¹ß ¿òÁ÷ÀÏ Â÷·Ê
+		else if (footLeftRight == 1) { //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			NotChanged += movingRf();
 			status = RFmoved;
-			footLeftRight = 0;//´ÙÀ½Àº ¿Þ¹ß ¿òÁ÷ÀÏ Â÷·Ê
+			footLeftRight = 0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 		System.out.println("3.NotChanged: "+NotChanged);
 		if(NotChanged >= 3)
