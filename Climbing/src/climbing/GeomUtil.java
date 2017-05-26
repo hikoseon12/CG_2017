@@ -178,6 +178,8 @@ public class GeomUtil {
         double baY = pointB.getY() - pointA.getY();
         double caX = center.getX() - pointA.getX();
         double caY = center.getY() - pointA.getY();
+        
+        if( baX == 0 && baY == 0 ) baX = 10;
 
         double a = baX * baX + baY * baY;
         double bBy2 = baX * caX + baY * caY;
