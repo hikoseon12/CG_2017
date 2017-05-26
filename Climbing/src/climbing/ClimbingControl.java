@@ -22,7 +22,7 @@ public class ClimbingControl {
 	HashMap<Pnt, Set<Pnt>> triPntHash;
 	private Triangle initTri;
 	private int initBoardSize = 10000;
-	private int NotChanged = 0;
+	private int NotChanged = 1;
 	private int changed = 0;
 	private int notChanged = 1;
 	private int footLeftRight = 0;
@@ -170,7 +170,17 @@ public class ClimbingControl {
 		}
 		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
 	}
-
+	
+	public ArrayList<Pnt> getNearPointsInDT5(int index) {
+		ArrayList<Pnt> res = getNearPointsInDT(index);
+		Set<Pnt> ret = new HashSet<Pnt>();
+		for (Pnt x : res) {
+			ret.add(x);
+			ret.addAll(getNearPointsInDT4(x.getIndex()));
+		}
+		return new ArrayList<Pnt>(Arrays.asList(ret.toArray(new Pnt[0])));
+	}
+	
 	public int getNearPointsInVornoi(Pnt pnt) {
 		Triangle tri = dt.locate(pnt);
 		if (tri == null)
@@ -242,8 +252,6 @@ public class ClimbingControl {
 		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
 				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()) // 손 한쪽을 땠을 떄 나머지 손이 양발 사이에 있다. 즉, 안정적이다)
 		{
-			//System.out.println("action0: 양발 사이에 있다\n");
-			// 현재 포지션에서 무게 중심을 구한다
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
 			
@@ -264,8 +272,7 @@ public class ClimbingControl {
 				holdNextShowIndex -= 1;
 			_next = targetList.get(holdNextShowIndex).getPoint();
 			//System.out.println("innerCenter" + innerCenter);
-			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"
-			//		+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
+			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
 			if (GeomUtil.getDistance(innerCenter, nextTarget) <= innerRadius) {
 				//System.out.println("GeomUtil.getDistance(i)");
 				if (ns.getHand() == TargetStep.LEFT_HAND)
@@ -374,11 +381,12 @@ public class ClimbingControl {
 		Pnt vtPnt = new Pnt( rfPnt.getX() + (nextHoldPnt.getX() - nowHoldPnt.getX()), 
 				rfPnt.getY() + (nextHoldPnt.getY() - nowHoldPnt.getY()));
 		Pnt idealRfPnt = GeomUtil.getCircleVectorIntersectionPoint(rfPnt, vtPnt,  innerCenter,innerRadius);
+		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 		
 		//System.out.println("idealRfPnt: " + idealRfPnt);
 		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
-		ArrayList<Pnt> nearFeet = getNearPointsInDT4(idealFootIndex);
+		ArrayList<Pnt> nearFeet = getNearPointsInDT5(idealFootIndex);
 		nearFootPnts = nearFeet;
 		// System.out.println("nearFeet: "+nearFeet);
 
@@ -394,7 +402,8 @@ public class ClimbingControl {
 			// System.out.println(":::nextDistance "+nextDistance+" preDistance"+preDistance);
 			// System.out.println(":::twoLegDistance "+twoLegDistance+"man.getPossibleLegLength() "+man.getPossibleLegLength());
 
-			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength())
+			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()
+				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
 				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX()
 				//	&& nearFeet.get(index).getX() <= nextHoldPnt.getX()) 
@@ -435,20 +444,23 @@ public class ClimbingControl {
 		
 		TargetStep ns = targetList.get(nextStepIndex);
 		Pnt nextTarget = pointList.get(ns.getIndex());
-		
-		NotChanged = movingHandStep(ns, nextTarget);
-		
-		if(NotChanged == 0)
+		int movedHand = 0;
+		movedHand = movingHandStep(ns, nextTarget);
+		//NotChanged += movedHand;  FAIL 보여주려면
+		NotChanged = movedHand;
+		System.out.println("1.NotChanged: "+NotChanged);
+		if(movedHand == 0)
 		{
-			int LEFT_HAND  =0;
-			int RIGHT_HAND =1;
+			int LEFT_HAND  = 0;
+			int RIGHT_HAND = 1;
 			if(ns.getHand() == LEFT_HAND)
 				status = LHmoved;
 			else if(ns.getHand() == RIGHT_HAND)
 				status = RHmoved;
+			//NotChanged = 0;
 			return status;
 		}
-		
+		System.out.println("2.NotChanged: "+NotChanged);
 		if(footLeftRight == 0)//왼발 움직일 차례
 		{	
 			NotChanged += movingLf();
@@ -460,7 +472,7 @@ public class ClimbingControl {
 			status = RFmoved;
 			footLeftRight = 0;//다음은 왼발 움직일 차례
 		}
-		
+		System.out.println("3.NotChanged: "+NotChanged);
 		if(NotChanged >= 3)
 		{
 			status = fail;
