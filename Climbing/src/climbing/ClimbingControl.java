@@ -374,8 +374,6 @@ public class ClimbingControl {
 		_ctrPnt = innerCenter;
 		_ctrRad = innerRadius;
 		_next = targetList.get(nextStepIndex).getPoint();
-		
-		//Pnt idealRfPnt = GeomUtil.getRightPointOfCircleAndVector(pointList.get(man.getRf()), innerRadius, nowHoldPnt, nextHoldPnt);
 		 
 		Pnt rfPnt = pointList.get(man.getRf());
 		Pnt vtPnt = new Pnt( rfPnt.getX() + (nextHoldPnt.getX() - nowHoldPnt.getX()), 
