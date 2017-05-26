@@ -137,7 +137,7 @@ public class GeomUtil {
 	    	
 	    	Pnt p1 = null;
 	    	Pnt p2 = null;
-	    	
+	    	  
 	    	if( a.equals(b))
 	    	{
 	    		p1 = GeomUtil.getCircleIntersection(a,c,r1,r3, false);
