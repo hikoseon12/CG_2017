@@ -253,14 +253,13 @@ public class ClimbingPanel extends JPanel {
            }
           drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
           drawLine(_ctrPnt,_next,3,Color.CYAN);
-           
-        }
-        if(nearFootList.size()!=0){
-        	for(int i = 0; i < nearFootList.size(); i++){
-        		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
-        	}
-        }
 
+          if(nearFootList.size()!=0){
+          	for(int i = 0; i < nearFootList.size(); i++){
+          		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
+          	}
+          }
+        }
         for(TargetStep ts : targetList){
            drawCircle(ts.getPoint(),7,3, true, Color.MAGENTA);
         }
