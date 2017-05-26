@@ -384,11 +384,11 @@ public class ClimbingControl {
 			nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
 			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getLf()), nearFeet.get(index));
 
-			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()
+			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()*1.1
 				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight()
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
-					&& nowHoldPnt.getX() <= nearFeet.get(index).getX()
-					&& nearFeet.get(index).getX() <= nextHoldPnt.getX())
+					&& ((nowHoldPnt.getX() - nearFeet.get(index).getX())
+					* (nextHoldPnt.getX()-nearFeet.get(index).getX())) <= 0)
 			{
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
