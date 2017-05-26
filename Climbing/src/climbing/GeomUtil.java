@@ -196,19 +196,21 @@ public class GeomUtil {
         double abScalingFactor1 = -pBy2 + tmpSqrt;
         double abScalingFactor2 = -pBy2 - tmpSqrt;
         
-        /*
-        Pnt p1 = new Pnt(pointA.getX() - baX * abScalingFactor1, pointA.getY()
-                - baY * abScalingFactor1);
-        return p1;
-        */
+        if ( baX < 0 )
+        {
+        	Pnt p1 = new Pnt(pointA.getX() - baX * abScalingFactor1, pointA.getY()
+        			- baY * abScalingFactor1);
+        	return p1;
+        } 
         /*
         if (disc == 0) { // abScalingFactor1 == abScalingFactor2
             return p1;
         }
         */
-        Pnt p2 = new Pnt(pointA.getX() - baX * abScalingFactor2, pointA.getY()
-                - baY * abScalingFactor2);
-        
-        return p2;
+        else {
+        	Pnt p2 = new Pnt(pointA.getX() - baX * abScalingFactor2, pointA.getY()
+        			- baY * abScalingFactor2);
+        	return p2;
+        }
     }
 }
