@@ -292,7 +292,7 @@ public class ClimbingPanel extends JPanel {
 		    	break;
     	}
     }
-    
+    // OGOGGO
     public void drawCurrntStep(int i){
     	Color temp = g.getColor();
         Font tempFont = g.getFont();
