@@ -192,7 +192,12 @@ public class GeomUtil {
         
        return new Pnt(centerx, centery);
     }
-     
+    
+    
+    /* getCircleVectorIntersectionPoint Algorithm from
+     * https://stackoverflow.com/questions/13053061/circle-line-intersection-points
+     * 
+     */
     public static Pnt getCircleVectorIntersectionPoint(Pnt pointA,
             Pnt pointB, Pnt center, double radius) {
         double baX = pointB.getX() - pointA.getX();
