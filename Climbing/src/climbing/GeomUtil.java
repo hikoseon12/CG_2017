@@ -134,6 +134,25 @@ public class GeomUtil {
 		        	inner.add(p2);  
 	    	}
 	    else{
+	    	
+	    	Pnt p1 = null;
+	    	Pnt p2 = null;
+	    	
+	    	if( a.equals(b))
+	    	{
+	    		p1 = GeomUtil.getCircleIntersection(a,c,r1,r3, false);
+	    		p2 = GeomUtil.getCircleIntersection(a,c,r1,r3, true);
+	    	} else if(a.equals(c))
+	    	{
+	    		p1 = GeomUtil.getCircleIntersection(a,b,r1,r2, false);
+	    		p2 = GeomUtil.getCircleIntersection(a,b,r1,r2, true);
+	    	} else if (b.equals(c))
+	    	{
+	    		p1 = GeomUtil.getCircleIntersection(a,c,r1,r3, false);
+	    		p2 = GeomUtil.getCircleIntersection(a,c,r1,r3, true);
+	    	}
+	    	/*
+	    	
 	    	Pnt[] k = {a,b};
 	    	double[] rk = {r1,r2};
 	    	int z = 0;
@@ -146,6 +165,8 @@ public class GeomUtil {
 	    	}
 	    	Pnt p1 = GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], false);
 	    	Pnt p2 = GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], true);
+	    	*/
+	    	
 	        inner.add(p1);
 	        inner.add(p2);
 	        inner.add(null);
