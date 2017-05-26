@@ -271,16 +271,12 @@ public class ClimbingControl {
 			if(targetList.size() <= holdNextShowIndex)
 				holdNextShowIndex -= 1;
 			_next = targetList.get(holdNextShowIndex).getPoint();
-			//System.out.println("innerCenter" + innerCenter);
-			//System.out.println("GeomUtil.getDistance(innerCenter, nextTarget)"+ GeomUtil.getDistance(innerCenter, nextTarget) + "  " + innerRadius);
 			if (GeomUtil.getDistance(innerCenter, nextTarget) <= innerRadius) {
-				//System.out.println("GeomUtil.getDistance(i)");
 				if (ns.getHand() == TargetStep.LEFT_HAND)
 					man.setLh(ns.getIndex());
 				else
 					man.setRh(ns.getIndex());
 				nextStepIndex++;
-				//System.out.println("\n거리가 \n action0: 손 움직이기 \n\n");
 				return changed;
 			}
 		}
@@ -311,7 +307,6 @@ public class ClimbingControl {
 		double preDistance = 9999999;
 		double nextDistance = 0;
 		Pnt nextFootPnt = null; // 오른쪽 발로 세팅
-		//System.out.println("pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 
@@ -322,9 +317,6 @@ public class ClimbingControl {
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX()
 				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())  
 			{
-				// System.out.println(":::nextDistance "+nextDistance+"
-				// preDistance "+preDistance);
-				// System.out.println(":::index "+index+ nearFeet.get(index));
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
 			}
@@ -346,11 +338,9 @@ public class ClimbingControl {
 		
 		if(nextFootPnt == null)
 		{
-			//System.out.println("\n끝끝끝!!nextFootPnt: "+nextFootPnt);
 			return notChanged;
 		}
 		man.setLf(nextFootPnt.getIndex());
-		//System.out.println("pointList.get(man.getLf()): " + pointList.get(man.getLf()));
 		return changed;
 	}
 
@@ -381,12 +371,9 @@ public class ClimbingControl {
 		Pnt idealRfPnt = GeomUtil.getCircleVectorIntersectionPoint(rfPnt, vtPnt,  innerCenter,innerRadius);
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 		
-		//System.out.println("idealRfPnt: " + idealRfPnt);
-		//System.out.println(">>CHECK!!>>pointList.get(man.getRf()): " + pointList.get(man.getRf()));
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT5(idealFootIndex);
 		nearFootPnts = nearFeet;
-		// System.out.println("nearFeet: "+nearFeet);
 
 		double preDistance = 9999999;
 		double nextDistance = 0;
@@ -397,27 +384,20 @@ public class ClimbingControl {
 			nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
 			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getLf()), nearFeet.get(index));
 
-			// System.out.println(":::nextDistance "+nextDistance+" preDistance"+preDistance);
-			// System.out.println(":::twoLegDistance "+twoLegDistance+"man.getPossibleLegLength() "+man.getPossibleLegLength());
-
 			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()
-				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())
+				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight()
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
-				//	&& pointList.get(man.getLh()).getX() <= nearFeet.get(index).getX()
-				//	&& nearFeet.get(index).getX() <= nextHoldPnt.getX()) 
+					&& nowHoldPnt.getX() <= nearFeet.get(index).getX()
+					&& nearFeet.get(index).getX() <= nextHoldPnt.getX())
 			{
-				// System.out.println(":::nextDistance "+nextDistance+"preDistance "+preDistance);
-				//System.out.println("들어감!!:::index " + index + nearFeet.get(index));
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
 			}
 		}
 		if(nextFootPnt == null)
 		{
-			//System.out.println("\n끝끝끝!!nextFootPnt: "+nextFootPnt);
 			return NotChanged;
 		}
-		//System.out.println("\n\n\n>>FINAL nextFootPnt: " + nextFootPnt + "\n\n");
 		man.setRf(nextFootPnt.getIndex());
 		return changed;
 	}
@@ -436,7 +416,6 @@ public class ClimbingControl {
 		if (nextStepIndex == 0)
 			curTarget = pointList.get(man.getLh()); // 초기에는 두 손으로 시작
 		if (nextStepIndex >= targetList.size()) {
-			//System.out.println("FINSHED ALL STEP");
 			return success;
 		}
 		
