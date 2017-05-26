@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.xml.crypto.Data;
 
 import org.omg.CORBA._PolicyStub;
 import org.w3c.dom.events.EventException;
@@ -179,12 +180,11 @@ public class ClimbingPanel extends JPanel {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         
-        
-        
+        drawCurrntStep(result);
                         
         drawTitle(); /* draw Title */
 
-        if(result!= 0){
+        if(result==1 || result==-1){
             Graphics2D g2d = (Graphics2D) g;
             AffineTransform trans = new AffineTransform();
             trans.setToTranslation(this.getWidth()/4,this.getHeight()/4);
@@ -233,41 +233,81 @@ public class ClimbingPanel extends JPanel {
         
         
         if( displayDT ) {
-           /* Draw Triangulation when enabled */
-           for (Triangle triangle : triList) {
-             Pnt[] vertices = triangle.toArray(new Pnt[0]);
-             drawPolygon(vertices);
-           }
+           drawDT();
         }
         
         if( displayVD ) {
-           /* Draw Voronoi Diagram when enabled */
-           for(int i = 0; i < vornoiList.size(); i++){
-              drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
-           }
+           drawVD();
         }
         
         if( displayStatus){
-           for(int i = 0; i < _3CirclePnt.length; i++){
-              drawCircle(_3CirclePnt[i],(int)_3CircleRad[i], 3, false, Color.BLUE);
-           }
-          drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
-          drawLine(_ctrPnt,_next,3,Color.CYAN);
+        	drawStatus();
 
-          if(nearFootList.size()!=0){
-          	for(int i = 0; i < nearFootList.size(); i++){
-          		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
-          	}
-          }
+            drawLastMovedPoint(result);
         }
+        
         for(TargetStep ts : targetList){
            drawCircle(ts.getPoint(),7,3, true, Color.MAGENTA);
         }
         
         g.setColor(temp);
     }
-    
-    
+    public void drawDT(){
+    	/* Draw Triangulation when enabled */
+        for (Triangle triangle : triList) {
+          Pnt[] vertices = triangle.toArray(new Pnt[0]);
+          drawPolygon(vertices);
+        }
+    }
+    public void drawVD(){
+    	/* Draw Voronoi Diagram when enabled */
+        for(int i = 0; i < vornoiList.size(); i++){
+           drawPolygon(vornoiList.get(i).toArray(new Pnt[0]));          
+        }
+    }
+    public void drawStatus(){
+    	if(_ctrPnt == null) return;
+    	
+	    for(int i = 0; i < _3CirclePnt.length; i++){
+	       drawCircle(_3CirclePnt[i],(int)_3CircleRad[i], 3, false, Color.BLUE);
+	    }
+        drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
+        drawLine(_ctrPnt,_next,3,Color.CYAN);
+
+       if(nearFootList.size()!=0){
+       	for(int i = 0; i < nearFootList.size(); i++){
+       		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
+       	}
+       }
+
+    }
+    public void drawLastMovedPoint(int i){
+    	if(manLF==null || manRF==null || manLH==null || manRH==null) return;
+    	switch(i){
+		    case 2: drawCircle(manRH,15,4,false,Color.black); break;
+		    case 3: drawCircle(manLH,15,4,false,Color.black); break;
+		    case 4: drawCircle(manRF,15,4,false,Color.black); break;
+		    default: drawCircle(manLF,15,4,false,Color.black); break;
+    	}
+    }
+    public void drawCurrntStep(int i){
+    	Color temp = g.getColor();
+        Font tempFont = g.getFont();
+        g.setColor(Color.BLACK);
+        Font titleFont = new Font(g.getFont().getName(), Font.BOLD | Font.ITALIC , 15);
+        g.setFont(titleFont);
+        String stepRes = "";
+        switch(i){
+	        case 2: stepRes="Last trial : Right Hand"; break;
+	        case 3: stepRes="Last trial : Left Hand"; break;
+	        case 4: stepRes="Last trial : Right Foot"; break;
+	        default:stepRes="Last trial : Left Foot";
+        }
+        g.drawString(stepRes, this.getWidth()-200, 20);
+        
+        g.setColor(temp);
+        g.setFont(tempFont);
+    }
     public void drawTitle() {
        if( title == null ) return;
        
@@ -286,7 +326,7 @@ public class ClimbingPanel extends JPanel {
     public void drawLine(Pnt s, Pnt e, int stroke,Color color){
        Graphics2D g2d = (Graphics2D) g;
        g2d.setStroke(new BasicStroke(stroke));   
-      g2d.setColor(color);
+       g2d.setColor(color);
        g2d.drawLine((int)s.getX(), (int)s.getY(),
                  (int)e.getX(), (int)e.getY());
     }
