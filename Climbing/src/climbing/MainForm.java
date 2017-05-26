@@ -21,9 +21,11 @@ public class MainForm extends JFrame {
 	String confFileName;
 	String characterName;
 	int    characterIndex;
+	int[]    characterTall = { 210, 180 };
 	boolean showDT = false;
 	boolean showVD = false;
 	boolean showStatus = false;
+	
 	
 	public MainForm()
 	{
@@ -108,6 +110,7 @@ public class MainForm extends JFrame {
 		Man man = cr.getMan();
 		if( man != null )
 		{
+			man.setTall(characterTall[characterIndex]);
 			pnClimbing.setMan(man);
 			control.setMan(man);
 		}
@@ -176,6 +179,8 @@ public class MainForm extends JFrame {
 		pnClimbing.setImagePath("character/"+ this.characterName.toLowerCase());
 		loadConf();
 	}
+	
+	
 	public static void main(String[] args) {
 	
 		
@@ -184,6 +189,7 @@ public class MainForm extends JFrame {
 		mf.setVisible(true);
 		mf.showConfDialog();
 		mf.loadConf();
+		
 		//mf.loadDefaultConf();
 		
 		

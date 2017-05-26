@@ -157,7 +157,8 @@ public class ClimbingPanel extends JPanel {
      this.man = man;
      isManDeclared = true;
     }
-
+    public Man getMan() { return this.man; }
+    
     public void setDtriangle(ArrayList<Triangle> dtr)
     {
      this.triList = dtr;
