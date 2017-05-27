@@ -158,15 +158,6 @@ public class GeomUtil {
 				p1 = GeomUtil.getCircleIntersection(a, c, r1, r3, false);
 				p2 = GeomUtil.getCircleIntersection(a, c, r1, r3, true);
 			}
-			/*
-			 * 
-			 * Pnt[] k = {a,b}; double[] rk = {r1,r2}; int z = 0; Integer[] zk =
-			 * hash.toArray(new Integer[0]); for(int i = 0; i < parr.length;
-			 * i++){ if(parr[i].getIndex()==zk[i]){ k[i] = parr[i]; rk[i] =
-			 * rarr[i]; z++; } } Pnt p1 =
-			 * GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], false); Pnt
-			 * p2 = GeomUtil.getCircleIntersection(k[0],k[1],rk[0],rk[1], true);
-			 */
 
 			inner.add(p1);
 			inner.add(p2);
