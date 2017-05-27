@@ -36,8 +36,6 @@ public class ClimbingControl {
 	Pnt _idealPnt;
 	ArrayList<Pnt> _inner;
 	
-	int start = 0;
-	
 	public ClimbingControl() {
 		nextStepIndex = 0;
 		isLFused = false;
@@ -266,7 +264,7 @@ public class ClimbingControl {
 			notmovingH = pointList.get(man.getLh());
 		}
 	
-		if (start == 0 || pointList.get(man.getLf()).getX() <= notmovingH.getX()
+		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
 				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()
 				
 			    && man.getMinHandFeetHeight() <= Math.min(pointList.get(man.getRf()).getY()-nextTarget.getY(),
@@ -277,8 +275,6 @@ public class ClimbingControl {
 		{
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
-			
-			start++;
 			
 			//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
@@ -574,10 +570,10 @@ public class ClimbingControl {
 		for (int i = 0; i < inner.size(); i++) {
 			System.out.println(i+". :");
 			if(inner.get(i) == null)
-				System.out.println("null :");
+				;//System.out.println("null :");
 			else
 			{
-				System.out.println("inner: :"+inner.get(i).getX());
+				//System.out.println("inner: :"+inner.get(i).getX());
 				sumCenterX += inner.get(i).getX();
 				sumCenterY += inner.get(i).getY();
 				numberOfPoints++;

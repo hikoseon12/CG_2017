@@ -70,6 +70,30 @@ public class GeomUtil {
 			return (type ? in1 : in2);
 	}
 	
+	public static ArrayList<Pnt> getCircleIntersection2(Pnt a, Pnt b, double aa, double bb) 
+	{
+		ArrayList<Pnt> intersectionPnts = new ArrayList<Pnt>();
+		double distAB = getDistance(a, b);
+		double distAC = (aa * aa - bb * bb + distAB * distAB) / (2 * distAB);
+		double distCI = Math.sqrt(Math.abs(aa * aa - distAC * distAC));
+		Pnt c = new Pnt(a.getX() + distAC * (b.getX() - a.getX()) / distAB,
+				a.getY() + distAC * (b.getY() - a.getY()) / distAB);
+		// if meet 1 point
+		if (Math.abs(distAB - aa - bb) - Math.pow(10, -5) < 0){
+			intersectionPnts.add(c);
+			return intersectionPnts;
+		}
+		Pnt in1 = new Pnt(c.getX() + distCI * (b.getY() - a.getY()) / distAB,
+				c.getY() - distCI * (b.getX() - a.getX()) / distAB);
+		Pnt in2 = new Pnt(c.getX() - distCI * (b.getY() - a.getY()) / distAB,
+				c.getY() + distCI * (b.getX() - a.getX()) / distAB);
+
+		intersectionPnts.add(in1);
+		intersectionPnts.add(in2);
+		
+		return intersectionPnts;
+	}
+	
 	public static double getAngle(Pnt a, Pnt b) {
 		double height = b.getY() - a.getY();
 		double width = a.getX() - b.getX();
@@ -166,6 +190,63 @@ public class GeomUtil {
 		return inner;
 	}
 	
+	public static ArrayList<Pnt> get3CircleTriangle2(Pnt a, Pnt b, Pnt c, double r1, double r2, double r3) {
+		ArrayList<Pnt> inner = new ArrayList<Pnt>();
+		ArrayList<Pnt> tempPnt = new ArrayList<Pnt>();
+		Pnt[] parr = { a, b, c };
+		double[] rarr = { r1, r2, r3 };
+		Set<Integer> hash = new HashSet<Integer>();
+
+		for (int i = 0; i < parr.length; i++)
+			hash.add(parr[i].getIndex());
+		if (hash.size() == 3)
+			for (int i = 0; i < parr.length; i++) {
+				int j = (i + 1) % parr.length;
+				int k = (i + 2) % parr.length;
+				ArrayList<Pnt> p1 = GeomUtil.getCircleIntersection2(parr[i], parr[j], rarr[i], rarr[j]);
+				ArrayList<Pnt> p2 = GeomUtil.getCircleIntersection2(parr[i], parr[j], rarr[i], rarr[j]);
+				
+				tempPnt.addAll(p1);
+				tempPnt.addAll(p2);
+				
+//				if ((rarr[k] - GeomUtil.getDistance2(p1, parr[k])) > Math.pow(10, -5))
+//					inner.add(p1);
+//				else
+//					inner.add(p2);
+			}
+		else {
+
+			ArrayList<Pnt> p1 = new ArrayList<Pnt>();
+			ArrayList<Pnt> p2 = new ArrayList<Pnt>();
+
+			if (a.equals(b)) {
+				p1 = GeomUtil.getCircleIntersection2(a, c, r1, r3);
+				//p2 = GeomUtil.getCircleIntersection2(a, c, r1, r3);
+			} else if (a.equals(c)) {
+				p1 = GeomUtil.getCircleIntersection2(a, b, r1, r2);
+				//p2 = GeomUtil.getCircleIntersection2(a, b, r1, r2);
+			} else if (b.equals(c)) {
+				p1 = GeomUtil.getCircleIntersection2(a, c, r1, r3);
+				//p2 = GeomUtil.getCircleIntersection2(a, c, r1, r3);
+			}
+
+			tempPnt.addAll(p1);
+			tempPnt.addAll(p2);
+			//inner.add(null);
+		}
+		
+		for(int i = 0; i < tempPnt.size(); i++){
+			Pnt intersectionPnt = tempPnt.get(i);
+			double distance1 = getDistance(a, intersectionPnt);
+			double distance2 = getDistance(b, intersectionPnt);
+			double distance3 = getDistance(c, intersectionPnt);
+			
+			if(distance1 <= r1 && distance2 <= r2 && distance3 <= r3){
+				inner.add(tempPnt.get(i));
+			}
+		}
+		return inner;
+	}
 	
 	public static Pnt getCircleCenter(Pnt p1, Pnt p2, Pnt p3) {
 		if (p3 == null) {
