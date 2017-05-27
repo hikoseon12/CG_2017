@@ -65,6 +65,7 @@ public class ClimbingPanel extends JPanel {
    Pnt _ctrPnt;
    double _ctrRad;
    Pnt _next;
+   Pnt _idealPnt;
    
    public ClimbingPanel(){
      pointList = new ArrayList<Pnt>();
@@ -78,6 +79,7 @@ public class ClimbingPanel extends JPanel {
      _next = null;
      _3CircleRad = new double[3];
      _ctrRad = 0;
+     _idealPnt = null;
    }
    public void setNearFootList(ArrayList<Pnt> nfl){
 	   this.nearFootList = nfl;
@@ -115,6 +117,9 @@ public class ClimbingPanel extends JPanel {
          }
         
       isImageReady = true;
+   }
+   public void setIdealPnt(Pnt idealPnt){
+	   _idealPnt = idealPnt;
    }
    
    public boolean isDisplayDT() {
@@ -280,7 +285,9 @@ public class ClimbingPanel extends JPanel {
        		drawCircle(nearFootList.get(i), 3, 3, true, Color.YELLOW);
        	}
        }
-
+       if(_idealPnt != null){
+    	   drawCircle(_idealPnt,7,3, true, Color.lightGray);
+       }
     }
     public void drawLastMovedPoint(int i){
     	if(manLF==null || manRF==null || manLH==null || manRH==null) return;
@@ -362,12 +369,7 @@ public class ClimbingPanel extends JPanel {
        for(int i = 1; i < 5; i++){
          drawCircle(pos.get(i).first,(i%2==1?9:11),3,false,(i%2==1)?Color.RED:Color.GREEN);
          
-       }
-
-     //System.out.println("�ִ� �ȱ��� : "+man.getArmMaxLength()+" ���ȱ��� : "+man.getBackArmLength()+" ���� ���� : " +man.getFrontArmLength());
-     //System.out.println("�ִ� �ٸ����� : "+man.getLegMaxLength()+" �޴ٸ����� : "+man.getBackLegLength()+" �մٸ����� : " +man.getFrontLegLength());
-       
-       
+       } 
        Graphics2D g2d = (Graphics2D) g;
        Stroke tempStroke = g2d.getStroke();
        g2d.setStroke(new BasicStroke(3));
