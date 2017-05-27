@@ -329,13 +329,15 @@ public class ClimbingControl {
 		Pnt nextFootPnt = null;
 
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
-
+		double highHand = Math.min(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
+		
 		for (int index = 0; index < nearFeet.size(); index++) {
 			double distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY() - lowHand);
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX()
-				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight())  
+				&& man.getMinHandFeetHeight() <= (nearFeet.get(index).getY()-lowHand)
+				&& (nearFeet.get(index).getY()-highHand) <= man.getMaxHandFeetHeight())
 			{
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
@@ -393,6 +395,7 @@ public class ClimbingControl {
 		Pnt idealRfPnt = vtPnt;
 		
 		double lowHand = Math.max(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
+		double highHand = Math.min(pointList.get(man.getLh()).getY(), pointList.get(man.getRh()).getY());
 		
 		int idealFootIndex = getNearPointsInVornoi(idealRfPnt);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT6(idealFootIndex);
@@ -410,7 +413,8 @@ public class ClimbingControl {
 				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight()
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
 					&& (Math.min(nowHoldPnt.getX(),nextHoldPnt.getX()) -1) <= nearFeet.get(index).getX()
-					&& nearFeet.get(index).getX() <= (Math.max(targetList.get(nextStepIndex-1).getPoint().getX(),nextHoldPnt.getX())+1))
+					&& nearFeet.get(index).getX() <= (Math.max(targetList.get(nextStepIndex-1).getPoint().getX(),nextHoldPnt.getX())+1)
+					&& (nearFeet.get(index).getY()-highHand) <= man.getMaxHandFeetHeight())
 				//	&& ((nowHoldPnt.getX() - nearFeet.get(index).getX())
 				//	* (nextHoldPnt.getX()-nearFeet.get(index).getX())) <= 0)
 			{
