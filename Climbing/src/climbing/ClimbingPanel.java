@@ -442,6 +442,9 @@ public class ClimbingPanel extends JPanel {
       Graphics2D g2d = (Graphics2D) g;
       g2d.setColor(color);
        g2d.setStroke(new BasicStroke(stroke));
+       
+       if(point == null)
+    	   return;
        int x = (int) point.coord(0);
         int y = (int) point.coord(1);
         if(fill)
