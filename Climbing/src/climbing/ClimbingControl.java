@@ -375,7 +375,6 @@ public class ClimbingControl {
 			double distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY() - lowHand);
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 
-			//System.out.println("Lf: " + "innerRadius: " +innerRadius+ "nextDistance: " + nextDistance);
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX()
 					
 				&& GeomUtil.getDistance(innerCenter, nearFeet.get(index)) <= innerRadius
@@ -616,7 +615,6 @@ public class ClimbingControl {
 				maxRadius = newRadius;
 			}
 		}
-
 		return maxRadius;
 	}
 }
