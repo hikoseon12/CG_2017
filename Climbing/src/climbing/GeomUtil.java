@@ -174,7 +174,7 @@ public class GeomUtil {
 		}
 		return inner;
 	}
-
+	
 	public static Pnt getCircleCenter(Pnt p1, Pnt p2, Pnt p3) {
 		if (p3 == null) {
 			return new Pnt(((p1.getX() + p2.getX()) / 2), ((p1.getY() + p2.getY()) / 2));
