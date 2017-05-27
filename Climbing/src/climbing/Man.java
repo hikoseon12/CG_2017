@@ -18,7 +18,8 @@ public class Man {
     public double getBodyLength() { return 0.28*tall ; } 
     public double getPossibleLegLength() { return 0.6*tall ; } 
     public double getMinHandFeetHeight() {return 0.6*tall ; }
-     
+    public double getMaxHandFeetHeight() {return 1.2*tall ; }
+    
 	public Man(int lh, int rh, int lf, int rf)
 	{
 		this.lh = lh;
