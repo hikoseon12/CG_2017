@@ -36,6 +36,8 @@ public class ClimbingControl {
 	Pnt _idealPnt;
 	ArrayList<Pnt> _inner;
 	
+	int start = 0;
+	
 	public ClimbingControl() {
 		nextStepIndex = 0;
 		isLFused = false;
@@ -264,12 +266,34 @@ public class ClimbingControl {
 			notmovingH = pointList.get(man.getLh());
 		}
 		System.out.println("ns.getHand():"+ns.getHand());
+		System.out.println("notmovingH:"+notmovingH);
+		System.out.println("nextTarget.getY()"+nextTarget.getY());
+		System.out.println("pointList.get(man.getRf()).getY()"+pointList.get(man.getRf()));
+		System.out.println("pointList.get(man.getLf()).getY()"+pointList.get(man.getLf()));
 		
-		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
-				&& notmovingH.getX() <= pointList.get(man.getRf()).getX())
-		{
+		System.out.println("man.getMinHandFeetHeight()"+man.getMinHandFeetHeight());
+		System.out.println("nextTarget.getY()-pointList.get(man.getRf()).getY()" + (pointList.get(man.getRf()).getY()-nextTarget.getY()));
+		System.out.println("nextTarget.getY()-pointList.get(man.getLf()).getY()"+(pointList.get(man.getLf()).getY()-nextTarget.getY()));
+		System.out.println(">>>man.getMinHandFeetHeight()()"+man.getMinHandFeetHeight());
+		System.out.println("Math.min: "+ Math.min(nextTarget.getY()-pointList.get(man.getRf()).getY(),
+				nextTarget.getY()-pointList.get(man.getLf()).getY()));
+		System.out.println(">>>man.getMaxHandFeetHeight()"+man.getMaxHandFeetHeight());
+		System.out.println("Math.max: "+ Math.max(nextTarget.getY()-pointList.get(man.getRf()).getY(),
+				nextTarget.getY()-pointList.get(man.getLf()).getY()));
+		
+		if (start == 0 || pointList.get(man.getLf()).getX() <= notmovingH.getX()
+				&& notmovingH.getX() <= pointList.get(man.getRf()).getX()
+				
+			    && man.getMinHandFeetHeight() <= Math.min(pointList.get(man.getRf()).getY()-nextTarget.getY(),
+					pointList.get(man.getLf()).getY()-nextTarget.getY())
+				&& Math.max(pointList.get(man.getRf()).getY()-nextTarget.getY(),
+						pointList.get(man.getLf()).getY())-nextTarget.getY() <= man.getMaxHandFeetHeight())
+			
+		{System.out.println("getIN!!!!"+ns.getHand());
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
+			
+			start++;
 			
 			//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 			//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
@@ -326,8 +350,17 @@ public class ClimbingControl {
 		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2+
 				(nextHoldPnt.getX() - nowHoldPnt.getX()), LfHeight+(nextHoldPnt.getY() - nowHoldPnt.getY()));
 	*/	
-		Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
-		System.out.println("idealFootPnt: "+idealFootPnt);
+		
+		Pnt nowHoldPnt = targetList.get(sameHandNextHold).getPoint();
+		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
+		double holdsDistance = GeomUtil.getDistance(nextHoldPnt, nowHoldPnt);
+		Pnt rfPnt = pointList.get(man.getRf());
+		Pnt vtPnt = new Pnt( rfPnt.getX() + man.getPossibleLegLength()*(nextHoldPnt.getX() - nowHoldPnt.getX())/holdsDistance, 
+				rfPnt.getY() + man.getPossibleLegLength()*(nextHoldPnt.getY() - nowHoldPnt.getY())/holdsDistance);
+		Pnt idealFootPnt = vtPnt;
+		
+		
+		//Pnt idealFootPnt = new Pnt((pointList.get(man.getRh()).getX()+pointList.get(man.getLh()).getX())/2, LfHeight);
 		ArrayList<Pnt> nearFeet = getNearPointsInDT4(pointList.get(man.getRf()).getIndex());
 		nearFootPnts = nearFeet;
 		
@@ -341,24 +374,31 @@ public class ClimbingControl {
 		
 		
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
-				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
+				pointList.get(man.getRf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 		//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
 		//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
 		//		(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
 		Pnt innerCenter = getCenterOfCircles(inner);
-		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
+		
+		double innerCenterMaxRadius = getInnerCenterMaxRadius(innerCenter, inner);
+		
+		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
+		
+		double innerRadius = innerCenterMaxRadius + man.getLegMaxLength();
 		
 		for (int index = 0; index < nearFeet.size(); index++) {
 			double distanceHoldAndFoot = Math.abs(nearFeet.get(index).getY() - lowHand);
 			nextDistance = GeomUtil.getDistance(idealFootPnt, nearFeet.get(index));
 
+			//System.out.println("Lf: " + "innerRadius: " +innerRadius+ "nextDistance: " + nextDistance);
 			if (nextDistance < preDistance && nearFeet.get(index).getX() < pointList.get(man.getRf()).getX()
 					
-					&& nextDistance <= innerRadius
-					
-				&& man.getMinHandFeetHeight() <= (nearFeet.get(index).getY()-lowHand)
+				&& GeomUtil.getDistance(innerCenter, nearFeet.get(index)) <= innerRadius
+				
 				&& (nearFeet.get(index).getY()-highHand) <= man.getMaxHandFeetHeight()
-				&& Math.min((nearFeet.get(index).getY()-lowHand),(nearFeet.get(index).getY()-targetList.get(NextTargetHold).getPoint().getY())) <= man.getMaxHandFeetHeight())
+				&& man.getMinHandFeetHeight() <= (nearFeet.get(index).getY()-lowHand))
+				//&& man.getMinHandFeetHeight()-1 <= Math.min((nearFeet.get(index).getY()-lowHand),
+				//		(nearFeet.get(index).getY()-targetList.get(NextTargetHold).getPoint().getY())))
 			{
 				preDistance = nextDistance;
 				nextFootPnt = nearFeet.get(index);
@@ -401,7 +441,11 @@ public class ClimbingControl {
 		Pnt innerCenter = getCenterOfCircles(inner);
 		
 		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
-		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
+		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
+		
+		double innerCenterMaxRadius = getInnerCenterMaxRadius(innerCenter, inner);
+		double innerRadius = innerCenterMaxRadius + man.getLegMaxLength();
+		
 		double holdsDistance = GeomUtil.getDistance(nextHoldPnt, nowHoldPnt);
 		Pnt rfPnt = pointList.get(man.getRf());
 		Pnt vtPnt = new Pnt( rfPnt.getX() + man.getPossibleLegLength()*(nextHoldPnt.getX() - nowHoldPnt.getX())/holdsDistance, 
@@ -425,16 +469,20 @@ public class ClimbingControl {
 			nextDistance = GeomUtil.getDistance(idealRfPnt, nearFeet.get(index));
 			double twoLegDistance = GeomUtil.getDistance(pointList.get(man.getLf()), nearFeet.get(index));
 
-			if (nextDistance < preDistance && twoLegDistance <= man.getPossibleLegLength()
+			if (nextDistance < preDistance 
+					&& twoLegDistance <= man.getPossibleLegLength()
 					
-				&& nextDistance <= innerRadius
+					&& GeomUtil.getDistance(innerCenter, nearFeet.get(index)) <= innerRadius
 					
-				&& (nearFeet.get(index).getY()-lowHand) >= man.getMinHandFeetHeight()
+					&& (nearFeet.get(index).getY()-highHand) <= man.getMaxHandFeetHeight()
+					&& man.getMinHandFeetHeight() <= (nearFeet.get(index).getY()-lowHand)
+					
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
 					&& (Math.min(nowHoldPnt.getX(),nextHoldPnt.getX()) -1) <= nearFeet.get(index).getX()
-					&& nearFeet.get(index).getX() <= (Math.max(targetList.get(nextStepIndex-1).getPoint().getX(),nextHoldPnt.getX())+1)
-					&& (nearFeet.get(index).getY()-highHand) <= man.getMaxHandFeetHeight()
-					&& Math.min((nearFeet.get(index).getY()-lowHand),(nearFeet.get(index).getY()-targetList.get(NextTargetHold).getPoint().getY())) <= man.getMaxHandFeetHeight())
+					&& nearFeet.get(index).getX() <= (Math.max(targetList.get(nextStepIndex-1).getPoint().getX(),nextHoldPnt.getX())+1))
+					
+					//&& man.getMinHandFeetHeight()-1 <= Math.min((nearFeet.get(index).getY()-lowHand),
+					//		(nearFeet.get(index).getY()-targetList.get(NextTargetHold).getPoint().getY())))
 				
 				//	&& ((nowHoldPnt.getX() - nearFeet.get(index).getX())
 				//	* (nextHoldPnt.getX()-nearFeet.get(index).getX())) <= 0)
@@ -542,5 +590,34 @@ public class ClimbingControl {
 		centerY = sumCenterY/inner.size();
 		
 		return new Pnt(centerX, centerY);
+	}
+	
+	public Pnt getInnerCenterOfCircles(ArrayList<Pnt> inner) {
+		double centerX = 0.0;
+		double centerY = 0.0;
+		double sumCenterX = 0.0;
+		double sumCenterY = 0.0;
+		
+		for (int i = 0; i < inner.size(); i++) {
+			sumCenterX += inner.get(i).getX();
+			sumCenterY += inner.get(i).getY();
+		}
+		centerX = sumCenterX/inner.size();
+		centerY = sumCenterY/inner.size();
+		
+		return new Pnt(centerX, centerY);
+	}
+	
+	public double getInnerCenterMaxRadius(Pnt innerCenter, ArrayList<Pnt> inner){
+		double maxRadius = 0.0;
+		double newRadius = 0.0;
+		for (int i = 0; i < inner.size(); i++) {
+			newRadius = GeomUtil.getDistance(innerCenter, inner.get(i));
+			if(newRadius > maxRadius){
+				maxRadius = newRadius;
+			}
+		}
+
+		return maxRadius;
 	}
 }

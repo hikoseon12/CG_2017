@@ -9,10 +9,10 @@ public class Man {
 	
 	private int tall = 210;
 	
-	public double getArmMaxLength() { return 0.6*tall ; }
+	public double getArmMaxLength() { return 0.7*tall ; }
 	public double getFrontArmLength() { return 0.4*getArmMaxLength() ; } 
 	public double getBackArmLength() { return 0.6*getArmMaxLength() ;  }
-	public double getLegMaxLength() { return 0.6*tall; }
+	public double getLegMaxLength() { return 0.7*tall; }
     public double getFrontLegLength() { return 0.4*getLegMaxLength() ; } 
     public double getBackLegLength() { return 0.6*getLegMaxLength() ;  }
     public double getBodyLength() { return 0.28*tall ; } 
