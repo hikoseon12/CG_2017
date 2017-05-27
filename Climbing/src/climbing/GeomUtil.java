@@ -209,10 +209,6 @@ public class GeomUtil {
 				tempPnt.addAll(p1);
 				tempPnt.addAll(p2);
 				
-//				if ((rarr[k] - GeomUtil.getDistance2(p1, parr[k])) > Math.pow(10, -5))
-//					inner.add(p1);
-//				else
-//					inner.add(p2);
 			}
 		else {
 

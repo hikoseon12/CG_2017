@@ -423,7 +423,6 @@ public class ClimbingControl {
 		
 		Pnt innerCenter = getCenterOfCircles(inner);
 		
-		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
 		
 		double innerCenterMaxRadius = getInnerCenterMaxRadius(innerCenter, inner);
