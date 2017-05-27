@@ -268,8 +268,10 @@ public class ClimbingControl {
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
 			
 			//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-			Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
-					(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+			//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+			//		(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+			
+			Pnt innerCenter = getCenterOfCircles(inner);
 			//System.out.println("inner.get(0):" +inner.get(0)+"inner.get(1):" +inner.get(1)+"inner.get(2):" +inner.get(2));
 
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
@@ -348,8 +350,9 @@ public class ClimbingControl {
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 		//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-		Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
-				(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+		//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+		//		(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+		Pnt innerCenter = getCenterOfCircles(inner);
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
 		
 		_3CirclePnt[0] = pointList.get(man.getLh());
@@ -381,8 +384,11 @@ public class ClimbingControl {
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
 		//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
-		Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
-				(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+		//Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+		//		(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+		
+		Pnt innerCenter = getCenterOfCircles(inner);
+		
 		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
 		
@@ -506,4 +512,19 @@ public class ClimbingControl {
 		return nextIndex;
 	}
 	
+	public Pnt getCenterOfCircles(ArrayList<Pnt> inner) {
+		double centerX = 0.0;
+		double centerY = 0.0;
+		double sumCenterX = 0.0;
+		double sumCenterY = 0.0;
+		
+		for (int i = 0; i < inner.size(); i++) {
+			sumCenterX += inner.get(i).getX();
+			sumCenterY += inner.get(i).getY();
+		}
+		centerX = sumCenterX/inner.size();
+		centerY = sumCenterY/inner.size();
+		
+		return new Pnt(centerX, centerY);
+	}
 }
