@@ -66,6 +66,7 @@ public class ClimbingPanel extends JPanel {
    double _ctrRad;
    Pnt _next;
    Pnt _idealPnt;
+   private ArrayList<Pnt> _inner;
    
    public ClimbingPanel(){
      pointList = new ArrayList<Pnt>();
@@ -120,6 +121,10 @@ public class ClimbingPanel extends JPanel {
    }
    public void setIdealPnt(Pnt idealPnt){
 	   _idealPnt = idealPnt;
+   }
+   
+   public void setInnerPnt(ArrayList<Pnt> inner){
+	   _inner = inner;
    }
    
    public boolean isDisplayDT() {
@@ -287,6 +292,11 @@ public class ClimbingPanel extends JPanel {
        }
        if(_idealPnt != null){
     	   drawCircle(_idealPnt,7,3, true, Color.lightGray);
+       }
+       if(_inner.size()!=0){
+    	   for(int i = 0; i < _inner.size(); i++){
+          		drawCircle(_inner.get(i), 5, 3, true, Color.PINK);
+          	}
        }
     }
     public void drawLastMovedPoint(int i){
