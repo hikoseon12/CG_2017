@@ -259,14 +259,22 @@ public class ClimbingControl {
 			movingH = pointList.get(man.getRh());
 			notmovingH = pointList.get(man.getLh());
 		}
+		System.out.println("ns.getHand():"+ns.getHand());
+		
 		if (pointList.get(man.getLf()).getX() <= notmovingH.getX()
 				&& notmovingH.getX() <= pointList.get(man.getRf()).getX())
 		{
 			ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(notmovingH, pointList.get(man.getLf()),
 					pointList.get(man.getRf()), man.getArmMaxLength(), man.getLegMaxLength(), man.getLegMaxLength());
 			
-			Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+			//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+			Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+					(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
+			//System.out.println("inner.get(0):" +inner.get(0)+"inner.get(1):" +inner.get(1)+"inner.get(2):" +inner.get(2));
+
 			double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
+			System.out.println("innerRadius:" +innerRadius);
+			
 			_3CirclePnt[0] = notmovingH;
 			_3CirclePnt[1] = pointList.get(man.getLf());
 			_3CirclePnt[2] = pointList.get(man.getRf());
@@ -280,6 +288,7 @@ public class ClimbingControl {
 			if(targetList.size() <= holdNextShowIndex)
 				holdNextShowIndex -= 1;
 			_next = targetList.get(holdNextShowIndex).getPoint();
+			
 			if (GeomUtil.getDistance(innerCenter, nextTarget) <= innerRadius) {
 				if (ns.getHand() == TargetStep.LEFT_HAND)
 					man.setLh(ns.getIndex());
@@ -336,7 +345,9 @@ public class ClimbingControl {
 		
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
-		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+				(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
 		
 		_3CirclePnt[0] = pointList.get(man.getLh());
@@ -367,15 +378,17 @@ public class ClimbingControl {
 
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
-		Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		//Pnt innerCenter = GeomUtil.getCircleCenter(inner.get(0), inner.get(1), inner.get(2));
+		Pnt innerCenter = new Pnt((inner.get(0).getX()+ inner.get(1).getX()+inner.get(2).getX())/3,
+				(inner.get(0).getY()+ inner.get(1).getY()+inner.get(2).getY())/3);
 		//double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getArmMaxLength();
 		double innerRadius = GeomUtil.getDistance(innerCenter, inner.get(0)) + man.getLegMaxLength();
 		
 		
-		
+		double holdsDistance = GeomUtil.getDistance(nextHoldPnt, nowHoldPnt);
 		Pnt rfPnt = pointList.get(man.getRf());
-		Pnt vtPnt = new Pnt( rfPnt.getX() + (nextHoldPnt.getX() - nowHoldPnt.getX()), 
-				rfPnt.getY() + (nextHoldPnt.getY() - nowHoldPnt.getY()));
+		Pnt vtPnt = new Pnt( rfPnt.getX() + man.getPossibleLegLength()*(nextHoldPnt.getX() - nowHoldPnt.getX())/holdsDistance, 
+				rfPnt.getY() + man.getPossibleLegLength()*(nextHoldPnt.getY() - nowHoldPnt.getY())/holdsDistance);
 		//Pnt idealRfPnt = GeomUtil.getCircleVectorIntersectionPoint(rfPnt, vtPnt,  innerCenter, innerRadius);//innerRadius*0.8);
 		Pnt idealRfPnt = vtPnt;
 		
@@ -448,7 +461,7 @@ public class ClimbingControl {
 		movedHand = movingHandStep(ns, nextTarget);
 		//NotChanged += movedHand;  FAIL 
 		NotChanged = movedHand;
-		System.out.println("1.NotChanged: "+NotChanged);
+		//System.out.println("1.NotChanged: "+NotChanged);
 		if(movedHand == 0)
 		{
 			int LEFT_HAND  = 0;
@@ -460,7 +473,7 @@ public class ClimbingControl {
 			//NotChanged = 0;
 			return status;
 		}
-		System.out.println("2.NotChanged: "+NotChanged);
+		//System.out.println("2.NotChanged: "+NotChanged);
 		if(footLeftRight == 0)
 		{	
 			NotChanged += movingLf();
@@ -472,7 +485,7 @@ public class ClimbingControl {
 			status = RFmoved;
 			footLeftRight = 0;
 		}
-		System.out.println("3.NotChanged: "+NotChanged);
+		//System.out.println("3.NotChanged: "+NotChanged);
 		if(NotChanged >= 3)
 		{
 			status = fail;
