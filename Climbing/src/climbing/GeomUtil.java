@@ -37,7 +37,8 @@ public class GeomUtil {
 
 	// if type 0 then return the point which is located on the cw direction
 	// else if type 1 then return ccw direction
-	public static Pnt getCircleIntersection(Pnt a, Pnt b, double aa, double bb, boolean type) {
+	public static Pnt getCircleIntersection(Pnt a, Pnt b, double aa, double bb, boolean type) 
+	{
 		double distAB = getDistance(a, b);
 		double distAC = (aa * aa - bb * bb + distAB * distAB) / (2 * distAB);
 		double distCI = Math.sqrt(Math.abs(aa * aa - distAC * distAC));
