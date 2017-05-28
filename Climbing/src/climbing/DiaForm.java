@@ -55,7 +55,7 @@ public class DiaForm extends JDialog  {
 	    characters = new JComboBox<String>();
 	    characters.addItem("Skeleton");
 	    characters.addItem("IronMan");
-	    characters.addItem("Skeleton (Short)");
+	    characters.addItem("GreenTee");
 	    
 	    characters.setBorder(new TitledBorder("Character"));
 	    pnMain.add(characters);
@@ -68,8 +68,6 @@ public class DiaForm extends JDialog  {
 	{
 		selectedFileName = (String) confFiles.getSelectedItem();
 		selectedCharacterName = (String) characters.getSelectedItem();
-		if( selectedCharacterName.indexOf(" ") > 0) 
-			selectedCharacterName= selectedCharacterName.substring(0, selectedCharacterName.indexOf(" ") ).trim();
 		selectedCharacterIndex = characters.getSelectedIndex();
 		this.setVisible(false);
 	}
