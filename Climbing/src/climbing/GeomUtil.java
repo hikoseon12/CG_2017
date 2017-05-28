@@ -204,10 +204,10 @@ public class GeomUtil {
 				int j = (i + 1) % parr.length;
 				int k = (i + 2) % parr.length;
 				ArrayList<Pnt> p1 = GeomUtil.getCircleIntersection2(parr[i], parr[j], rarr[i], rarr[j]);
-				ArrayList<Pnt> p2 = GeomUtil.getCircleIntersection2(parr[i], parr[j], rarr[i], rarr[j]);
+//				ArrayList<Pnt> p2 = GeomUtil.getCircleIntersection2(parr[i], parr[j], rarr[i], rarr[j]);
 				
 				tempPnt.addAll(p1);
-				tempPnt.addAll(p2);
+//				tempPnt.addAll(p2);
 				
 			}
 		else {
@@ -227,7 +227,7 @@ public class GeomUtil {
 			}
 
 			tempPnt.addAll(p1);
-			tempPnt.addAll(p2);
+//			tempPnt.addAll(p2);
 			//inner.add(null);
 		}
 		
@@ -237,9 +237,10 @@ public class GeomUtil {
 			double distance2 = getDistance(b, intersectionPnt);
 			double distance3 = getDistance(c, intersectionPnt);
 			
-			if(distance1 <= r1 && distance2 <= r2 && distance3 <= r3){
+			if(distance1 <= r1+Math.pow(10, -5) && distance2 <= r2+Math.pow(10, -5) && distance3 <= r3+Math.pow(10, -5)){
 				inner.add(tempPnt.get(i));
 			}
+			System.out.println(tempPnt);
 		}
 		return inner;
 	}

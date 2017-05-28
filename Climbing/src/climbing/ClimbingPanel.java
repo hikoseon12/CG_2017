@@ -66,6 +66,7 @@ public class ClimbingPanel extends JPanel {
    double _ctrRad;
    Pnt _next;
    Pnt _idealPnt;
+   Pnt startPnt;
    private ArrayList<Pnt> _inner;
    
    public ClimbingPanel(){
@@ -78,6 +79,7 @@ public class ClimbingPanel extends JPanel {
      _3CirclePnt = new Pnt[3];
      _ctrPnt = null;
      _next = null;
+     startPnt = null;
      _3CircleRad = new double[3];
      _ctrRad = 0;
      _idealPnt = null;
@@ -166,6 +168,7 @@ public class ClimbingPanel extends JPanel {
     {
      this.man = man;
      isManDeclared = true;
+     startPnt = pointList.get(man.getLh());
     }
     public Man getMan() { return this.man; }
     
@@ -256,7 +259,8 @@ public class ClimbingPanel extends JPanel {
 
             drawLastMovedPoint(result);
         }
-        
+
+        drawCircle(startPnt,7,3, true, Color.MAGENTA);
         for(TargetStep ts : targetList){
            drawCircle(ts.getPoint(),7,3, true, Color.MAGENTA);
         }
@@ -284,6 +288,8 @@ public class ClimbingPanel extends JPanel {
 	    }
         drawCircle(_ctrPnt,(int)_ctrRad, 3, false, Color.ORANGE);
         drawLine(_ctrPnt,_next,3,Color.CYAN);
+
+        drawCircle(_next,(int)11, 3, false, Color.PINK);
 
        if(nearFootList.size()!=0){
        	for(int i = 0; i < nearFootList.size(); i++){
