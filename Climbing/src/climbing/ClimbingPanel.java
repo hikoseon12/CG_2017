@@ -169,6 +169,7 @@ public class ClimbingPanel extends JPanel {
      this.man = man;
      isManDeclared = true;
      startPnt = pointList.get(man.getLh());
+     title += ", tall : " + (int)(man.getTall()/25.0*18) + "cm";
     }
     public Man getMan() { return this.man; }
     
