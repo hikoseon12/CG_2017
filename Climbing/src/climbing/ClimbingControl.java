@@ -400,7 +400,7 @@ public class ClimbingControl {
 		_next = targetList.get(nextStepIndex).getPoint();
 		_inner = inner;
 		
-		if(nextFootPnt == null)
+		if(nextFootPnt == null || nextFootPnt == pointList.get(man.getLf()))
 		{
 			return notChanged;
 		}
@@ -485,7 +485,7 @@ public class ClimbingControl {
 		_idealPnt = idealRfPnt;
 		_inner = inner;
 		
-		if(nextFootPnt == null)
+		if(nextFootPnt == null || nextFootPnt == pointList.get(man.getRf()))
 		{
 			return NotChanged;
 		}
@@ -515,8 +515,8 @@ public class ClimbingControl {
 		Pnt nextTarget = pointList.get(ns.getIndex());
 		int movedHand = 0;
 		movedHand = movingHandStep(ns, nextTarget);
-		//NotChanged += movedHand;  FAIL 
-		NotChanged = movedHand;
+		NotChanged += movedHand; // FAIL 
+		//NotChanged = movedHand;
 		//System.out.println("1.NotChanged: "+NotChanged);
 		if(movedHand == 0)
 		{
@@ -526,22 +526,24 @@ public class ClimbingControl {
 				status = LHmoved;
 			else if(ns.getHand() == RIGHT_HAND)
 				status = RHmoved;
-			//NotChanged = 0;
+			NotChanged = 0;
 			return status;
 		}
 		//System.out.println("2.NotChanged: "+NotChanged);
 		if(footLeftRight == 0)
-		{	
-			NotChanged += movingLf();
+		{	int returnValue = movingLf();
+			NotChanged += (returnValue == 0? -NotChanged: returnValue);
 			status = LFmoved;
 			footLeftRight = 1;
 		} 
 		else if (footLeftRight == 1) {
-			NotChanged += movingRf();
+			int returnValue = movingRf();
+			NotChanged += (returnValue == 0? -NotChanged: returnValue);
 			status = RFmoved;
 			footLeftRight = 0;
 		}
-		//System.out.println("3.NotChanged: "+NotChanged);
+		
+		//System.out.println("3.NotChanged: "+NotChanged); 
 		if(NotChanged >= 3)
 		{
 			status = fail;

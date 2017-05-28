@@ -55,7 +55,7 @@ public class DiaForm extends JDialog  {
 	    characters = new JComboBox<String>();
 	    characters.addItem("Skeleton");
 	    characters.addItem("IronMan");
-	    characters.addItem("GreenTee");
+	    characters.addItem("GreenTea");
 	    
 	    characters.setBorder(new TitledBorder("Character"));
 	    pnMain.add(characters);
