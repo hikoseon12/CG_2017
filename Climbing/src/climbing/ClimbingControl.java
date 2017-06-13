@@ -322,7 +322,7 @@ public class ClimbingControl {
 		double nowHoldHeight = targetList.get(sameHandNextHold).getPoint().getY();
 		
 		//double nowHoldHeight = targetList.get(nextStepIndex - 1).getPoint().getY();
-		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex())).getY();
+		double nextHoldHeight = pointList.get(findNextDiffHoldIndex(targetList.get((int)Math.max(0, nextStepIndex-1)).getIndex())).getY();
 
 		LfHeight -= nowHoldHeight - nextHoldHeight;
 		
@@ -333,7 +333,7 @@ public class ClimbingControl {
 	*/	
 		
 		Pnt nowHoldPnt = targetList.get(sameHandNextHold).getPoint();
-		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
+		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get((int)Math.max(0, nextStepIndex-1)).getIndex()));
 		double holdsDistance = GeomUtil.getDistance(nextHoldPnt, nowHoldPnt);
 		Pnt rfPnt = pointList.get(man.getRf());
 		Pnt vtPnt = new Pnt( rfPnt.getX() + man.getPossibleLegLength()*(nextHoldPnt.getX() - nowHoldPnt.getX())/holdsDistance, 
@@ -413,7 +413,7 @@ public class ClimbingControl {
 		int sameHandNextHold = Math.max(0, nextStepIndex-2);
 		Pnt nowHoldPnt = targetList.get(sameHandNextHold).getPoint();
 		//Pnt nowHoldPnt = targetList.get(nextStepIndex - 1).getPoint();
-		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get(nextStepIndex-1).getIndex()));
+		Pnt nextHoldPnt = pointList.get(findNextDiffHoldIndex(targetList.get((int)Math.max(0, nextStepIndex-1)).getIndex()));
 
 		ArrayList<Pnt> inner = GeomUtil.get3CircleTriangle2(pointList.get(man.getLh()), pointList.get(man.getRh()),
 				pointList.get(man.getLf()), man.getArmMaxLength(), man.getArmMaxLength(), man.getLegMaxLength());
@@ -461,7 +461,7 @@ public class ClimbingControl {
 					
 				//	&& nowHoldPnt.getX() < nearFeet.get(index).getX()
 					&& (Math.min(nowHoldPnt.getX(),nextHoldPnt.getX()) -1) <= nearFeet.get(index).getX()
-					&& nearFeet.get(index).getX() <= (Math.max(targetList.get(nextStepIndex-1).getPoint().getX(),nextHoldPnt.getX())+1))
+					&& nearFeet.get(index).getX() <= (Math.max(targetList.get((int)Math.max(0, nextStepIndex-1)).getPoint().getX(),nextHoldPnt.getX())+1))
 					
 					//&& man.getMinHandFeetHeight()-1 <= Math.min((nearFeet.get(index).getY()-lowHand),
 					//		(nearFeet.get(index).getY()-targetList.get(NextTargetHold).getPoint().getY())))
